@@ -46,6 +46,7 @@ watch(inputValue, (newInputValue) => {
             : '',
         ]"
         v-model="inputValue"
+        @keyup="$emit('typing', inputValue)"
       />
       <span
         v-if="errorState"

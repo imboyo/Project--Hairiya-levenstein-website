@@ -16,16 +16,23 @@ const rules = [
     validate: (value) => isEmail(value),
   },
 ];
+
+const formValues = reactive({
+  email: "",
+  password: "",
+});
 </script>
 
 <template>
   <div class="p-5">
-    <div class="flex flex-col">
+    {{ formValues.email }}
+    <div class="flex flex-col gap-5">
       <InputField
         placeholder="Masukkan email"
         icon="email"
         type="email"
         :rules="rules"
+        @typing="formValues.email = $event"
       />
     </div>
   </div>
