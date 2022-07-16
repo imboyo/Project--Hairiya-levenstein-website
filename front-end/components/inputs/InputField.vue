@@ -1,44 +1,24 @@
 <script lang="ts" setup>
-import {
-  isEmail,
-  isRequired,
-  minLength,
-  validateField,
-} from "~/my_modules/input_validation";
+import { validateField } from "~/my_modules/input_validation";
 
 interface Props {
+  type: string;
   disabled?: boolean;
   icon?: string;
   label?: string;
-  validation?: Function;
+  rules: rule[];
   hints?: string[];
   placeholder: string;
 }
-
-const rules = [
-  {
-    text: "This field is required",
-    validate: isRequired,
-  },
-  {
-    text: "Minimum characters is 6",
-    validate: (value) => minLength(value, 6),
-  },
-  {
-    text: "Insert a valid email",
-    validate: (value) => isEmail(value),
-  },
-];
 
 const inputValue = ref("");
 
 const errorState = ref<boolean | string>(false);
 
-watch(inputValue, (newInputValue) => {
-  errorState.value = validateField(newInputValue, rules);
-});
-
 const props = defineProps<Props>();
+watch(inputValue, (newInputValue) => {
+  errorState.value = validateField(newInputValue, props.rules);
+});
 </script>
 
 <template>
@@ -54,7 +34,7 @@ const props = defineProps<Props>();
         {{ icon }}
       </span>
       <input
-        type="text"
+        :type="type"
         class="py-2 px-3 rounded-lg border shadow-xs border-gray-300 w-full focus:border-primary-300 focus:shadow-xs-focused-primary-100"
         :placeholder="placeholder"
         :disabled="disabled"
