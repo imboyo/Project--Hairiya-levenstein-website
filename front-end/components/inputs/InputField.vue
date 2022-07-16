@@ -35,7 +35,7 @@ watch(inputValue, (newInputValue) => {
       </span>
       <input
         :type="type"
-        class="py-2 px-3 rounded-lg border shadow-xs border-gray-300 w-full focus:border-primary-300 focus:shadow-xs-focused-primary-100"
+        class="py-2 px-3 rounded-lg border shadow-xs border-gray-300 w-full focus:border-primary-300 focus:ring-0 focus:shadow-xs-focused-primary-100"
         :placeholder="placeholder"
         :disabled="disabled"
         :class="[

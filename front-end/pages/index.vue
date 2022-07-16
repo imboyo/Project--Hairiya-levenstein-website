@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import InputField from "~/components/inputs/InputField.vue";
 import { isEmail, isRequired, minLength } from "~/my_modules/input_validation";
+import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
 
 const rules = [
   {
@@ -20,12 +21,13 @@ const rules = [
 const formValues = reactive({
   email: "",
   password: "",
+  checked: false,
 });
 </script>
 
 <template>
   <div class="p-5">
-    {{ formValues.email }}
+    {{ formValues.checked }}
     <div class="flex flex-col gap-5">
       <InputField
         placeholder="Masukkan email"
@@ -34,6 +36,9 @@ const formValues = reactive({
         :rules="rules"
         @typing="formValues.email = $event"
       />
+      <InputCheckBox @changed="formValues.checked = $event" id="rememberMe"
+        >Ingat Saya
+      </InputCheckBox>
     </div>
   </div>
 </template>
