@@ -4,6 +4,13 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   css: ["@/assets/css/tailwind.css"],
   build: {
+    transpile: [
+      "@fortawesome/vue-fontawesome",
+      "@fortawesome/fontawesome-svg-core",
+      "@fortawesome/free-brands-svg-icons",
+      "@fortawesome/free-regular-svg-icons",
+      "@fortawesome/free-solid-svg-icons",
+    ],
     postcss: {
       postcssOptions: {
         plugins: {
