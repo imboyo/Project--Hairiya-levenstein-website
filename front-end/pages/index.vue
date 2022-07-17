@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import InputField from "~/components/inputs/InputField.vue";
 import { isEmail, isRequired, minLength } from "~/my_modules/input_validation";
-import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
+import FileUpload from "~/components/inputs/FileUpload.vue";
+import InputField from "~/components/inputs/InputField.vue";
 
 const rules = [
   {
@@ -23,22 +23,18 @@ const formValues = reactive({
   password: "",
   checked: false,
 });
+
+const fileInput = ref();
 </script>
 
 <template>
   <div class="p-5">
-    {{ formValues.checked }}
     <div class="flex flex-col gap-5">
-      <InputField
-        placeholder="Masukkan email"
-        icon="email"
-        type="email"
-        :rules="rules"
-        @typing="formValues.email = $event"
-      />
-      <InputCheckBox @changed="formValues.checked = $event" id="rememberMe"
-        >Ingat Saya
-      </InputCheckBox>
+      <form>
+        <InputField :rules="rules" placeholder="Masukkan Email" type="email" />
+        <FileUpload @fileChanged="fileInput = $event" />
+        <button class="border py-2 px-3" @click.prevent="">Submit</button>
+      </form>
     </div>
   </div>
 </template>
