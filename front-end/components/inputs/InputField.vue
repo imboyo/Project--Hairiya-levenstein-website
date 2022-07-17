@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { validateField } from "~/my_modules/input_validation";
+import MyErrorMessage from "~/components/inputs/MyErrorMessage.vue";
 
 // Props
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   hints?: string[];
   placeholder: string;
 }
+
 const props = defineProps<Props>();
 
 // state
@@ -68,10 +70,7 @@ defineExpose({ refreshValidation });
         >done</span
       >
     </div>
-    <!--  Error Message  -->
-    <span class="block text-sm text-error-500" v-if="errorState">{{
-      errorState
-    }}</span>
+    <MyErrorMessage v-if="errorState" :errorState="errorState" />
     <!--  Hint Message  -->
     <div v-if="hints" class="flex flex-col">
       <span v-for="item in hints" class="text-sm text-gray-500">{{

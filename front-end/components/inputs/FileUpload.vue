@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import axios from "axios";
-
 const file = ref(null);
 </script>
 
@@ -11,5 +9,6 @@ const file = ref(null);
     type="file"
     ref="file"
     @change="$emit('fileChanged', file.files[0])"
+    required
   />
 </template>
