@@ -46,12 +46,23 @@ const buttonClass = {
 
 // Icon General Class
 const iconClass = {
-  size: {
-    sm: "w-[25px] pr-2",
-    md: "w-[25px] pr-2",
-    lg: "w-[25px] pr-2",
-    xl: "w-[25px] pr-2",
-    "2xl": "w-35px pr-3",
+  leading: {
+    size: {
+      sm: "w-[25px] pr-2",
+      md: "w-[25px] pr-2",
+      lg: "w-[25px] pr-2",
+      xl: "w-[25px] pr-2",
+      "2xl": "w-35px pr-3",
+    },
+  },
+  trailling: {
+    size: {
+      sm: "w-[25px] pl-2",
+      md: "w-[25px] pl-2",
+      lg: "w-[25px] pl-2",
+      xl: "w-[25px] pl-2",
+      "2xl": "w-35px pl-3",
+    },
   },
 };
 </script>
@@ -63,7 +74,7 @@ const iconClass = {
     <!--  Leading Icon  -->
     <span
       v-if="leading"
-      :class="`inline-block align-middle ${iconClass.size[size]}`"
+      :class="`inline-block align-middle ${iconClass.leading.size[size]}`"
     >
       <slot name="leading"></slot>
     </span>
@@ -74,7 +85,7 @@ const iconClass = {
     <!--  Trailling Icon  -->
     <span
       v-if="trailling"
-      :class="`inline-block align-middle ${iconClass.size[size]}`"
+      :class="`inline-block align-middle ${iconClass.trailling.size[size]}`"
     >
       <slot name="trailling"></slot>
     </span>
