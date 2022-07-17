@@ -5,6 +5,5 @@ import TestingButton from "~/components/testing/TestingButton.vue";
 <template>
   <div>
     <TestingButton />
-    <font-awesome-icon icon="fa-solid fa-user-secret" />
   </div>
 </template>

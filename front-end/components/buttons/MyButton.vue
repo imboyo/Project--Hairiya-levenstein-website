@@ -8,8 +8,10 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const { text, leading } = useSlots();
+// * Get slot value for checking if empty or not
+const { text, leading, trailling } = useSlots();
 
+// * Class state--------------------
 const textClass = {
   sm: "text-sm",
   md: "text-sm",
@@ -18,8 +20,8 @@ const textClass = {
   "2xl": "text-lg",
 };
 
-// state
-const filterClass = {
+// Button element class based on props
+const buttonClass = {
   width: {
     fit: "w-max",
     full: "w-full",
@@ -41,17 +43,40 @@ const filterClass = {
     "link-gray": "text-gray-500 shadow-none p-0",
   },
 };
+
+// Icon General Class
+const iconClass = {
+  size: {
+    sm: "w-[25px] pr-2",
+    md: "w-[25px] pr-2",
+    lg: "w-[25px] pr-2",
+    xl: "w-[25px] pr-2",
+    "2xl": "w-35px pr-3",
+  },
+};
 </script>
 
 <template>
   <button
-    :class="`rounded-lg ${filterClass.width[width]} ${filterClass.size[size]} ${filterClass.hieararchy[hieararchy]} shadow-xs font-medium`"
+    :class="`rounded-lg ${buttonClass.width[width]} ${buttonClass.size[size]} ${buttonClass.hieararchy[hieararchy]} shadow-xs font-medium`"
   >
     <!--  Leading Icon  -->
-    <i class="fa-solid fa-circle-notch"></i>
+    <span
+      v-if="leading"
+      :class="`inline-block align-middle ${iconClass.size[size]}`"
+    >
+      <slot name="leading"></slot>
+    </span>
     <!--  Text Button  -->
-    <span v-if="text" class="inline-block">
+    <span v-if="text" class="inline-block align-middle">
       <slot name="text"></slot>
+    </span>
+    <!--  Trailling Icon  -->
+    <span
+      v-if="trailling"
+      :class="`inline-block align-middle ${iconClass.size[size]}`"
+    >
+      <slot name="trailling"></slot>
     </span>
   </button>
 </template>

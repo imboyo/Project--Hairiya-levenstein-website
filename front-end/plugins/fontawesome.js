@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 /* import specific icons */
 import { faUserSecret, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faCircle } from "@fortawesome/free-regular-svg-icons";
 
 /* add icons to the library */
-library.add(faUserSecret, faCircleNotch);
+library.add(faUserSecret, faCircleNotch, faCircle);
 
 // This is important, we are going to let Nuxt.js worry about the CSS
 config.autoAddCss = false;
