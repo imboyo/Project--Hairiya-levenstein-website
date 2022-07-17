@@ -19,6 +19,8 @@ const inputRules = [
 const refreshValidation = () => {
   errorState.value = validateField(file.value.files.length, inputRules);
 };
+
+defineExpose({ refreshValidation });
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const refreshValidation = () => {
       id="file_input"
       type="file"
       ref="file"
-      @change="[$emit('fileChanged', file.files[0]), refreshValidation()]"
+      @change="[$emit('fileChanged', file.files[0]), refreshValidation]"
     />
     <MyErrorMessage v-if="errorState" :errorState="errorState" />
   </div>

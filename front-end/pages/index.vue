@@ -27,10 +27,16 @@ const formValues = reactive({
   fileInput: "",
 });
 
-// Child Ref Component for accesing child funciton
+// * Child Ref Component for accesing child funciton
+// EmailField
 const inputField = ref<InstanceType<typeof InputField> | null>(null);
 const refreshInpuFieldValidation = () => {
   inputField.value?.refreshValidation();
+};
+// FileUpload
+const fileUpload = ref<InstanceType<typeof FileUpload> | null>(null);
+const refreshFileUploadValidation = () => {
+  fileUpload.value?.refreshValidation();
 };
 </script>
 
@@ -44,10 +50,16 @@ const refreshInpuFieldValidation = () => {
           type="email"
           ref="inputField"
         />
-        <FileUpload @fileChanged="formValues.fileInput = $event" />
+        <FileUpload
+          @fileChanged="formValues.fileInput = $event"
+          ref="fileUpload"
+        />
         <button
           class="border py-2 px-3"
-          @click.prevent="refreshInpuFieldValidation"
+          @click.prevent="
+            refreshInpuFieldValidation();
+            refreshFileUploadValidation();
+          "
         >
           Submit
         </button>
