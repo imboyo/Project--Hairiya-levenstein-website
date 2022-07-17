@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { validateField } from "~/my_modules/input_validation";
 
+// Props
 interface Props {
   type: string;
   disabled?: boolean;
@@ -10,15 +11,22 @@ interface Props {
   hints?: string[];
   placeholder: string;
 }
+const props = defineProps<Props>();
 
+// state
 const inputValue = ref("");
-
 const errorState = ref<boolean | string>(false);
 
-const props = defineProps<Props>();
+// Check typing in input then do validation
 watch(inputValue, (newInputValue) => {
   errorState.value = validateField(newInputValue, props.rules);
 });
+
+// Pass this function to parent as ref
+const refreshValidation = () => {
+  errorState.value = validateField(inputValue.value, props.rules);
+};
+defineExpose({ refreshValidation });
 </script>
 
 <template>
