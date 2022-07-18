@@ -7,4 +7,5 @@ type ButtonHierarchyProps =
   | "tertiary"
   | "tertiary-gray"
   | "link"
-  | "link-gray";
+  | "link-gray"
+  | "destructive";
