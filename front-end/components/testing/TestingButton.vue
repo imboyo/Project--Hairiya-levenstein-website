@@ -70,7 +70,31 @@ import MyButton from "~/components/buttons/MyButton.vue";
         <template #text> Button CTA</template>
       </MyButton>
       <!--  ! Destructive   -->
-      <MyButton size="md" width="fit" hieararchy="destructive">
+      <MyButton size="md" width="fit" hieararchy="primary" destructive>
+        <template #text> Button CTA</template>
+      </MyButton>
+      <!--  Secondary  -->
+      <MyButton size="md" width="fit" hieararchy="secondary" destructive>
+        <template #text> Button CTA</template>
+      </MyButton>
+      <!--  secondary gray  -->
+      <MyButton size="md" width="fit" hieararchy="secondary-gray" destructive>
+        <template #text> Button CTA</template>
+      </MyButton>
+      <!--   tertiary   -->
+      <MyButton size="md" width="fit" hieararchy="tertiary" destructive>
+        <template #text> Button CTA</template>
+      </MyButton>
+      <!--   tertiary gray   -->
+      <MyButton size="md" width="fit" hieararchy="tertiary-gray" destructive>
+        <template #text> Button CTA</template>
+      </MyButton>
+      <!--   link   -->
+      <MyButton size="md" width="fit" hieararchy="link" destructive>
+        <template #text> Button CTA</template>
+      </MyButton>
+      <!--   link-gray   -->
+      <MyButton size="md" width="fit" hieararchy="link-gray" destructive>
         <template #text> Button CTA</template>
       </MyButton>
     </div>
@@ -101,6 +125,108 @@ import MyButton from "~/components/buttons/MyButton.vue";
           <font-awesome-icon icon="fa-regular fa-circle" />
         </template>
       </MyButton>
+    </div>
+
+    <!--  * Disabled  -->
+    <div class="flex flex-row">
+      <!--   Default   -->
+      <div class="flex flex-col">
+        <!--   Primary   -->
+        <MyButton size="md" width="fit" hieararchy="primary" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   Secondary   -->
+        <MyButton size="md" width="fit" hieararchy="secondary" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   secondary gray   -->
+        <MyButton size="md" width="fit" hieararchy="secondary-gray" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   tertiary   -->
+        <MyButton size="md" width="fit" hieararchy="tertiary" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   tertiary-gray   -->
+        <MyButton size="md" width="fit" hieararchy="tertiary-gray" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   link   -->
+        <MyButton size="md" width="fit" hieararchy="link" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--  link-gray  -->
+        <MyButton size="md" width="fit" hieararchy="link-gray" disabled>
+          <template #text> Button CTA</template>
+        </MyButton>
+      </div>
+      <!--   Destructive   -->
+      <div class="flex flex-col">
+        <!--   Primary   -->
+        <MyButton
+          size="md"
+          width="fit"
+          hieararchy="primary"
+          disabled
+          destructive
+        >
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   Secondary   -->
+        <MyButton
+          size="md"
+          width="fit"
+          hieararchy="secondary"
+          disabled
+          destructive
+        >
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   secondary gray   -->
+        <MyButton
+          size="md"
+          width="fit"
+          hieararchy="secondary-gray"
+          disabled
+          destructive
+        >
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   tertiary   -->
+        <MyButton
+          size="md"
+          width="fit"
+          hieararchy="tertiary"
+          disabled
+          destructive
+        >
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   tertiary-gray   -->
+        <MyButton
+          size="md"
+          width="fit"
+          hieararchy="tertiary-gray"
+          disabled
+          destructive
+        >
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--   link   -->
+        <MyButton size="md" width="fit" hieararchy="link" disabled destructive>
+          <template #text> Button CTA</template>
+        </MyButton>
+        <!--  link-gray  -->
+        <MyButton
+          size="md"
+          width="fit"
+          hieararchy="link-gray"
+          disabled
+          destructive
+        >
+          <template #text> Button CTA</template>
+        </MyButton>
+      </div>
     </div>
   </div>
 </template>
