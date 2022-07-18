@@ -33,7 +33,7 @@ const buttonClass = {
     "tertiary-gray": "text-gray-500",
     link: "text-primary-700 shadow-none",
     "link-gray": "text-gray-500 shadow-none",
-    destructive: "bg-red-600 text-white",
+    destructive: "bg-error-600 text-white",
   },
 };
 

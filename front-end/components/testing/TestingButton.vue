@@ -69,7 +69,7 @@ import MyButton from "~/components/buttons/MyButton.vue";
       <MyButton size="md" width="fit" hieararchy="link-gray">
         <template #text> Button CTA</template>
       </MyButton>
-      <!--   Destructive   -->
+      <!--  ! Destructive   -->
       <MyButton size="md" width="fit" hieararchy="destructive">
         <template #text> Button CTA</template>
       </MyButton>
