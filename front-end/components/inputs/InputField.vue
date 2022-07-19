@@ -12,6 +12,7 @@ interface Props {
   rules: rule[];
   hints?: string[];
   placeholder: string;
+  required?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -34,9 +35,10 @@ defineExpose({ refreshValidation });
 
 <template>
   <div class="flex flex-col gap-1">
-    <label v-if="label" class="mb-1 text-sm font-medium text-gray-700">{{
-      label
-    }}</label>
+    <label v-if="label" class="mb-1 text-sm font-medium">
+      <span class="text-gray-700">{{ label }}</span>
+      <span v-if="required" class="text-red-700"> *</span>
+    </label>
     <div class="flex flex-row relative">
       <span
         v-if="icon"
@@ -57,7 +59,7 @@ defineExpose({ refreshValidation });
             : '',
         ]"
         v-model="inputValue"
-        @keyup="$emit('typing', inputValue)"
+        @keyup="$emit('typing', { inputValue, errorState })"
       />
       <span
         v-if="errorState"

@@ -153,6 +153,7 @@ const buttonTypeClassObject = computed(() => {
       `rounded-lg font-medium transition shadow-xs duration-150 ${buttonClass.width[width]} ${buttonClass.size[size]}`,
       buttonTypeClassObject,
     ]"
+    @click.prevent="$emit('clicked')"
   >
     <!--  Leading Icon  -->
     <span

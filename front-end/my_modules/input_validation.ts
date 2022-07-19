@@ -1,3 +1,5 @@
+import { computed } from "@vue/reactivity";
+
 export const isRequired = (value: string): boolean => {
   return value.length > 0;
 };
@@ -11,7 +13,7 @@ export const isEmail = (value: string) => {
 };
 
 export const validateField = (value, rules) => {
-  let finalValue: string | boolean = null;
+  let finalValue: string | boolean = false;
 
   for (let i = 0; i < rules.length; i++) {
     if (!rules[i].validate(value)) {
@@ -20,4 +22,12 @@ export const validateField = (value, rules) => {
     }
   }
   return finalValue;
+};
+
+export const checkFormIsError = (formErrorValues) => {
+  for (const property in formErrorValues) {
+    if (formErrorValues[property]) {
+      return true;
+    }
+  }
 };

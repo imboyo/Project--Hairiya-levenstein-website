@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { isEmail, isRequired } from "~/my_modules/input_validation";
+import {
+  checkFormIsError,
+  isEmail,
+  isRequired,
+} from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
 import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
@@ -14,13 +18,55 @@ const formInputRules = {
   email: [
     {
       validate: isRequired,
-      text: "Please enter your email",
+      text: "Tolong masukkan email anda",
     },
     {
       validate: isEmail,
-      text: "Please enter a valid email",
+      text: "Tolong massukan email dengan benar",
     },
   ],
+  password: [
+    {
+      validate: isRequired,
+      text: "Tolong masukkan password anda",
+    },
+    {
+      validate: (value) => value.length >= 8,
+      text: "Minimum password 6 karakter",
+    },
+  ],
+};
+
+// Form Input State
+const formValues = reactive({
+  email: "",
+  password: "",
+  checked: false,
+});
+
+const formErrorValues = reactive({
+  email: true,
+  password: true,
+});
+
+// Check input value is error or validated
+const formIsError = computed(() => checkFormIsError(formErrorValues));
+
+// * Child Ref Component for accesing child funciton
+// EmailField
+const emailField = ref<InstanceType<typeof InputField> | null>(null);
+const refreshEmailFieldValidation = () => {
+  emailField.value?.refreshValidation();
+};
+// Password Field
+const passwordField = ref<InstanceType<typeof InputField> | null>(null);
+const refreshPasswordFieldValidation = () => {
+  passwordField.value?.refreshValidation();
+};
+
+// Handle Click
+const handleClick = () => {
+  console.log("aaaa");
 };
 </script>
 
@@ -61,16 +107,32 @@ const formInputRules = {
         <!--   Input Field   -->
         <div class="flex flex-col gap-5">
           <InputField
-            placeholder="Email/Nomor Induk"
+            placeholder="Email"
             :rules="formInputRules.email"
             type="email"
-            label="Email/Nomor Induk"
+            label="Email"
+            required
+            ref="emailField"
+            @typing="
+              [
+                (formValues.email = $event.inputValue),
+                (formErrorValues.email = $event.errorState),
+              ]
+            "
           />
           <InputField
             placeholder="Password"
-            :rules="formInputRules.email"
+            :rules="formInputRules.password"
             type="email"
             label="Password"
+            required
+            ref="passwordField"
+            @typing="
+              formValues.email = $event.inputValue;
+              formErrorValues.email = $event.errorState;
+              // ! Masih Error
+              handleClick();
+            "
           />
         </div>
         <!--  ! End Input Field   -->
@@ -83,12 +145,18 @@ const formInputRules = {
             <!--    TODO: Linknya nanti perbaiki      -->
             <div class="flex w-6/12 justify-end">
               <a class="text-primary-700 text-sm font-medium inline-block"
-                >Forgot Password</a
+                >Lupa Password</a
               >
             </div>
           </div>
-          <MyButton hieararchy="primary" size="lg" width="full">
-            <template #text> Login</template>
+          <MyButton
+            hieararchy="primary"
+            size="lg"
+            width="full"
+            :disabled="formIsError"
+            @clicked="handleClick"
+          >
+            <template #text>Login</template>
           </MyButton>
         </div>
         <!--  ! End Button   -->
