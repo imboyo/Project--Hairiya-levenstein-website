@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import TestingButton from "~/components/testing/TestingButton.vue";
+import TestingFeaturedIcon from "~/components/testing/TestingFeaturedIcon.vue";
 </script>
 
 <template>
   <div>
-    <h1 class="text-display-lg">Ini Index</h1>
+    <TestingFeaturedIcon />
   </div>
 </template>
