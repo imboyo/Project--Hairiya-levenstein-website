@@ -4,6 +4,6 @@ import TestingButton from "~/components/testing/TestingButton.vue";
 
 <template>
   <div>
-    <TestingButton />
+    <h1 class="text-display-lg">Ini Index</h1>
   </div>
 </template>

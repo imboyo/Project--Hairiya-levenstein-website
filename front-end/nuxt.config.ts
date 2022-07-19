@@ -27,5 +27,6 @@ export default defineNuxtConfig({
         rel: "stylesheet",
       },
     ],
+    title: "Plagirasm Checker",
   },
 });

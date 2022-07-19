@@ -34,9 +34,9 @@ defineExpose({ refreshValidation });
 
 <template>
   <div class="flex flex-col gap-1">
-    <label v-if="label" class="mb-1 text-sm font-medium text-gray-700"
-      >Email</label
-    >
+    <label v-if="label" class="mb-1 text-sm font-medium text-gray-700">{{
+      label
+    }}</label>
     <div class="flex flex-row relative">
       <span
         v-if="icon"
