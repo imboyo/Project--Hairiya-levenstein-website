@@ -27,8 +27,9 @@ watch(inputValue, (newInputValue) => {
 });
 
 // Pass this function to parent as ref
-const refreshValidation = () => {
+const refreshValidation = (callback) => {
   errorState.value = validateField(inputValue.value, props.rules);
+  callback(errorState.value);
 };
 defineExpose({ refreshValidation });
 </script>

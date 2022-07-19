@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  checkFormIsEmpty,
   checkFormIsError,
   isEmail,
   isRequired,
@@ -50,23 +51,29 @@ const formErrorValues = reactive({
 });
 
 // Check input value is error or validated
-const formIsError = computed(() => checkFormIsError(formErrorValues));
+const formIsError = computed(() => {
+  return checkFormIsError(formErrorValues);
+});
 
 // * Child Ref Component for accesing child funciton
-// EmailField
+// ? Note : Buat Ref di component html di template sesaui dengan nama const disini
 const emailField = ref<InstanceType<typeof InputField> | null>(null);
-const refreshEmailFieldValidation = () => {
-  emailField.value?.refreshValidation();
-};
-// Password Field
 const passwordField = ref<InstanceType<typeof InputField> | null>(null);
-const refreshPasswordFieldValidation = () => {
-  passwordField.value?.refreshValidation();
-};
 
 // Handle Click
 const handleClick = () => {
-  console.log("aaaa");
+  emailField.value?.refreshValidation((value) => {
+    formErrorValues.email = value;
+  });
+  passwordField.value?.refreshValidation((value) => {
+    formErrorValues.password = value;
+  });
+
+  if (!formIsError.value) {
+    console.log("Form is valid");
+  } else {
+    console.log("Form is invalid");
+  }
 };
 </script>
 
@@ -114,10 +121,8 @@ const handleClick = () => {
             required
             ref="emailField"
             @typing="
-              [
-                (formValues.email = $event.inputValue),
-                (formErrorValues.email = $event.errorState),
-              ]
+              formValues.email = $event.inputValue;
+              formErrorValues.email = $event.errorState;
             "
           />
           <InputField
@@ -128,10 +133,8 @@ const handleClick = () => {
             required
             ref="passwordField"
             @typing="
-              formValues.email = $event.inputValue;
-              formErrorValues.email = $event.errorState;
-              // ! Masih Error
-              handleClick();
+              formValues.password = $event.inputValue;
+              formErrorValues.password = $event.errorState;
             "
           />
         </div>

@@ -25,9 +25,12 @@ export const validateField = (value, rules) => {
 };
 
 export const checkFormIsError = (formErrorValues) => {
-  for (const property in formErrorValues) {
-    if (formErrorValues[property]) {
+  // Check if formValues is empty or not
+  for (const key in formErrorValues) {
+    if (formErrorValues[key] !== false) {
       return true;
     }
   }
+
+  return false;
 };
