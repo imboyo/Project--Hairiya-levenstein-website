@@ -2,7 +2,7 @@
 import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
 
 const iconReactive = reactive({
-  theme: "dark",
+  theme: "light",
   size: "md",
   type: "primary",
 });
@@ -16,6 +16,6 @@ const iconReactive = reactive({
       :type="iconReactive.type"
     />
 
-    <button @click="iconReactive.theme = 'light'">Click Me</button>
+    <button @click="iconReactive.theme = 'dark'">Click Me</button>
   </div>
 </template>

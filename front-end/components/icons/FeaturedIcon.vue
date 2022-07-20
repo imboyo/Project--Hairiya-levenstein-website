@@ -146,11 +146,12 @@ const materialIconContent = computed(() => {
 </script>
 
 <template>
-  {{ circleDynamicClass }}
   <div
-    :class="`flex justify-center items-center rounded-full ${circleDynamicClass}`"
+    :class="`flex justify-center items-center rounded-full transition duration-200 ${circleDynamicClass}`"
   >
-    <span :class="`material-icons-outlined inline-block ${spanDynamicClass}`">
+    <span
+      :class="`material-icons-outlined inline-block transition duration-200 ${spanDynamicClass}`"
+    >
       {{ materialIconContent }}
     </span>
   </div>
