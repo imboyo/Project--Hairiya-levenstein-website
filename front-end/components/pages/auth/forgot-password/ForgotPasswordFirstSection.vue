@@ -47,7 +47,7 @@ const emit = defineEmits(["btn-clicked", "typing"]);
 
 <template>
   <!--  Header  -->
-  <div class="flex flex-col items-center justify-center gap-6">
+  <div class="flex flex-col gap-6 items-center">
     <!--   FeaturedIcon   -->
     <FeaturedIcon size="xl" theme="lightOutline" color="primary">
       vpn_key

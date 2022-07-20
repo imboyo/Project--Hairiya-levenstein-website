@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 // Page Meta and main data
 import ForgotPasswordFirstSection from "~/components/pages/auth/forgot-password/ForgotPasswordFirstSection.vue";
+import ForgotPasswordSecondSection from "~/components/pages/auth/forgot-password/ForgotPasswordSecondSection.vue";
 definePageMeta({
   layout: "auth",
 });
@@ -23,9 +24,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col h-screen justify-center gap-8 w-full md:w-[22.5rem]"
-  >
+  <div class="flex flex-col gap-8 w-full md:w-[22.5rem] mt-[48px] md:mt-[96px]">
     <!--  Form  -->
     <ForgotPasswordFirstSection
       v-if="!formIsSubmitted"
@@ -36,5 +35,9 @@ const handleClick = () => {
       "
     />
     <!--  End Form  -->
+    <ForgotPasswordSecondSection
+      v-if="formIsSubmitted"
+      :emailText="emailState"
+    />
   </div>
 </template>
