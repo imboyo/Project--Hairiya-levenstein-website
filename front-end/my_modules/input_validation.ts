@@ -3,7 +3,7 @@ export const isRequired = (value: string): boolean => {
 };
 
 export const minLength = (value: string, length: number): boolean => {
-  return value.length > length;
+  return value.length >= length;
 };
 
 export const isEmail = (value: string) => {

@@ -6,6 +6,8 @@ import {
 } from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
+import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
+import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
 
 // Form Input Rules
 const formInputRules = {
@@ -33,8 +35,6 @@ const formIsError = computed(() => {
 // * Child Ref Component for accesing child funciton
 // ? Note : Buat Ref di component html di template sesaui dengan nama const disini
 const emailField = ref<InstanceType<typeof InputField> | null>(null);
-import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
-import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
 
 const handleClick = () => {
   emailField.value?.refreshValidation((value) => {

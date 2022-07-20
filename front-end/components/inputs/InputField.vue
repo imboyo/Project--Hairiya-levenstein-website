@@ -22,9 +22,9 @@ const inputValue = ref("");
 const errorState = ref<boolean | string>(false);
 
 // Pass this function to parent as ref
-const refreshValidation = (callback) => {
+const refreshValidation = (callback = null) => {
   errorState.value = validateField(inputValue.value, props.rules);
-  callback(errorState.value);
+  if (callback) callback(errorState.value);
 };
 defineExpose({ refreshValidation });
 </script>
@@ -56,8 +56,8 @@ defineExpose({ refreshValidation });
         ]"
         v-model="inputValue"
         @keyup="
+          refreshValidation();
           $emit('typing', { inputValue, errorState });
-          refreshValidation(inputValue, props.rules);
         "
       />
       <span

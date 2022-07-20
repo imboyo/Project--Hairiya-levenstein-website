@@ -8,6 +8,7 @@ import {
   isRequired,
   minLength,
 } from "~/my_modules/input_validation";
+import MyButton from "~/components/buttons/MyButton.vue";
 
 // Form Input State
 const formValues = reactive({
@@ -20,11 +21,6 @@ const formErrorValues = reactive({
   password2: true,
 });
 
-// Check input value is error or validated
-const formIsError = computed(() => {
-  return checkFormIsError(formErrorValues);
-});
-
 // Form Input Rules
 const formInputRules = computed(() => {
   return {
@@ -34,7 +30,7 @@ const formInputRules = computed(() => {
         text: "Tolong masukkan password anda",
       },
       {
-        validate: (value) => minLength(value, 6),
+        validate: (password1) => minLength(password1, 6),
         text: "Password minimal 6 karakter",
       },
     ],
@@ -44,16 +40,46 @@ const formInputRules = computed(() => {
         text: "Tolong masukkan password anda",
       },
       {
-        validate: () => isMatching(formValues.password1, formValues.password2),
+        validate: (password2) => isMatching(formValues.password1, password2),
         text: "Password tidak sesuai",
       },
     ],
   };
 });
+
+// Check input value is error or validated
+const formIsError = computed(() => {
+  return checkFormIsError(formErrorValues);
+});
+
+// * Child Ref Component for accesing child funciton
+// ? Note : Buat Ref di component html di template sesaui dengan nama const disini
+const password1Field = ref<InstanceType<typeof InputField> | null>(null);
+const password2Field = ref<InstanceType<typeof InputField> | null>(null);
+
+const refreshValidation = () => {
+  password1Field.value?.refreshValidation((value) => {
+    formErrorValues.password1 = value;
+  });
+  password2Field.value?.refreshValidation((value) => {
+    formErrorValues.password2 = value;
+  });
+};
+
+const handleClick = () => {
+  refreshValidation();
+  if (!formIsError.value) {
+    console.log("Form is valid");
+  } else {
+    console.log("Form is invalid");
+  }
+};
 </script>
 
 <template>
-  {{ formInputRules.password2[1].validate() }}
+  {{ formErrorValues }}
+  <br />
+  {{ formValues }}
   <!-- * Header -->
   <div class="flex flex-col gap-6 items-center">
     <!--  FeaturedIcon  -->
@@ -79,10 +105,13 @@ const formInputRules = computed(() => {
       type="password"
       label="Kata sandi"
       required
-      ref="emailField"
+      ref="password1Field"
       @typing="
         formValues.password1 = $event.inputValue;
         formErrorValues.password1 = $event.errorState;
+        password2Field.refreshValidation((value) => {
+          formErrorValues.password2 = value;
+        });
       "
     />
     <InputField
@@ -91,7 +120,7 @@ const formInputRules = computed(() => {
       type="password"
       label="Konfirmasi kata sandi"
       required
-      ref="emailField"
+      ref="password2Field"
       @typing="
         formValues.password2 = $event.inputValue;
         formErrorValues.password2 = $event.errorState;
@@ -99,4 +128,14 @@ const formInputRules = computed(() => {
     />
   </div>
   <!-- ! End Form -->
+  <!--  Button    -->
+  <MyButton
+    hieararchy="primary"
+    size="lg"
+    width="full"
+    :disabled="formIsError"
+    @clicked="handleClick"
+  >
+    <template #text>Reset Password</template>
+  </MyButton>
 </template>
