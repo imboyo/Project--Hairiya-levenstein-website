@@ -1,9 +1,21 @@
 <script lang="ts" setup>
-import TestingFeaturedIcon from "~/components/testing/TestingFeaturedIcon.vue";
+import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
+
+const iconReactive = reactive({
+  theme: "dark",
+  size: "md",
+  type: "primary",
+});
 </script>
 
 <template>
   <div>
-    <TestingFeaturedIcon />
+    <FeaturedIcon
+      :theme="iconReactive.theme"
+      :size="iconReactive.size"
+      :type="iconReactive.type"
+    />
+
+    <button @click="iconReactive.theme = 'light'">Click Me</button>
   </div>
 </template>
