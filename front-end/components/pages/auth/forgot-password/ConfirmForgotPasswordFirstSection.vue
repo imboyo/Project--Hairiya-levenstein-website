@@ -57,7 +57,7 @@ const formIsError = computed(() => {
 const password1Field = ref<InstanceType<typeof InputField> | null>(null);
 const password2Field = ref<InstanceType<typeof InputField> | null>(null);
 
-const refreshValidation = () => {
+const handleClick = () => {
   password1Field.value?.refreshValidation((value) => {
     formErrorValues.password1 = value;
   });
@@ -65,21 +65,9 @@ const refreshValidation = () => {
     formErrorValues.password2 = value;
   });
 };
-
-const handleClick = () => {
-  refreshValidation();
-  if (!formIsError.value) {
-    console.log("Form is valid");
-  } else {
-    console.log("Form is invalid");
-  }
-};
 </script>
 
 <template>
-  {{ formErrorValues }}
-  <br />
-  {{ formValues }}
   <!-- * Header -->
   <div class="flex flex-col gap-6 items-center">
     <!--  FeaturedIcon  -->
@@ -134,7 +122,10 @@ const handleClick = () => {
     size="lg"
     width="full"
     :disabled="formIsError"
-    @clicked="handleClick"
+    @clicked="
+      handleClick();
+      $emit('btn-clicked', formIsError);
+    "
   >
     <template #text>Reset Password</template>
   </MyButton>

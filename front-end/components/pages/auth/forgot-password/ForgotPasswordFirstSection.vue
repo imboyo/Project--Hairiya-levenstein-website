@@ -84,7 +84,7 @@ const emit = defineEmits(["btn-clicked", "typing"]);
       width="full"
       :disabled="formIsError"
       @clicked="
-        handleClick;
+        handleClick();
         $emit('btn-clicked', formIsError);
       "
     >
