@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 // Page Meta and main data
-import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
-import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
-import AuthForgotPasswordForm from "~/components/pages/auth/AuthForgotPasswordForm.vue";
-
+import ForgotPasswordFirstSection from "~/components/pages/auth/forgot-password/ForgotPasswordFirstSection.vue";
 definePageMeta({
   layout: "auth",
 });
@@ -13,9 +10,11 @@ useHead({
 
 const emailState = ref("");
 const formIsError = ref("");
+const formIsSubmitted = ref(false);
 
 const handleClick = () => {
   if (!formIsError.value) {
+    formIsSubmitted.value = true;
     console.log("Form is valid");
   } else {
     console.log("Form is invalid");
@@ -27,26 +26,11 @@ const handleClick = () => {
   <div
     class="flex flex-col h-screen justify-center gap-8 w-full md:w-[22.5rem]"
   >
-    <!--  Header  -->
-    <div class="flex flex-col items-center justify-center gap-6">
-      <!--   FeaturedIcon   -->
-      <FeaturedIcon size="xl" theme="lightOutline" color="primary">
-        vpn_key
-      </FeaturedIcon>
-      <!--   Text Header   -->
-      <AuthTextHeader>
-        <template #title>Lupa kata sandi</template>
-        <template #subTitle
-          >Jangan khawatir, kami akan mengirimkan instruksi untuk mereset.
-        </template>
-      </AuthTextHeader>
-      <!--    End Text Header  -->
-    </div>
-    <!--  End Header -->
     <!--  Form  -->
-    <AuthForgotPasswordForm
+    <ForgotPasswordFirstSection
+      v-if="!formIsSubmitted"
       @typing="emailState = $event"
-      @btnClicked="
+      @btn-clicked="
         formIsError = $event;
         handleClick();
       "

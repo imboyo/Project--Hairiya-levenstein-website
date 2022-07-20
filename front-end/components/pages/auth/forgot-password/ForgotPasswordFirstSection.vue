@@ -33,15 +33,35 @@ const formIsError = computed(() => {
 // * Child Ref Component for accesing child funciton
 // ? Note : Buat Ref di component html di template sesaui dengan nama const disini
 const emailField = ref<InstanceType<typeof InputField> | null>(null);
+import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
+import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
 
 const handleClick = () => {
   emailField.value?.refreshValidation((value) => {
     emailErrorState.value = value;
   });
 };
+
+const emit = defineEmits(["btn-clicked", "typing"]);
 </script>
 
 <template>
+  <!--  Header  -->
+  <div class="flex flex-col items-center justify-center gap-6">
+    <!--   FeaturedIcon   -->
+    <FeaturedIcon size="xl" theme="lightOutline" color="primary">
+      vpn_key
+    </FeaturedIcon>
+    <!--   Text Header   -->
+    <AuthTextHeader>
+      <template #title>Lupa kata sandi</template>
+      <template #subTitle
+        >Jangan khawatir, kami akan mengirimkan instruksi untuk mereset.
+      </template>
+    </AuthTextHeader>
+    <!--    End Text Header  -->
+  </div>
+  <!--  End Header -->
   <!--   Form   -->
   <div class="flex flex-col gap-6">
     <InputField
@@ -54,7 +74,7 @@ const handleClick = () => {
       @typing="
         emailState = $event.inputValue;
         emailErrorState = $event.errorState;
-        $emit('typing', $event.inputValue);
+        $emit('typing', emailState);
       "
     />
     <!--  Button    -->
@@ -65,7 +85,7 @@ const handleClick = () => {
       :disabled="formIsError"
       @clicked="
         handleClick;
-        $emit('btnClicked', formIsError);
+        $emit('btn-clicked', formIsError);
       "
     >
       <template #text>Reset Password</template>
