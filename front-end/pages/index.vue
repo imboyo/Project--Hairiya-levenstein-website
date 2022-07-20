@@ -13,7 +13,7 @@ const iconReactive = reactive({
     <FeaturedIcon
       :theme="iconReactive.theme"
       :size="iconReactive.size"
-      :type="iconReactive.type"
+      :color="iconReactive.type"
     />
 
     <button @click="iconReactive.theme = 'dark'">Click Me</button>

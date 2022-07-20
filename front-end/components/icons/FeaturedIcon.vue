@@ -5,7 +5,7 @@ import { computed } from "#imports";
 interface Props {
   theme: FeaturedThemeProps;
   size: FeaturedSizeProps;
-  type: FeaturedTypeProps;
+  color: FeaturedTypeProps;
 }
 
 const props = defineProps<Props>();
@@ -26,15 +26,6 @@ const defaultClass = {
       md: "text-xl",
       lg: "text-display-xs",
       xl: "text-[28px]",
-    },
-  },
-  color: {
-    materialIcon: {
-      primary: "bolt",
-      gray: "bolt",
-      error: "error_outline",
-      warning: "warning_amber",
-      success: "check_circle",
     },
   },
 };
@@ -61,7 +52,6 @@ const featuredIconClassConfig = {
         warning: "text-warning-700",
         success: "text-success-700",
       },
-      materialIcon: defaultClass.color.materialIcon,
     },
   },
   lightOutline: {
@@ -91,7 +81,6 @@ const featuredIconClassConfig = {
         warning: "text-warning-700",
         success: "text-success-700",
       },
-      materialIcon: defaultClass.color.materialIcon,
     },
   },
   dark: {
@@ -121,7 +110,6 @@ const featuredIconClassConfig = {
         warning: "text-white",
         success: "text-white",
       },
-      materialIcon: defaultClass.color.materialIcon,
     },
   },
 };
@@ -130,18 +118,13 @@ const circleDynamicClass = computed(() => {
   const themeSelected = featuredIconClassConfig[props.theme];
   return `${themeSelected.size.circle[props.size]}
           ${themeSelected.size.border[props.size]}
-          ${themeSelected.color.circle[props.type]}`;
+          ${themeSelected.color.circle[props.color]}`;
 });
 
 const spanDynamicClass = computed(() => {
   const themeSelected = featuredIconClassConfig[props.theme];
   return `${themeSelected.size.icon[props.size]}
-          ${themeSelected.color.icon[props.type]}`;
-});
-
-const materialIconContent = computed(() => {
-  const themeSelected = featuredIconClassConfig[props.theme];
-  return `${themeSelected.color.materialIcon[props.type]}`;
+          ${themeSelected.color.icon[props.color]}`;
 });
 </script>
 
@@ -152,7 +135,7 @@ const materialIconContent = computed(() => {
     <span
       :class="`material-icons-outlined inline-block transition duration-200 ${spanDynamicClass}`"
     >
-      {{ materialIconContent }}
+      <slot></slot>
     </span>
   </div>
 </template>

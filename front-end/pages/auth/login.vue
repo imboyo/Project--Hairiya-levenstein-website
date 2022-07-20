@@ -7,6 +7,7 @@ import {
 import InputField from "~/components/inputs/InputField.vue";
 import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
+import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
 
 // Page Meta and main data
 definePageMeta({
@@ -81,7 +82,9 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div>
+  <div
+    class="flex flex-col h-screen justify-center gap-8 w-full md:w-[22.5rem]"
+  >
     <!-- * Content Container  -->
     <!-- Header  -->
     <div class="flex flex-col items-center justify-center gap-6">
@@ -96,14 +99,10 @@ const handleClick = () => {
       </div>
       <!--   ! End Image wrapper    -->
       <!--   Text Header   -->
-      <div class="text-center flex flex-col gap-2">
-        <h3
-          class="flex flex-col text-gray-900 text-display-xs font-semibold lg:text-display-sm"
-        >
-          Silahkan Login
-        </h3>
-        <h5 class="text-md text-gray-500">Selamat datang kembali!</h5>
-      </div>
+      <AuthTextHeader>
+        <template #title>Silahkan login</template>
+        <template #subTitle>Selamat datang kembali!</template>
+      </AuthTextHeader>
       <!--  !  End Text Header    -->
     </div>
     <!-- ! End Header  -->
