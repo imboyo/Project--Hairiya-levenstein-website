@@ -21,11 +21,6 @@ const props = defineProps<Props>();
 const inputValue = ref("");
 const errorState = ref<boolean | string>(false);
 
-// Check typing in input then do validation
-watch(inputValue, (newInputValue) => {
-  errorState.value = validateField(newInputValue, props.rules);
-});
-
 // Pass this function to parent as ref
 const refreshValidation = (callback) => {
   errorState.value = validateField(inputValue.value, props.rules);
@@ -60,7 +55,10 @@ defineExpose({ refreshValidation });
             : '',
         ]"
         v-model="inputValue"
-        @keyup="$emit('typing', { inputValue, errorState })"
+        @keyup="
+          $emit('typing', { inputValue, errorState });
+          refreshValidation(inputValue, props.rules);
+        "
       />
       <span
         v-if="errorState"

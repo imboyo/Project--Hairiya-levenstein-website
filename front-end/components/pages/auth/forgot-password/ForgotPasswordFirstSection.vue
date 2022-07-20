@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// Form Input Rules
 import {
   checkFormIsError,
   isEmail,
@@ -8,6 +7,7 @@ import {
 import InputField from "~/components/inputs/InputField.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
 
+// Form Input Rules
 const formInputRules = {
   email: [
     {

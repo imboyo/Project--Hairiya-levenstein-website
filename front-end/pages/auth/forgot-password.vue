@@ -2,7 +2,6 @@
 // Page Meta and main data
 import ForgotPasswordFirstSection from "~/components/pages/auth/forgot-password/ForgotPasswordFirstSection.vue";
 import ForgotPasswordSecondSection from "~/components/pages/auth/forgot-password/ForgotPasswordSecondSection.vue";
-import MyButton from "~/components/buttons/MyButton.vue";
 
 definePageMeta({
   layout: "auth",
@@ -17,6 +16,7 @@ const formIsSubmitted = ref(false);
 
 const handleClick = () => {
   if (!formIsError.value) {
+    // TODO : Send email
     formIsSubmitted.value = true;
     console.log("Form is valid");
   } else {
@@ -27,7 +27,7 @@ const handleClick = () => {
 
 <template>
   <div class="flex flex-col gap-8 w-full md:w-[22.5rem] mt-[48px] md:mt-[96px]">
-    <!--  Form  -->
+    <!--  First Section -->
     <Transition name="first-transition" :duration="300" mode="out-in">
       <div v-if="!formIsSubmitted">
         <ForgotPasswordFirstSection
@@ -42,6 +42,7 @@ const handleClick = () => {
         <ForgotPasswordSecondSection :emailText="emailState" />
       </div>
     </Transition>
+    <!--  Second Section  -->
     <div class="flex justify-center text-gray-500 text-sm">
       <NuxtLink to="login">
         <span class="material-icons-outlined align-middle pr-[8px]">
