@@ -127,6 +127,6 @@ const handleClick = () => {
       $emit('btn-clicked', formIsError);
     "
   >
-    <template #text>Reset Password</template>
+    <template #text>Reset Kata Sandi</template>
   </MyButton>
 </template>

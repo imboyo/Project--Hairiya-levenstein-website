@@ -9,7 +9,6 @@ useHead({
   titleTemplate: (title) => `Konfirmasi Lupa Password - ${title}`,
 });
 
-const emailState = ref("");
 const formIsError = ref("");
 const formIsSubmitted = ref(false);
 
@@ -27,7 +26,8 @@ const handleClick = () => {
 <template>
   <div class="flex flex-col gap-8 w-full md:w-[22.5rem] mt-[48px] md:mt-96px">
     <!--  First Section  -->
-    <ConfirmForgotPasswordFirstSection />
+    <ConfirmForgotPasswordFirstSection @btn-clicked="formIsError = $event" />
+    <!--  Second Section  -->
   </div>
 </template>
 
