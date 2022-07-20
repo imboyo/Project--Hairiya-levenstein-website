@@ -2,13 +2,6 @@
 // Page Meta and main data
 import FeaturedIcon from "~/components/icons/FeaturedIcon.vue";
 import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
-import {
-  checkFormIsError,
-  isEmail,
-  isRequired,
-} from "~/my_modules/input_validation";
-import InputField from "~/components/inputs/InputField.vue";
-import MyButton from "~/components/buttons/MyButton.vue";
 import AuthForgotPasswordForm from "~/components/pages/auth/AuthForgotPasswordForm.vue";
 
 definePageMeta({
@@ -22,7 +15,11 @@ const emailState = ref("");
 const formIsError = ref("");
 
 const handleClick = () => {
-  console.log(formIsError.value);
+  if (!formIsError.value) {
+    console.log("Form is valid");
+  } else {
+    console.log("Form is invalid");
+  }
 };
 </script>
 
