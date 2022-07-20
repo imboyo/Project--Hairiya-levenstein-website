@@ -144,9 +144,12 @@ const handleClick = () => {
           </div>
           <!--    TODO: Linknya nanti perbaiki      -->
           <div class="flex w-6/12 justify-end">
-            <a class="text-primary-700 text-sm font-medium inline-block"
-              >Lupa Password</a
+            <NuxtLink
+              to="forgot-password"
+              class="text-primary-700 text-sm font-medium inline-block"
             >
+              Lupa Password
+            </NuxtLink>
           </div>
         </div>
         <MyButton
