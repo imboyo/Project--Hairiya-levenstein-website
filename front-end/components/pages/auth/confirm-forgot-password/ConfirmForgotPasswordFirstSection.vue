@@ -114,19 +114,19 @@ const handleClick = () => {
         formErrorValues.password2 = $event.errorState;
       "
     />
+    <!-- ! End Form -->
+    <!--  Button    -->
+    <MyButton
+      hieararchy="primary"
+      size="lg"
+      width="full"
+      :disabled="formIsError"
+      @clicked="
+        handleClick();
+        $emit('btn-clicked', formIsError);
+      "
+    >
+      <template #text>Reset Kata Sandi</template>
+    </MyButton>
   </div>
-  <!-- ! End Form -->
-  <!--  Button    -->
-  <MyButton
-    hieararchy="primary"
-    size="lg"
-    width="full"
-    :disabled="formIsError"
-    @clicked="
-      handleClick();
-      $emit('btn-clicked', formIsError);
-    "
-  >
-    <template #text>Reset Kata Sandi</template>
-  </MyButton>
 </template>

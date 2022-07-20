@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import ConfirmForgotPasswordFirstSection from "~/components/pages/auth/forgot-password/ConfirmForgotPasswordFirstSection.vue";
+import ConfirmForgotPasswordFirstSection from "~/components/pages/auth/confirm-forgot-password/ConfirmForgotPasswordFirstSection.vue";
+import ConfirmForgotPasswordSecondSection from "~/components/pages/auth/confirm-forgot-password/ConfirmForgotPasswordSecondSection.vue";
 
 definePageMeta({
   layout: "auth",
@@ -25,9 +26,21 @@ const handleClick = () => {
 
 <template>
   <div class="flex flex-col gap-8 w-full md:w-[22.5rem] mt-[48px] md:mt-96px">
-    <!--  First Section  -->
-    <ConfirmForgotPasswordFirstSection @btn-clicked="formIsError = $event" />
-    <!--  Second Section  -->
+    <Transition name="first-transition" :duration="300" mode="out-in">
+      <!--  First Section  -->
+      <div v-if="!formIsSubmitted">
+        <ConfirmForgotPasswordFirstSection
+          @btn-clicked="
+            formIsError = $event;
+            handleClick();
+          "
+        />
+      </div>
+      <!--  Second Section  -->
+      <div v-else>
+        <ConfirmForgotPasswordSecondSection />
+      </div>
+    </Transition>
   </div>
 </template>
 
