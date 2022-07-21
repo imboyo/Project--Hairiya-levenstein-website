@@ -23,12 +23,27 @@ const { modalIsOpen, toggleMobileNav } = useMobileNav();
             <h3 class="font-bold text-gray-700 text-xl">Plagiarism</h3>
           </div>
         </div>
-        <!--  Nav Item  -->
+        <!--  Nav Items  -->
         <NavItem to="/" label="Home" icon="home" />
         <NavItem to="/auth/login" label="Login" icon="person" />
-        <NavItem to="/auth/login" label="Login" icon="person" />
-        <NavItem to="/auth/login" label="Login" icon="person" />
-        <NavItem to="/auth/login" label="Login" icon="person" />
+
+        <!--    ! Testing Dropdown Nav Items    -->
+        <div>
+          <div
+            class="flex flex-row px-[12px] py-[8px] items-center block text-primary-700 font-bold"
+          >
+            <span
+              class="material-icons-outlined text-display-xs inline-block pr-[12px]"
+            >
+              home
+            </span>
+            <h4 class="inline-block text-md">Account</h4>
+          </div>
+          <div class="flex flex-col pl-10">
+            <NavItem to="/auth/login" label="Login" icon="person" />
+            <NavItem to="/auth/login" label="Login" icon="person" />
+          </div>
+        </div>
       </div>
       <!--  ! End Content   -->
       <!-- ?  Close Button   -->
