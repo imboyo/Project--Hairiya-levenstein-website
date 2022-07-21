@@ -82,3 +82,16 @@ const { modalIsOpen, toggleMobileNav } = useMobileNav();
     </div>
   </Transition>
 </template>
+
+<style scoped>
+.mobile-sidenav-enter-active,
+.mobile-sidenav-leave-active {
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mobile-sidenav-enter-from,
+.mobile-sidenav-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+</style>
