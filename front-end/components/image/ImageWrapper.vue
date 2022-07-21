@@ -6,6 +6,7 @@ interface Props {
   rounded?: string;
   img: string;
 }
+
 const props = defineProps<Props>();
 
 const dynamicClass = computed(() => {
@@ -15,7 +16,7 @@ const dynamicClass = computed(() => {
 </script>
 
 <template>
-  <div :class="`overflow-hidden ${dynamicClass}`">
-    <img :src="img" alt="img" class="w-auto h-full object-cover" />
+  <div :class="`overflow-hidden ${dynamicClass} items-center`">
+    <img :src="img" alt="img" class="w-full h-full" style="object-fit: cover" />
   </div>
 </template>
