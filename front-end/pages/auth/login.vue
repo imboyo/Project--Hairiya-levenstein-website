@@ -8,6 +8,7 @@ import InputField from "~/components/inputs/InputField.vue";
 import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
 import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
+import ImageWrapper from "~/components/image/ImageWrapper.vue";
 
 // Page Meta and main data
 definePageMeta({
@@ -89,14 +90,13 @@ const handleClick = () => {
     <!-- Header  -->
     <div class="flex flex-col items-center justify-center gap-6">
       <!--   Image wrapper   -->
-      <div class="h-12 w-12 rounded-2xl overflow-hidden">
-        <!--    TODO : Perbaiki nanti logo imagenya    -->
-        <img
-          src="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
-          alt="header_logo"
-          class="w-auto h-full object-cover"
-        />
-      </div>
+      <!--    TODO : Perbaiki nanti logo imagenya    -->
+      <ImageWrapper
+        height="12"
+        width="12"
+        rounded="2xl"
+        img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
+      />
       <!--   ! End Image wrapper    -->
       <!--   Text Header   -->
       <AuthTextHeader>

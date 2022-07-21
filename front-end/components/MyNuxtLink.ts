@@ -1,6 +1,6 @@
 export default defineNuxtLink({
   componentName: "MyNuxtLink",
   externalRelAttribute: "",
-  activeClass: "bg-blue-700 text-white",
+  activeClass: "bg-primary-700 text-primary-100",
   exactActiveClass: "exact-active",
 });
