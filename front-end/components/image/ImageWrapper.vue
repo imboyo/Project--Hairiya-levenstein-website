@@ -16,7 +16,7 @@ const dynamicClass = computed(() => {
 </script>
 
 <template>
-  <div :class="`overflow-hidden ${dynamicClass} items-center`">
+  <div :class="`overflow-hidden ${dynamicClass}`">
     <img :src="img" alt="img" class="w-full h-full" style="object-fit: cover" />
   </div>
 </template>
