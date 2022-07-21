@@ -2,6 +2,7 @@
 import NavItem from "~/components/navigation/NavItem.vue";
 import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
+import { truncate } from "~/my_modules/string";
 </script>
 
 <template>
@@ -28,17 +29,28 @@ import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
       <!--   End Logo Hero  -->
 
       <!--  Nav Items  -->
-      <NavItem to="/" label="Home" icon="home" />
-      <NavItem to="/auth/login" label="Login" icon="person" />
-      <DropdownNavItem label="Login" icon="person">
-        <NavItem to="/auth/login" label="Login" icon="person" />
-        <NavItem to="/auth/login" label="Login" icon="person" />
+      <NavItem to="/" label="Dashboard" icon="signal_cellular_alt" />
+      <DropdownNavItem label="Proposal" icon="folder">
+        <NavItem to="/auth/login" label="Upload Proposal" icon="file_upload" />
+        <NavItem
+          to="/auth/login"
+          label="Daftar Proposal"
+          icon="format_list_bulleted"
+        />
+      </DropdownNavItem>
+      <DropdownNavItem label="User" icon="folder">
+        <NavItem to="/auth/login" label="Tambah User" icon="person_add" />
+        <NavItem
+          to="/auth/login"
+          label="Daftar User"
+          icon="format_list_bulleted"
+        />
       </DropdownNavItem>
     </div>
     <!--   2nd Section     -->
     <div class="flex flex-col justify-end h-full">
       <hr class="mb-4" />
-      <div class="px-[12px] flex flex-row">
+      <div class="px-[12px] flex flex-row lg:gap-3">
         <div class="flex basis-2/12 items-center">
           <ImageWrapper
             height="[40px]"
@@ -48,13 +60,19 @@ import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
             class="block"
           />
         </div>
-        <div class="flex flex-col basis-9/12">
-          <h3 class="inline-block text-gray-700">Mabrur Syamhur</h3>
-          <h5 class="inline-block text-gray-500">mabrursyamhur@gmail.com</h5>
+        <div class="flex flex-col basis-9/12 text-sm">
+          <h3 class="inline-block text-gray-700 font-medium">
+            {{ truncate("Mabrur Syamhur", 16) }}
+          </h3>
+          <h5 class="inline-block text-gray-500">
+            {{ truncate("imbomabrur84@gmail.com", 16) }}
+          </h5>
         </div>
         <div class="flex justify-end items-center text-gray-500">
-          <button>
-            <span class="material-icons-outlined"> logout </span>
+          <button @click="() => alert('terlogout')">
+            <span class="material-icons-outlined text-display-xs">
+              logout
+            </span>
           </button>
         </div>
       </div>
