@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import NavItem from "~/components/navigation/NavItem.vue";
 import ImageWrapper from "~/components/image/ImageWrapper.vue";
+import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 
 const { modalIsOpen, toggleMobileNav } = useMobileNav();
 </script>
@@ -26,24 +27,10 @@ const { modalIsOpen, toggleMobileNav } = useMobileNav();
         <!--  Nav Items  -->
         <NavItem to="/" label="Home" icon="home" />
         <NavItem to="/auth/login" label="Login" icon="person" />
-
-        <!--    ! Testing Dropdown Nav Items    -->
-        <div>
-          <div
-            class="flex flex-row px-[12px] py-[8px] items-center block text-primary-700 font-bold"
-          >
-            <span
-              class="material-icons-outlined text-display-xs inline-block pr-[12px]"
-            >
-              home
-            </span>
-            <h4 class="inline-block text-md">Account</h4>
-          </div>
-          <div class="flex flex-col pl-10">
-            <NavItem to="/auth/login" label="Login" icon="person" />
-            <NavItem to="/auth/login" label="Login" icon="person" />
-          </div>
-        </div>
+        <DropdownNavItem label="Login" icon="person">
+          <NavItem to="/auth/login" label="Login" icon="person" />
+          <NavItem to="/auth/login" label="Login" icon="person" />
+        </DropdownNavItem>
       </div>
       <!--  ! End Content   -->
       <!-- ?  Close Button   -->
