@@ -139,7 +139,6 @@ defineExpose({ toggleIsLoading });
 </script>
 
 <template>
-  {{ valuePropsComputed }}
   <!--    First Input    -->
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
@@ -154,7 +153,7 @@ defineExpose({ toggleIsLoading });
           formErrorValues.judulProposal = $event.errorState;
         "
         class="lg:w-full"
-        :propsInputValue="valuePropsComputed.title"
+        :value="valuePropsComputed.title"
       />
     </div>
   </GroupInput>
@@ -191,7 +190,7 @@ defineExpose({ toggleIsLoading });
           mahasiswaSearchModal = false;
         "
         class="lg:w-full"
-        :propsInputValue="valuePropsComputed.dosen"
+        :value="valuePropsComputed.dosen"
       />
     </div>
   </GroupInput>
@@ -237,7 +236,7 @@ defineExpose({ toggleIsLoading });
           dosenSearchModal = false;
         "
         class="lg:w-full"
-        :propsInputValue="valuePropsComputed.mahasiswa"
+        :value="valuePropsComputed.mahasiswa"
       />
     </div>
   </GroupInput>
