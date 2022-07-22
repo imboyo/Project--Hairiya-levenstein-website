@@ -6,6 +6,7 @@ import MyErrorMessage from "~/components/inputs/MyErrorMessage.vue";
 interface Props {
   rules: rule[];
 }
+
 const props = defineProps<Props>();
 
 // Ref templates
@@ -30,7 +31,13 @@ defineExpose({ refreshValidation });
       id="file_input"
       type="file"
       ref="file"
-      @change="[$emit('fileChanged', file.files[0]), refreshValidation]"
+      @change="
+        [
+          $emit('fileChanged', { file, errorState: errorState }),
+          refreshValidation,
+          (file = $event.target),
+        ]
+      "
     />
     <MyErrorMessage v-if="errorState" :errorState="errorState" />
   </div>

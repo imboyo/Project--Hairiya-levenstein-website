@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import NavItem from "~/components/navigation/NavItem.vue";
-import ImageWrapper from "~/components/image/ImageWrapper.vue";
-import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import Sidenav from "~/components/navigation/Sidenav.vue";
 
 const { modalIsOpen, toggleMobileNav } = useMobileNav();
