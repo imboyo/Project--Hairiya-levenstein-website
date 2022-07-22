@@ -47,12 +47,14 @@ const formValues = reactive({
   judulProposal: "",
   fileInput: "",
   mahasiswa: "",
+  dosen: "",
 });
 
 const formErrorValues = reactive({
   judulProposal: true,
   fileInput: true,
   mahasiswa: true,
+  dosen: true,
 });
 
 // Check input value is error or validated
@@ -84,11 +86,21 @@ const handleClick = () => {
 };
 
 const mahasiswaSearchModal = ref(false);
+const dosenSearchModal = ref(false);
 
-watch(formValues, (value) => {
-  mahasiswaSearchModal.value = value.mahasiswa.length > 0;
-});
-// ! End Form Main
+watch(
+  () => formValues.mahasiswa,
+  (value) => {
+    mahasiswaSearchModal.value = value.length > 0;
+  }
+);
+
+watch(
+  () => formValues.dosen,
+  (value) => {
+    dosenSearchModal.value = value.length > 0;
+  }
+);
 
 const emit = defineEmits(["clicked"]);
 </script>
@@ -128,7 +140,52 @@ const emit = defineEmits(["clicked"]);
   </GroupInput>
   <hr />
 
-  <!-- TODO: Add Mahasiswa -->
+  <!-- Search Dosen -->
+  <GroupInput label="Dosen Pembimbing" required>
+    <div :class="`${inputContainerClass}`">
+      <InputField
+        placeholder="Dosen Pembimbing"
+        :rules="formInputRules.mahasiswa"
+        type="text"
+        required
+        ref="mahasiswaFieldRef"
+        @typing="
+          formValues.dosen = $event.inputValue;
+          formErrorValues.dosen = $event.errorState;
+          dosenSearchModal = true;
+          mahasiswaSearchModal = false;
+        "
+        class="lg:w-full"
+      />
+    </div>
+  </GroupInput>
+  <!-- Search Mahasiswa Modal -->
+  <div class="flex relative" v-if="dosenSearchModal">
+    <div
+      class="h-[400px] absolute w-full overflow-y-auto left-0 top-0 lg:w-[400px] lg:left-[16rem]"
+      style="z-index: 51"
+    >
+      <div
+        class="flex flex-col bg-primary-50 rounded-2xl shadow-focus-ring-grey-100"
+      >
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+      </div>
+    </div>
+  </div>
+  <!-- End Search Dosen Modal -->
+  <hr />
+
   <GroupInput label="Mahasiswa" required>
     <div :class="`${inputContainerClass}`">
       <InputField
@@ -141,6 +198,7 @@ const emit = defineEmits(["clicked"]);
           formValues.mahasiswa = $event.inputValue;
           formErrorValues.mahasiswa = $event.errorState;
           mahasiswaSearchModal = true;
+          dosenSearchModal = false;
         "
         class="lg:w-full"
       />
@@ -152,7 +210,9 @@ const emit = defineEmits(["clicked"]);
       class="h-[400px] absolute w-full overflow-y-auto left-0 top-0 lg:w-[400px] lg:left-[16rem]"
       style="z-index: 51"
     >
-      <div class="flex flex-col bg-gray-100 rounded-xl">
+      <div
+        class="flex flex-col bg-primary-50 rounded-2xl shadow-focus-ring-grey-100"
+      >
         <SearchCardWrapper>
           <SearchCard />
         </SearchCardWrapper>
