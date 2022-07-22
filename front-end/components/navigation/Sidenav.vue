@@ -7,7 +7,7 @@ import { truncate } from "~/my_modules/string";
 
 <template>
   <!--  ? Nav Content  -->
-  <div class="flex flex-col w-full h-screen bg-white py-[1rem] gap-[4px]">
+  <div class="flex flex-col w-full h-screen bg-white py-[1rem] gap-[4px] z-50">
     <!--  ? First Section     -->
     <div class="flex flex-col">
       <!--    Logo Hero    -->
