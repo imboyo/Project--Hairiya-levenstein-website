@@ -11,6 +11,32 @@ import MyButton from "~/components/buttons/MyButton.vue";
 import SearchCard from "~/components/card/SearchCard.vue";
 import SearchCardWrapper from "~/components/card/SearchCardWrapper.vue";
 
+interface Props {
+  value?: {
+    title: string;
+    dosen: string;
+    mahasiswa: string;
+  };
+}
+
+const props = defineProps<Props>();
+
+const valuePropsComputed = computed(() => {
+  if (props.value) {
+    return {
+      title: props.value.title,
+      dosen: props.value.dosen,
+      mahasiswa: props.value.mahasiswa,
+    };
+  } else {
+    return {
+      title: "",
+      dosen: "",
+      mahasiswa: "",
+    };
+  }
+});
+
 // * State
 // Form Input Rules
 const formInputRules = {
@@ -113,6 +139,7 @@ defineExpose({ toggleIsLoading });
 </script>
 
 <template>
+  {{ valuePropsComputed }}
   <!--    First Input    -->
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
@@ -127,6 +154,7 @@ defineExpose({ toggleIsLoading });
           formErrorValues.judulProposal = $event.errorState;
         "
         class="lg:w-full"
+        :propsInputValue="valuePropsComputed.title"
       />
     </div>
   </GroupInput>
@@ -163,6 +191,7 @@ defineExpose({ toggleIsLoading });
           mahasiswaSearchModal = false;
         "
         class="lg:w-full"
+        :propsInputValue="valuePropsComputed.dosen"
       />
     </div>
   </GroupInput>
@@ -208,6 +237,7 @@ defineExpose({ toggleIsLoading });
           dosenSearchModal = false;
         "
         class="lg:w-full"
+        :propsInputValue="valuePropsComputed.mahasiswa"
       />
     </div>
   </GroupInput>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import PageHeader from "~/components/header/PageHeader.vue";
+import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
 
+const route = useRoute();
+
 useHead({
-  titleTemplate: (title) => `Upload Proposal - ${title}`,
+  titleTemplate: (title) => `Edit Proposal - ${title}`,
 });
 
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
@@ -17,14 +19,12 @@ const handleClick = (value) => {
   }
 };
 </script>
-
 <template>
   <div>
     <section class="flex flex-col gap-8">
       <!-- * Header Section    -->
-      <PageHeader>Upload Proposal</PageHeader>
+      <PageHeader>Edit Proposal</PageHeader>
       <!--   ! End Header Section -->
-      <!-- Form Section   -->
       <div class="flex flex-col gap-5">
         <!--    Header Form    -->
         <PageSubHeader>
@@ -38,7 +38,15 @@ const handleClick = (value) => {
         </PageSubHeader>
         <!--   End Header Form    -->
         <hr />
-        <ProposalForm @clicked="handleClick($event)" ref="proposalFormRef" />
+        <ProposalForm
+          @clicked="handleClick($event)"
+          ref="proposalFormRef"
+          :value="{
+            title: 'Uzumaki Naruto',
+            dosen: 'Jiraiya',
+            mahasiswa: 'Sasuke',
+          }"
+        />
       </div>
     </section>
   </div>

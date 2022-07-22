@@ -13,13 +13,13 @@ interface Props {
   hints?: string[];
   placeholder: string;
   required?: boolean;
-  value?: string;
+  propsInputValue?: string;
 }
 
 const props = defineProps<Props>();
 
 // state
-const inputValue = ref("");
+const inputValue = ref(props.propsInputValue || "");
 const errorState = ref<boolean | string>(false);
 
 // Pass this function to parent as ref
@@ -28,15 +28,10 @@ const refreshValidation = (callback = null) => {
   if (callback) callback(errorState.value);
 };
 defineExpose({ refreshValidation });
-
-const propsValue = ref(" ");
-
-watch(inputValue, (value) => {
-  propsValue.value = value;
-});
 </script>
 
 <template>
+  {{ propsInputValue }}
   <div class="flex flex-col gap-1">
     <label v-if="label" class="mb-1 text-sm font-medium">
       <span class="text-gray-700">{{ label }}</span>
@@ -62,7 +57,6 @@ watch(inputValue, (value) => {
             : '',
         ]"
         v-model="inputValue"
-        :value="propsValue"
         @keyup="
           refreshValidation();
           $emit('typing', { inputValue, errorState });
