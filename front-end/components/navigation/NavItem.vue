@@ -22,3 +22,9 @@ const props = defineProps<Props>();
     <h4 class="inline-block text-md">{{ label }}</h4>
   </MyNuxtLink>
 </template>
+
+<style>
+.active {
+  color: white;
+}
+</style>

@@ -11,16 +11,11 @@ import { truncate } from "~/my_modules/string";
     <!--  ? First Section     -->
     <div class="flex flex-col">
       <!--    Logo Hero    -->
-      <NuxtLink
-        class="flex flex-row items-center px-[12px] py-[20px]"
-        to="/mabrur"
-      >
+      <NuxtLink class="flex flex-row items-center px-[12px] py-[20px]" to="/">
         <ImageWrapper
-          height="8"
-          width="8"
           rounded="lg"
           img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
-          class="mr-[12px]"
+          class="mr-[12px] w-8 h-8"
         />
         <div>
           <h3 class="font-bold text-gray-700 text-xl">Plagiarism</h3>
@@ -53,11 +48,9 @@ import { truncate } from "~/my_modules/string";
       <div class="px-[12px] flex flex-row lg:gap-3">
         <div class="flex basis-2/12 items-center">
           <ImageWrapper
-            height="[40px]"
-            width="[40px]"
             rounded="full"
             img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
-            class="block"
+            class="block w-[40px] h-[40px]"
           />
         </div>
         <div class="flex flex-col basis-9/12 text-sm">

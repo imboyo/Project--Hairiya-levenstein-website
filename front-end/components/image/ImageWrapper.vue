@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 // Props
 interface Props {
-  height: string;
-  width: string;
   rounded?: string;
   img: string;
 }
@@ -10,13 +8,13 @@ interface Props {
 const props = defineProps<Props>();
 
 const dynamicClass = computed(() => {
-  const { height, width, rounded } = props;
-  return `h-${height} w-${width} rounded-${rounded}`;
+  const { rounded } = props;
+  return `rounded-${rounded}`;
 });
 </script>
 
 <template>
   <div :class="`overflow-hidden ${dynamicClass}`">
-    <img :src="img" alt="img" class="w-full h-full" style="object-fit: cover" />
+    <img :src="img" alt="img" class="w-full h-full object-cover" />
   </div>
 </template>

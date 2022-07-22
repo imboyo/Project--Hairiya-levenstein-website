@@ -92,10 +92,9 @@ const handleClick = () => {
       <!--   Image wrapper   -->
       <!--    TODO : Perbaiki nanti logo imagenya    -->
       <ImageWrapper
-        height="12"
-        width="12"
         rounded="2xl"
         img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
+        class="w-12 h-12"
       />
       <!--   ! End Image wrapper    -->
       <!--   Text Header   -->
