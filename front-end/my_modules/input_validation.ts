@@ -20,6 +20,19 @@ export const isStrongPassword = (value: string): boolean => {
   );
 };
 
+export const isASCII = (value: string): boolean => {
+  return /^[\x00-\x7F]*$/.test(value);
+};
+
+export const isNoSpace = (value: string): boolean => {
+  return !/\s/g.test(value);
+};
+
+// Check if the value is not contain any number
+export const isNoNumber = (value: string): boolean => {
+  return !/\d/g.test(value);
+};
+
 export const validateField = (value, rules) => {
   let finalValue: string | boolean = false;
 

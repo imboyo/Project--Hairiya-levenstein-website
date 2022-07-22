@@ -9,7 +9,10 @@ const { modalIsOpen, toggleMobileNav } = useMobileNav();
 
 <template>
   <Transition name="mobile-sidenav" duration="300">
-    <div v-if="modalIsOpen" class="flex flex-row h-screen w-screen absolute">
+    <div
+      v-if="modalIsOpen"
+      class="flex flex-row h-screen w-screen absolute z-50"
+    >
       <Sidenav />
 
       <!-- ?  Close Button   -->
