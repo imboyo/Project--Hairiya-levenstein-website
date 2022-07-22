@@ -8,7 +8,8 @@ import InputField from "~/components/inputs/InputField.vue";
 import GroupInput from "~/components/inputs/GroupInput.vue";
 import FileUpload from "~/components/inputs/FileUpload.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
-import ImageWrapper from "~/components/image/ImageWrapper.vue";
+import SearchCard from "~/components/card/SearchCard.vue";
+import SearchCardWrapper from "~/components/card/SearchCardWrapper.vue";
 
 // * State
 // Form Input Rules
@@ -144,35 +145,30 @@ const emit = defineEmits(["clicked"]);
         class="lg:w-full"
       />
     </div>
-    <!-- Search Mahasiswa Modal -->
-    <div class="relative">
-      <div
-        v-if="mahasiswaSearchModal"
-        class="h-[400px] absolute w-full"
-        style="z-index: 51; left: 0; top: 0"
-      >
-        <div class="bg-gray-300 px-2 pt-2 rounded-xl">
-          <div class="flex flex-col gap-2">
-            <div
-              class="flex flex-row cursor-pointer hover:bg-gray-400 transition duration-200"
-            >
-              <ImageWrapper
-                rounded="full"
-                img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
-                class="mr-[12px] w-12 h-12"
-              />
-              <div class="flex flex-col">
-                <h4 class="text-lg font-medium text-gray-900">
-                  Mabrur Syamhur
-                </h4>
-                <p class="uppercase text-sm text-gray-500">B011171365</p>
-              </div>
-            </div>
-          </div>
-        </div>
+  </GroupInput>
+  <!-- Search Mahasiswa Modal -->
+  <div class="flex relative" v-if="mahasiswaSearchModal">
+    <div
+      class="h-[400px] absolute w-full overflow-y-auto left-0 top-0 lg:w-[400px] lg:left-[16rem]"
+      style="z-index: 51"
+    >
+      <div class="flex flex-col bg-gray-100 rounded-xl">
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
+        <SearchCardWrapper>
+          <SearchCard />
+        </SearchCardWrapper>
       </div>
     </div>
-  </GroupInput>
+  </div>
+  <!-- End Search Mahasiswa Modal -->
 
   <MyButton
     size="lg"
