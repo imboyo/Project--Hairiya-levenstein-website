@@ -26,17 +26,21 @@ import { truncate } from "~/my_modules/string";
       <!--  Nav Items  -->
       <NavItem to="/" label="Dashboard" icon="signal_cellular_alt" />
       <DropdownNavItem label="Proposal" icon="folder">
-        <NavItem to="/auth/login" label="Upload Proposal" icon="file_upload" />
         <NavItem
-          to="/auth/login"
+          to="/proposal/upload-proposal"
+          label="Upload Proposal"
+          icon="file_upload"
+        />
+        <NavItem
+          to="/proposal/daftar-proposal"
           label="Daftar Proposal"
           icon="format_list_bulleted"
         />
       </DropdownNavItem>
       <DropdownNavItem label="User" icon="folder">
-        <NavItem to="/auth/login" label="Tambah User" icon="person_add" />
+        <NavItem to="/user/tambah-user" label="Tambah User" icon="person_add" />
         <NavItem
-          to="/auth/login"
+          to="/user/daftar-user"
           label="Daftar User"
           icon="format_list_bulleted"
         />
