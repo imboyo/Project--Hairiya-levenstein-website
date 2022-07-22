@@ -2,22 +2,21 @@
 import { validateField } from "~/my_modules/input_validation";
 import MyErrorMessage from "~/components/inputs/MyErrorMessage.vue";
 
+// Props
+interface Props {
+  rules: rule[];
+}
+const props = defineProps<Props>();
+
 // Ref templates
 const file = ref(null);
 
 // State
 const errorState = ref<boolean | string>(false);
 
-const inputRules = [
-  {
-    text: "This field is required",
-    validate: () => file.value.files.length > 0,
-  },
-];
-
 // Pass this function to parent as ref
 const refreshValidation = () => {
-  errorState.value = validateField(file.value.files.length, inputRules);
+  errorState.value = validateField(file.value.files.length, props.rules);
 };
 
 defineExpose({ refreshValidation });
