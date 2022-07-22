@@ -33,7 +33,7 @@ defineExpose({ refreshValidation });
       ref="file"
       @change="
         [
-          $emit('fileChanged', { file, errorState: errorState }),
+          $emit('fileChanged', { file, errorState }),
           refreshValidation,
           (file = $event.target),
         ]

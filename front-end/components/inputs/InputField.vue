@@ -2,6 +2,7 @@
 import { validateField } from "~/my_modules/input_validation";
 import MyErrorMessage from "~/components/inputs/MyErrorMessage.vue";
 import HintMessage from "~/components/inputs/HintMessage.vue";
+import { computed } from "#imports";
 
 // Props
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   hints?: string[];
   placeholder: string;
   required?: boolean;
+  value?: string;
 }
 
 const props = defineProps<Props>();
@@ -27,6 +29,12 @@ const refreshValidation = (callback = null) => {
   if (callback) callback(errorState.value);
 };
 defineExpose({ refreshValidation });
+
+const propsValue = ref(" ");
+
+watch(inputValue, (value) => {
+  propsValue.value = value;
+});
 </script>
 
 <template>
@@ -55,6 +63,7 @@ defineExpose({ refreshValidation });
             : '',
         ]"
         v-model="inputValue"
+        :value="propsValue"
         @keyup="
           refreshValidation();
           $emit('typing', { inputValue, errorState });

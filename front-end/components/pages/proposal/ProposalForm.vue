@@ -2,54 +2,21 @@
 import {
   checkFormIsError,
   isASCII,
-  isNoSpace,
-  isNoNumber,
   isRequired,
 } from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
 import GroupInput from "~/components/inputs/GroupInput.vue";
 import FileUpload from "~/components/inputs/FileUpload.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
+import ImageWrapper from "~/components/image/ImageWrapper.vue";
 
 // * State
 // Form Input Rules
 const formInputRules = {
-  firstName: [
-    {
-      validate: isRequired,
-      text: "Tolong masukkan nama anda",
-    },
-    {
-      validate: (value) => value.length >= 3,
-      text: "Minimum nama 3 karakter",
-    },
-    {
-      validate: isASCII,
-      text: "Tolong masukkan nama dengan benar",
-    },
-    {
-      validate: isNoSpace,
-      text: "Tidak boleh menggunakan spasi",
-    },
-    {
-      validate: isNoNumber,
-      text: "Angka tidak diperbolehkan",
-    },
-  ],
-  lastName: [
-    {
-      validate: isASCII,
-      text: "Tolong masukkan nama dengan benar",
-    },
-    {
-      validate: isNoNumber,
-      text: "Angka tidak diperbolehkan",
-    },
-  ],
   judulProposal: [
     {
       validate: isRequired,
-      text: "Tolong masukkan nama anda",
+      text: "Tolong masukkan judul proposal",
     },
     {
       validate: (value) => value.length >= 5,
@@ -66,21 +33,25 @@ const formInputRules = {
       text: "Tolong masukkan file",
     },
   ],
+  mahasiswa: [
+    {
+      validate: isRequired,
+      text: "Tolong masukkan nama mahasiswa",
+    },
+  ],
 };
 
-// Form Input State
+// * Form Input State - Main
 const formValues = reactive({
-  firstName: "",
-  lastName: "",
   judulProposal: "",
   fileInput: "",
+  mahasiswa: "",
 });
 
 const formErrorValues = reactive({
-  firstName: true,
-  lastName: false,
   judulProposal: true,
   fileInput: true,
+  mahasiswa: true,
 });
 
 // Check input value is error or validated
@@ -94,19 +65,13 @@ const inputContainerClass = computed(() => {
 
 // * Child Ref Component for accesing child funciton
 // ? Note : Buat Ref di component html di template sesaui dengan nama const disini
-const firstNameFieldRef = ref<InstanceType<typeof InputField> | null>(null);
-const lastNameFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const judulProposalFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const fileInputFieldRef = ref<InstanceType<typeof FileUpload> | null>(null);
+const mahasiswaFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
 
 // Handle Click
 const handleClick = () => {
-  const listRef = [
-    firstNameFieldRef,
-    lastNameFieldRef,
-    judulProposalFieldRef,
-    fileInputFieldRef,
-  ];
+  const listRef = [judulProposalFieldRef, fileInputFieldRef, mahasiswaFieldRef];
 
   // Looping list ref
   listRef.forEach((ref) => {
@@ -117,41 +82,18 @@ const handleClick = () => {
   return !formIsError.value;
 };
 
+const mahasiswaSearchModal = ref(false);
+
+watch(formValues, (value) => {
+  mahasiswaSearchModal.value = value.mahasiswa.length > 0;
+});
+// ! End Form Main
+
 const emit = defineEmits(["clicked"]);
 </script>
 
 <template>
-  <!--    First Inputs    -->
-  <GroupInput label="Nama Lengkap" required>
-    <div :class="`${inputContainerClass} lg:gap-5 lg:flex-row`">
-      <InputField
-        placeholder="Nama Depan"
-        :rules="formInputRules.firstName"
-        type="text"
-        required
-        ref="firstNameFieldRef"
-        @typing="
-          formValues.firstName = $event.inputValue;
-          formErrorValues.firstName = $event.errorState;
-        "
-        class="lg:w-6/12"
-      />
-      <InputField
-        placeholder="Nama Belakang"
-        :rules="formInputRules.lastName"
-        type="text"
-        ref="lastNameFieldRef"
-        @typing="
-          formValues.lastName = $event.inputValue;
-          formErrorValues.lastName = $event.errorState;
-        "
-        class="lg:w-6/12"
-      />
-    </div>
-  </GroupInput>
-  <hr />
-
-  <!--    Second Input    -->
+  <!--    First Input    -->
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
       <InputField
@@ -170,7 +112,7 @@ const emit = defineEmits(["clicked"]);
   </GroupInput>
   <hr />
 
-  <!--    Third Input    -->
+  <!--    Second Input    -->
   <GroupInput label="Proposal File" required>
     <div :class="`${inputContainerClass}`">
       <FileUpload
@@ -183,6 +125,55 @@ const emit = defineEmits(["clicked"]);
       />
     </div>
   </GroupInput>
+  <hr />
+
+  <!-- TODO: Add Mahasiswa -->
+  <GroupInput label="Mahasiswa" required>
+    <div :class="`${inputContainerClass}`">
+      <InputField
+        placeholder="Mahasiswa"
+        :rules="formInputRules.mahasiswa"
+        type="text"
+        required
+        ref="mahasiswaFieldRef"
+        @typing="
+          formValues.mahasiswa = $event.inputValue;
+          formErrorValues.mahasiswa = $event.errorState;
+          mahasiswaSearchModal = true;
+        "
+        class="lg:w-full"
+      />
+    </div>
+    <!-- Search Mahasiswa Modal -->
+    <div class="relative">
+      <div
+        v-if="mahasiswaSearchModal"
+        class="h-[400px] absolute w-full"
+        style="z-index: 51; left: 0; top: 0"
+      >
+        <div class="bg-gray-300 px-2 pt-2 rounded-xl">
+          <div class="flex flex-col gap-2">
+            <div
+              class="flex flex-row cursor-pointer hover:bg-gray-400 transition duration-200"
+            >
+              <ImageWrapper
+                rounded="full"
+                img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
+                class="mr-[12px] w-12 h-12"
+              />
+              <div class="flex flex-col">
+                <h4 class="text-lg font-medium text-gray-900">
+                  Mabrur Syamhur
+                </h4>
+                <p class="uppercase text-sm text-gray-500">B011171365</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </GroupInput>
+
   <MyButton
     size="lg"
     width="full"
