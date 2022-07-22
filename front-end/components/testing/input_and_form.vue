@@ -53,6 +53,7 @@ const refreshFileUploadValidation = () => {
         <FileUpload
           @fileChanged="formValues.fileInput = $event"
           ref="fileUpload"
+          rules="[]"
         />
         <button
           class="border py-2 px-3"
