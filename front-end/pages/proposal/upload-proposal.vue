@@ -2,13 +2,20 @@
 import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import PageHeader from "~/components/header/PageHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
+import InputField from "~/components/inputs/InputField.vue";
 
 useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
 });
 
+const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
+
 const handleClick = (value) => {
-  console.log(value);
+  if (value) {
+    proposalFormRef.value?.toggleIsLoading();
+  } else {
+    console.log("form is not valid");
+  }
 };
 </script>
 
@@ -32,7 +39,7 @@ const handleClick = (value) => {
         </PageSubHeader>
         <!--   End Header Form    -->
         <hr />
-        <ProposalForm @clicked="handleClick($event)" />
+        <ProposalForm @clicked="handleClick($event)" ref="proposalFormRef" />
       </div>
     </section>
   </div>

@@ -75,7 +75,6 @@ const mahasiswaFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
 // Handle Click
 const handleClick = () => {
   const listRef = [judulProposalFieldRef, fileInputFieldRef, mahasiswaFieldRef];
-
   // Looping list ref
   listRef.forEach((ref) => {
     ref.value?.refreshValidation((value) => {
@@ -85,6 +84,7 @@ const handleClick = () => {
   return !formIsError.value;
 };
 
+// * Modal
 const mahasiswaSearchModal = ref(false);
 const dosenSearchModal = ref(false);
 
@@ -101,8 +101,15 @@ watch(
     dosenSearchModal.value = value.length > 0;
   }
 );
+// End Modal
 
 const emit = defineEmits(["clicked"]);
+
+const isLoading = ref(false);
+const toggleIsLoading = () => {
+  isLoading.value = !isLoading.value;
+};
+defineExpose({ toggleIsLoading });
 </script>
 
 <template>
@@ -237,6 +244,14 @@ const emit = defineEmits(["clicked"]);
     @clicked="$emit('clicked', handleClick())"
     :disabled="formIsError"
   >
+    <template #onlyIcon>
+      <img
+        src="/website/Rolling-1s-200px.svg"
+        alt=""
+        class="animate-spin ml-2"
+        v-if="isLoading"
+      />
+    </template>
     <template #text>Upload Proposal</template>
   </MyButton>
 </template>

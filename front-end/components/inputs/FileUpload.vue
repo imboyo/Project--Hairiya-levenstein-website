@@ -32,11 +32,9 @@ defineExpose({ refreshValidation });
       type="file"
       ref="file"
       @change="
-        [
-          $emit('fileChanged', { file, errorState }),
-          refreshValidation,
-          (file = $event.target),
-        ]
+        $emit('fileChanged', { file, errorState });
+        refreshValidation();
+        file = $event.target;
       "
     />
     <MyErrorMessage v-if="errorState" :errorState="errorState" />
