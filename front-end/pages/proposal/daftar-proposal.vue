@@ -7,6 +7,7 @@ import MyTableCol from "~/components/tables/MyTableCol.vue";
 
 const searchState = ref("");
 
+const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
 const proposal = ref<{}[]>([
   {
     proposal: "How to be Hokage",
@@ -21,7 +22,6 @@ const proposal = ref<{}[]>([
 ]);
 
 const tableIsLoading = ref(false);
-const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
 
 const proposalPagination = ref({
   currentPage: 1,
@@ -54,7 +54,6 @@ const proposalPagination = ref({
       <MyTable
         title="Daftar Proposal"
         :header="proposalHeader"
-        :body="proposal"
         :isLoading="tableIsLoading"
         :pagination="proposalPagination"
       >
