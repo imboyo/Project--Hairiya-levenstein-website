@@ -1,10 +1,17 @@
 <script lang="ts" setup>
 // Props
+import MyButton from "~/components/buttons/MyButton.vue";
+
 interface Props {
   title: string;
   header: string[];
   body: TableBody[];
   isLoading: boolean;
+  pagination?: {
+    currentPage: number;
+    totalPage: number;
+    perPage: number;
+  };
 }
 
 const props = defineProps<Props>();
@@ -48,8 +55,8 @@ const props = defineProps<Props>();
             <NuxtLink
               :to="`/proposal/edit/${item.id}`"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
-              >Edit</NuxtLink
-            >
+              >Edit
+            </NuxtLink>
             <a
               href="#"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
@@ -59,5 +66,34 @@ const props = defineProps<Props>();
         </tr>
       </tbody>
     </table>
+    <div class="px-4 py-4" v-if="pagination">
+      <div class="flex flex-row justify-between">
+        <div>
+          <MyButton
+            size="sm"
+            width="fit"
+            hieararchy="secondary"
+            :disabled="pagination.currentPage === 1"
+          >
+            <template #text>Sebelumnya</template>
+          </MyButton>
+        </div>
+        <div class="flex items-center">
+          <h5 class="text-gray-700 text-sm">
+            Halaman {{ pagination.currentPage }} dari {{ pagination.totalPage }}
+          </h5>
+        </div>
+        <div>
+          <MyButton
+            size="sm"
+            width="fit"
+            hieararchy="secondary"
+            :disabled="pagination.currentPage === pagination.totalPage"
+          >
+            <template #text>Selanjutnya</template>
+          </MyButton>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
