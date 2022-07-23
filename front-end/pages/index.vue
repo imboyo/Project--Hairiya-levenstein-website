@@ -29,12 +29,7 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
       :isLoading="tableIsLoading"
     >
       <template #body>
-        <MyTableRow></MyTableRow>
-        <tr
-          v-for="(item, index) in proposal"
-          :key="index"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-        >
+        <MyTableRow v-for="(item, index) in proposal" :key="index">
           <MyTableCol>{{ item.proposal }}</MyTableCol>
           <MyTableCol>{{ item.percentage }}</MyTableCol>
           <MyTableCol>{{ item.date }}</MyTableCol>
@@ -50,7 +45,7 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
               >Delete</a
             >
           </td>
-        </tr>
+        </MyTableRow>
       </template>
     </MyTable>
   </div>
