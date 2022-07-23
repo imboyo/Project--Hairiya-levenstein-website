@@ -5,18 +5,18 @@ import MyTable from "~/components/tables/MyTable.vue";
 
 const searchState = ref("");
 
-const proposal = ref<TableBody[]>([
+const proposal = ref<{}[]>([
   {
-    id: 1,
     proposal: "How to be Hokage",
     percentage: 20,
     date: "20 Januari 2022",
+    action: "12",
   },
   {
-    id: 3,
     proposal: "How to be Hokage",
     percentage: 20,
     date: "20 Januari 2022",
+    action: "12",
   },
 ]);
 

@@ -15,6 +15,16 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const slot = useSlots();
+
+const getSlotValue = (name) => {
+  try {
+    return slot[name]()[0].children.length > 0;
+  } catch (e) {
+    return false;
+  }
+};
 </script>
 
 <template>
@@ -38,32 +48,7 @@ const props = defineProps<Props>();
         </tr>
       </thead>
       <tbody v-if="!isLoading">
-        <tr
-          v-for="(item, index) in body"
-          :key="index"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-        >
-          <th
-            scope="row"
-            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            {{ item.proposal }}
-          </th>
-          <td class="py-4 px-6">{{ item.percentage }}</td>
-          <td class="py-4 px-6">{{ item.date }}</td>
-          <td class="py-4 px-6 text-right flex flex-row gap-4 justify-center">
-            <NuxtLink
-              :to="`/proposal/edit/${item.id}`"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
-              >Edit
-            </NuxtLink>
-            <a
-              href="#"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
-              >Delete</a
-            >
-          </td>
-        </tr>
+        <slot name="body"></slot>
       </tbody>
     </table>
     <div class="px-4 py-4" v-if="pagination">

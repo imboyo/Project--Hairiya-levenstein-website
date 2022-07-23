@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import MyTable from "~/components/tables/MyTable.vue";
+import MyTableRow from "~/components/tables/MyTableRow.vue";
+import MyTableCol from "~/components/tables/MyTableCol.vue";
 
-const proposal = ref<TableBody[]>([
+const proposal = ref<{}[]>([
   {
-    id: 1,
     proposal: "How to be Hokage",
     percentage: 20,
     date: "20 Januari 2022",
   },
   {
-    id: 3,
     proposal: "How to be Hokage",
     percentage: 20,
     date: "20 Januari 2022",
@@ -27,6 +27,31 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
       :header="proposalHeader"
       :body="proposal"
       :isLoading="tableIsLoading"
-    />
+    >
+      <template #body>
+        <MyTableRow></MyTableRow>
+        <tr
+          v-for="(item, index) in proposal"
+          :key="index"
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+        >
+          <MyTableCol>{{ item.proposal }}</MyTableCol>
+          <MyTableCol>{{ item.percentage }}</MyTableCol>
+          <MyTableCol>{{ item.date }}</MyTableCol>
+          <td class="py-4 px-6 text-right flex flex-row gap-4 justify-center">
+            <NuxtLink
+              :to="`/proposal/edit/${item.id}`"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
+              >Edit
+            </NuxtLink>
+            <a
+              href="#"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
+              >Delete</a
+            >
+          </td>
+        </tr>
+      </template>
+    </MyTable>
   </div>
 </template>
