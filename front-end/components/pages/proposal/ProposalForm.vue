@@ -152,7 +152,6 @@ defineExpose({ toggleIsLoading });
           formValues.judulProposal = $event.inputValue;
           formErrorValues.judulProposal = $event.errorState;
         "
-        class="lg:w-full"
         :value="valuePropsComputed.title"
       />
     </div>
@@ -189,7 +188,6 @@ defineExpose({ toggleIsLoading });
           dosenSearchModal = true;
           mahasiswaSearchModal = false;
         "
-        class="lg:w-full"
         :value="valuePropsComputed.dosen"
       />
     </div>
@@ -235,7 +233,6 @@ defineExpose({ toggleIsLoading });
           mahasiswaSearchModal = true;
           dosenSearchModal = false;
         "
-        class="lg:w-full"
         :value="valuePropsComputed.mahasiswa"
       />
     </div>
