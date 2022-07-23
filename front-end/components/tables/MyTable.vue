@@ -5,7 +5,6 @@ import MyButton from "~/components/buttons/MyButton.vue";
 interface Props {
   title: string;
   header: string[];
-  body: TableBody[];
   isLoading: boolean;
   pagination?: {
     currentPage: number;
@@ -15,16 +14,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
-const slot = useSlots();
-
-const getSlotValue = (name) => {
-  try {
-    return slot[name]()[0].children.length > 0;
-  } catch (e) {
-    return false;
-  }
-};
 </script>
 
 <template>
@@ -44,7 +33,6 @@ const getSlotValue = (name) => {
           <th scope="col" class="py-3 px-6" v-for="item in header" :key="item">
             {{ item }}
           </th>
-          <th scope="col" class="py-3 px-6 text-center">Action</th>
         </tr>
       </thead>
       <tbody v-if="!isLoading">
