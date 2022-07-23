@@ -32,6 +32,7 @@ const handleClick = (value) => {
         <UserSettingForm
           @clicked="handleClick($event)"
           ref="userSettingFormRef"
+          :value="{ name: 'John Doe', email: 'sasuke@gmail.com' }"
         />
       </div>
     </section>

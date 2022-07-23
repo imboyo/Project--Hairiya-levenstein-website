@@ -72,12 +72,12 @@ const formInputState = {
 };
 
 const formErrorValues = reactive({
-  name: "",
-  email: "",
+  name: false,
+  email: false,
 });
 
 const formIsError = computed(() => {
-  return checkFormIsError(formInputState);
+  return checkFormIsError(formErrorValues);
 });
 
 // * Child Ref Component for accesing child funciton
@@ -86,14 +86,16 @@ const nameFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const emailFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 
 // Handle Click
-const handleClick = () => {
+const refreshValidation = () => {
   const listRef = [nameFieldRef, emailFieldRef];
   listRef.forEach((ref) => {
     ref.value?.refreshValidation((value) => {
       return value;
     });
   });
-
+};
+const handleClick = () => {
+  refreshValidation();
   return !formIsError.value;
 };
 
@@ -112,6 +114,7 @@ const inputContainerClass = computed(() => {
 </script>
 
 <template>
+  {{ formInputState }}
   <!-- First Input -->
   <GroupInput label="Nama Lengkap" required>
     <div :class="inputContainerClass">
@@ -124,6 +127,7 @@ const inputContainerClass = computed(() => {
         @typing="
           formInputState.name = $event.inputValue;
           formErrorValues.name = $event.errorState;
+          refreshValidation();
         "
         :value="valuePropsComputed.name"
       />
@@ -142,6 +146,7 @@ const inputContainerClass = computed(() => {
         @typing="
           formInputState.email = $event.inputValue;
           formErrorValues.email = $event.errorState;
+          refreshValidation();
         "
         :value="valuePropsComputed.email"
       />
