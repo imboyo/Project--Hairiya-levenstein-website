@@ -25,7 +25,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div>
+  <FullNavigation>
     <slot></slot>
-  </div>
+  </FullNavigation>
 </template>
