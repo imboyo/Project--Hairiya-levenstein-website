@@ -29,4 +29,9 @@ export default defineNuxtConfig({
     ],
     title: "Plagirasm Checker",
   },
+  runtimeConfig: {
+    public: {
+      baseApiUrl: "http://localhost:8000/api/",
+    },
+  },
 });

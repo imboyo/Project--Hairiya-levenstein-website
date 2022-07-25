@@ -26,14 +26,14 @@ const valuePropsComputed = computed(() => {
     return {
       name: props.value.name,
       nim: props.value.nim,
-      email: props.value.email,
+      username: props.value.email,
       role: props.value.role,
     };
   } else {
     return {
       name: "",
       nim: "",
-      email: "",
+      username: "",
       role: "",
     };
   }
@@ -69,7 +69,7 @@ const formInputRules = {
       text: "Tolong masukkan nim dengan benar",
     },
   ],
-  email: [
+  username: [
     {
       validate: isRequired,
       text: "Tolong masukkan email",
@@ -99,14 +99,14 @@ const formInputRules = {
 const formValues = reactive({
   name: "",
   nim: "",
-  email: "",
+  username: "",
   role: "",
 });
 
 const formErrorValues = reactive({
   name: true,
   nim: true,
-  email: true,
+  username: true,
   role: true,
 });
 

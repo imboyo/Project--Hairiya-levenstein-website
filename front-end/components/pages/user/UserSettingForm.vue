@@ -23,12 +23,12 @@ const valuePropsComputed = computed(() => {
   if (props.value) {
     return {
       name: props.value.name,
-      email: props.value.email,
+      username: props.value.email,
     };
   } else {
     return {
       name: "",
-      email: "",
+      username: "",
     };
   }
 });
@@ -49,7 +49,7 @@ const formInputRules = {
       text: "Terdapat karakter yang tidak diperbolehkan",
     },
   ],
-  email: [
+  username: [
     {
       validate: isRequired,
       text: "Tolong masukkan email",
@@ -73,7 +73,7 @@ const formInputState = {
 
 const formErrorValues = reactive({
   name: false,
-  email: false,
+  username: false,
 });
 
 const formIsError = computed(() => {

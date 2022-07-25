@@ -9,6 +9,9 @@ import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
 import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
 import ImageWrapper from "~/components/image/ImageWrapper.vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { getDateUntilNYear } from "~/my_modules/date";
 
 // Page Meta and main data
 definePageMeta({
@@ -21,14 +24,14 @@ useHead({
 // * State
 // Form Input Rules
 const formInputRules = {
-  email: [
+  username: [
     {
       validate: isRequired,
-      text: "Tolong masukkan email anda",
+      text: "Tolong masukkan username anda",
     },
     {
-      validate: isEmail,
-      text: "Tolong massukan email dengan benar",
+      validate: (value) => value.length >= 6,
+      text: "Minimum password 6 karakter",
     },
   ],
   password: [
@@ -38,20 +41,20 @@ const formInputRules = {
     },
     {
       validate: (value) => value.length >= 8,
-      text: "Minimum password 6 karakter",
+      text: "Minimum password 8 karakter",
     },
   ],
 };
 
 // Form Input State
 const formValues = reactive({
-  email: "",
+  username: "",
   password: "",
   checked: false,
 });
 
 const formErrorValues = reactive({
-  email: true,
+  username: true,
   password: true,
 });
 
@@ -62,23 +65,102 @@ const formIsError = computed(() => {
 
 // * Child Ref Component for accesing child funciton
 // ? Note : Buat Ref di component html di template sesaui dengan nama const disini
-const emailField = ref<InstanceType<typeof InputField> | null>(null);
+const usernameField = ref<InstanceType<typeof InputField> | null>(null);
 const passwordField = ref<InstanceType<typeof InputField> | null>(null);
 
+const buttonIsLoading = ref(false);
+
+// Cookie
+const cookieToken = useCookie("token", {
+  sameSite: "strict",
+  expires: getDateUntilNYear(2100),
+});
+
 // Handle Click
-const handleClick = () => {
-  emailField.value?.refreshValidation((value) => {
-    formErrorValues.email = value;
+const handleClick = async () => {
+  usernameField.value?.refreshValidation((value) => {
+    formErrorValues.username = value;
   });
   passwordField.value?.refreshValidation((value) => {
     formErrorValues.password = value;
   });
 
+  // If form is valid
   if (!formIsError.value) {
-    console.log("Form is valid");
-  } else {
-    console.log("Form is invalid");
+    buttonIsLoading.value = true;
+
+    // Connect to api
+    await axios
+      .post(`${config.public.baseApiUrl}auth/jwt/create`, {
+        username: formValues.username,
+        password: formValues.password,
+      })
+      .then((response) => {
+        const status = response.status;
+        // Jika berhasil login
+        if (status === 200) {
+          Swal.fire({
+            title: "Success",
+            text: "Login berhasil",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+          // If checkbox is checked make cookie
+          if (formValues.checked) {
+            cookieToken.value = response.data.access;
+          } else {
+            // if checkbox not checked make sessions in browser
+            sessionStorage.setItem("token", response.data.access);
+          }
+          //
+        } else {
+          // Jika gagal login
+          buttonIsLoading.value = false;
+          Swal.fire({
+            title: "Error",
+            text: "Login gagal",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      })
+      .catch((error) => {
+        // Jika gagal login lebih umum
+        buttonIsLoading.value = false;
+        const status = error.response.status;
+        if (status === 401) {
+          Swal.fire({
+            title: "Login Gagal",
+            text: "Akun tidak ditemukan - Tolong perhatikan username dan password",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Login gagal",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      });
   }
+};
+
+const config = useRuntimeConfig();
+
+const verifyLogin = async () => {
+  // Check Token is Good
+  // If Good return true
+  // If Bad
+  // Check is refresh token is good
+  // If Good return true
+  // If Bad
+  // Check apakah ada username dan password di cookies
+  // If Yes
+  // lakukan create token dan refresh dan timpa cookies
+  // return true
+  // If No return false
 };
 </script>
 
@@ -111,14 +193,14 @@ const handleClick = () => {
       <div class="flex flex-col gap-5">
         <InputField
           placeholder="Email"
-          :rules="formInputRules.email"
-          type="email"
-          label="Email"
+          :rules="formInputRules.username"
+          type="text"
+          label="Username"
           required
-          ref="emailField"
+          ref="usernameField"
           @typing="
-            formValues.email = $event.inputValue;
-            formErrorValues.email = $event.errorState;
+            formValues.username = $event.inputValue;
+            formErrorValues.username = $event.errorState;
           "
         />
         <InputField
@@ -139,7 +221,11 @@ const handleClick = () => {
       <div class="flex flex-col gap-6">
         <div class="flex flex-row">
           <div class="flex w-6/12 justify-start">
-            <InputCheckBox id="remember_me">Ingat Saya</InputCheckBox>
+            <InputCheckBox
+              id="remember_me"
+              @change="formValues.checked = $event.target.value"
+              >Ingat Saya</InputCheckBox
+            >
           </div>
           <!--    TODO: Linknya nanti perbaiki      -->
           <div class="flex w-6/12 justify-end">
@@ -155,7 +241,7 @@ const handleClick = () => {
           hieararchy="primary"
           size="lg"
           width="full"
-          :disabled="formIsError"
+          :disabled="formIsError || buttonIsLoading"
           @clicked="handleClick"
         >
           <template #text>Login</template>

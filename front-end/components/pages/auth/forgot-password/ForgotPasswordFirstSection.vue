@@ -11,7 +11,7 @@ import AuthTextHeader from "~/components/pages/auth/AuthTextHeader.vue";
 
 // Form Input Rules
 const formInputRules = {
-  email: [
+  username: [
     {
       validate: isRequired,
       text: "Tolong masukkan email anda",
