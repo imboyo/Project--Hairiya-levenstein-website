@@ -41,7 +41,7 @@ onMounted(() => {
       :isLoading="tableIsLoading"
     >
       <template #body>
-        <MyTableRow v-for="(item, index) in proposal" :key="index">
+        <MyTableRow v-for="(item, index) in proposal" :key="dashboard">
           <MyTableCol>{{ item.proposal }}</MyTableCol>
           <MyTableCol>{{ item.percentage }}</MyTableCol>
           <MyTableCol>{{ item.date }}</MyTableCol>

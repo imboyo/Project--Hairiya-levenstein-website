@@ -3,6 +3,9 @@ import NavItem from "~/components/navigation/NavItem.vue";
 import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import { truncate } from "~/my_modules/string";
+import { dynamicSidenavByRoles } from "~/my_modules/sidenav";
+
+const dynamicSidenav = computed(() => dynamicSidenavByRoles("admin"));
 </script>
 
 <template>
@@ -24,27 +27,21 @@ import { truncate } from "~/my_modules/string";
       <!--   End Logo Hero  -->
 
       <!--  Nav Items  -->
-      <NavItem to="/" label="Dashboard" icon="signal_cellular_alt" />
-      <DropdownNavItem label="Proposal" icon="folder">
-        <NavItem
-          to="/proposal/upload-proposal"
-          label="Upload Proposal"
-          icon="file_upload"
-        />
-        <NavItem
-          to="/proposal/daftar-proposal"
-          label="Daftar Proposal"
-          icon="format_list_bulleted"
-        />
-      </DropdownNavItem>
-      <DropdownNavItem label="User" icon="folder">
-        <NavItem to="/user/tambah-user" label="Tambah User" icon="person_add" />
-        <NavItem
-          to="/user/daftar-user"
-          label="Daftar User"
-          icon="format_list_bulleted"
-        />
-      </DropdownNavItem>
+      <template v-for="item in dynamicSidenav">
+        <template v-if="!item.childrens">
+          <NavItem :to="item.path" :label="item.name" :icon="item.icon" />
+        </template>
+        <template v-if="item.childrens">
+          <DropdownNavItem :label="item.name" :icon="item.icon">
+            <NavItem
+              v-for="children in item.childrens"
+              :to="children.path"
+              :label="children.name"
+              :icon="children.icon"
+            />
+          </DropdownNavItem>
+        </template>
+      </template>
     </div>
     <!--   2nd Section     -->
     <div class="flex flex-col justify-end h-full">
