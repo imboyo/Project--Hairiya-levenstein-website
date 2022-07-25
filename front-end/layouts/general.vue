@@ -6,7 +6,7 @@ const initialPageIsLoading = ref(true);
 
 const router = useRouter();
 
-onMounted(() => {
+onBeforeMount(() => {
   verifyLogin(
     () => {
       initialPageIsLoading.value = false;
@@ -23,3 +23,9 @@ onMounted(() => {
   );
 });
 </script>
+
+<template>
+  <div>
+    <slot></slot>
+  </div>
+</template>

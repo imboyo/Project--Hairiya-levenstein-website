@@ -9,7 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { getDateUntilNYear } from "~/my_modules/date";
 import { baseApiUrl } from "~/my_modules/environment";
-import { checkUserRole } from "~/my_modules/auth";
+import { checkUserRole, loginRoleRedirect } from "~/my_modules/auth";
 
 // Page Meta and main data
 useHead({
@@ -105,23 +105,13 @@ const handleClick = async () => {
           // If checkbox is checked make cookie
           if (formValues.checked) {
             cookieToken.value = response.data.access;
-            checkUserRole((role) => {
-              if (role === "admin") {
-                router.push({ path: "/admin/dashboard" });
-              } else {
-                router.push({ path: "/general/dashboard" });
-              }
-            });
+            loginRoleRedirect();
           } else {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
           }
           checkUserRole((role) => {
-            if (role === "admin") {
-              router.push({ path: "/admin/dashboard" });
-            } else {
-              router.push({ path: "/general/dashboard" });
-            }
+            loginRoleRedirect();
           });
         } else {
           // Jika gagal login

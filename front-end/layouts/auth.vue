@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { checkUserRole, verifyLogin } from "~/my_modules/auth";
+import {
+  checkUserRole,
+  loginRoleRedirect,
+  verifyLogin,
+} from "~/my_modules/auth";
 const initialPageIsLoading = ref(true);
 
 const router = useRouter();
@@ -7,13 +11,7 @@ const router = useRouter();
 onBeforeMount(() => {
   verifyLogin(
     () => {
-      checkUserRole((role) => {
-        if (role === "admin") {
-          router.push({ path: "/admin/dashboard" });
-        } else {
-          router.push({ path: "/general/dashboard" });
-        }
-      });
+      loginRoleRedirect();
     },
     () => {},
     () => {
