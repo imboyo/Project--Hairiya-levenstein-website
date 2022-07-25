@@ -13,7 +13,7 @@ import Sidenav from "~/components/navigation/Sidenav.vue";
     <div
       class="hidden flex-col h-screen w-[280px] lg:flex shadow-focus-ring-grey-100"
     >
-      <Sidenav />
+      <Sidenav v-once />
     </div>
     <div class="w-full pt-[32px] px-[32px]">
       <slot></slot>

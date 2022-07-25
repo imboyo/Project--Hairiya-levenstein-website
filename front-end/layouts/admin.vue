@@ -27,7 +27,7 @@ provide("role", "admin");
 </script>
 
 <template>
-  <FullNavigation v-if="!initialPageIsLoading">
+  <FullNavigation>
     <slot></slot>
   </FullNavigation>
 </template>

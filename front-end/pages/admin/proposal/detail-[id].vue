@@ -5,6 +5,10 @@ import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
 
+useHead({
+  titleTemplate: (title) => `Detail Proposal - ${title}`,
+});
+
 const searchState = ref("");
 
 const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];

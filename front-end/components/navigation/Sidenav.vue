@@ -16,7 +16,7 @@ const dynamicSidenav = computed(() => dynamicSidenavByRoles(role));
     <!--  ? First Section     -->
     <div class="flex flex-col">
       <!--    Logo Hero    -->
-      <NuxtLink class="flex flex-row items-center px-[12px] py-[20px]" to="/">
+      <div class="flex flex-row items-center px-[12px] py-[20px]" to="/">
         <ImageWrapper
           rounded="lg"
           img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
@@ -25,7 +25,7 @@ const dynamicSidenav = computed(() => dynamicSidenavByRoles(role));
         <div>
           <h3 class="font-bold text-gray-700 text-xl">Plagiarism</h3>
         </div>
-      </NuxtLink>
+      </div>
       <!--   End Logo Hero  -->
 
       <!--  Nav Items  -->

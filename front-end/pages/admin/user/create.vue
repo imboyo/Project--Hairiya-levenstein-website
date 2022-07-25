@@ -2,10 +2,6 @@
 import PageHeader from "~/components/header/PageHeader.vue";
 import UserForm from "~/components/pages/user/UserForm.vue";
 
-definePageMeta({
-  layout: "admin",
-});
-
 useHead({
   titleTemplate: (title) => `Tambah User - ${title}`,
 });
