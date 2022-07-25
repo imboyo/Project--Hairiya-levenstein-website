@@ -9,3 +9,7 @@ class IsAdminUser(permissions.BasePermission):
         finally:
             return is_admin_user
 
+
+class IsLoggendInUser(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user == obj
