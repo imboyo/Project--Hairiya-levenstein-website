@@ -1,37 +1,30 @@
 import axios from "axios";
-import { getDateUntilNYear } from "~/my_modules/date";
+import { baseApiUrl } from "~/my_modules/environment";
 
-const config = useRuntimeConfig();
+const getCookie = (name) => {
+  const value = "; " + document.cookie;
+  const parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+};
 
-// Cookie function
-const cookieToken = useCookie("token", {
-  sameSite: "strict",
-  expires: getDateUntilNYear(2100),
-});
-
-export const verifyLogin = async () => {
+export const verifyLogin = async (
+  successCallback,
+  badTokenCallback,
+  errorCallback
+) => {
   await axios
-    .post(`${config.public.baseApiUrl}auth/jwt/verify`, {
-      token: sessionStorage.getItem("token") ?? cookieToken.value,
+    .post(`${baseApiUrl}auth/jwt/verify`, {
+      token: sessionStorage.getItem("token") ?? getCookie("token"),
     })
     .then((response) => {
       const status = response.status;
       if (status === 200) {
-        console.log("Token is good");
-        // If token is good
-        // Redirect to dashboard
-        // router.push("/dashboard");
+        successCallback(response);
       } else {
-        console.log("Token is not good");
-        // If token is bad
-        // Redirect to login
-        // router.push("/login");
+        badTokenCallback(response);
       }
     })
     .catch((error) => {
-      console.log("Token is error");
-      // If token is bad
-      // Redirect to login
-      // router.push("/login");
+      errorCallback(error);
     });
 };

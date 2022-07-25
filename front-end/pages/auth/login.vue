@@ -8,6 +8,8 @@ import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { getDateUntilNYear } from "~/my_modules/date";
+import { verifyLogin } from "~/my_modules/auth";
+import { baseApiUrl } from "~/my_modules/environment";
 
 // Page Meta and main data
 definePageMeta({
@@ -16,6 +18,16 @@ definePageMeta({
 useHead({
   titleTemplate: (title) => `Login - ${title}`,
 });
+
+const router = useRouter();
+// Check Logged in or not
+onMounted(() =>
+  verifyLogin(
+    () => router.push({ path: "/" }),
+    () => {},
+    () => {}
+  )
+);
 
 // * State
 // Form Input Rules
@@ -87,7 +99,7 @@ const handleClick = async () => {
 
     // Connect to api
     await axios
-      .post(`${config.public.baseApiUrl}auth/jwt/create`, {
+      .post(`${baseApiUrl}auth/jwt/create`, {
         username: formValues.username,
         password: formValues.password,
       })
@@ -142,36 +154,9 @@ const handleClick = async () => {
   }
 };
 
-const config = useRuntimeConfig();
-
-const verifyLogin = async () => {
-  await axios
-    .post(`${config.public.baseApiUrl}auth/jwt/verify`, {
-      token: sessionStorage.getItem("token") ?? cookieToken.value,
-    })
-    .then((response) => {
-      const status = response.status;
-      if (status === 200) {
-        console.log("Token is good");
-        // If token is good
-        // Redirect to dashboard
-        // router.push("/dashboard");
-      } else {
-        console.log("Token is not good");
-        // If token is bad
-        // Redirect to login
-        // router.push("/login");
-      }
-    })
-    .catch((error) => {
-      console.log("Token is error");
-      // If token is bad
-      // Redirect to login
-      // router.push("/login");
-    });
+const handleClick2 = () => {
+  router.push({ path: "/login" });
 };
-
-onMounted(() => verifyLogin());
 </script>
 
 <template>
@@ -260,5 +245,7 @@ onMounted(() => verifyLogin());
       <!--  ! End Button   -->
     </div>
     <!--   ! End Container   -->
+
+    <button @click="handleClick2">Handle Click</button>
   </div>
 </template>

@@ -69,7 +69,7 @@ const formInputRules = {
       text: "Tolong masukkan nim dengan benar",
     },
   ],
-  username: [
+  email: [
     {
       validate: isRequired,
       text: "Tolong masukkan email",

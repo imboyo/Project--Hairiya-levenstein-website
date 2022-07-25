@@ -35,7 +35,6 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
           <MyTableCol>{{ item.date }}</MyTableCol>
           <td class="py-4 px-6 text-right flex flex-row gap-4 justify-center">
             <NuxtLink
-              :to="`/proposal/edit/${item.id}`"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
               >Edit
             </NuxtLink>
