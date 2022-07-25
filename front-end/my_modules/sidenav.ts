@@ -7,7 +7,8 @@ export const dynamicSidenavByRoles = (roles: string) => {
     },
     {
       name: "Proposal",
-      children: [
+      icon: "assignment",
+      childrens: [
         {
           path: "/admin/proposal/list",
           name: "Daftar Proposal",
@@ -22,7 +23,8 @@ export const dynamicSidenavByRoles = (roles: string) => {
     },
     {
       name: "User",
-      children: [
+      icon: "assignment",
+      childrens: [
         {
           path: "/admin/user/list",
           name: "Daftar User",

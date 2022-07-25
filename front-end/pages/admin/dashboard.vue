@@ -23,9 +23,7 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
 const router = useRouter();
 onMounted(() => {
   verifyLogin(
-    () => {
-      console.log((response) => {});
-    },
+    () => {},
     () => {},
     () => router.push({ path: "/auth/login" })
   );
