@@ -105,14 +105,12 @@ const handleClick = async () => {
           // If checkbox is checked make cookie
           if (formValues.checked) {
             cookieToken.value = response.data.access;
-            loginRoleRedirect();
           } else {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
           }
-          checkUserRole((role) => {
-            loginRoleRedirect();
-          });
+          // Custom Redirect after logged in between dosen, mahasiswa, admin
+          loginRoleRedirect();
         } else {
           // Jika gagal login
           buttonIsLoading.value = false;
