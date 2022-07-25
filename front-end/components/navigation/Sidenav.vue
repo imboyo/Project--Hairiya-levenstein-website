@@ -5,7 +5,13 @@ import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import { truncate } from "~/my_modules/string";
 import { dynamicSidenavByRoles } from "~/my_modules/sidenav";
 
-const dynamicSidenav = computed(() => dynamicSidenavByRoles("admin"));
+interface Props {
+  userRole: string;
+}
+
+const props = defineProps<Props>();
+
+const dynamicSidenav = computed(() => dynamicSidenavByRoles(props.userRole));
 </script>
 
 <template>

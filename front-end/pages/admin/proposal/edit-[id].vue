@@ -3,6 +3,10 @@ import PageHeader from "~/components/header/PageHeader.vue";
 import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
 
+definePageMeta({
+  layout: "admin",
+});
+
 const route = useRoute();
 
 useHead({

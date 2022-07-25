@@ -7,6 +7,10 @@ useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
 });
 
+definePageMeta({
+  layout: "admin",
+});
+
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
 
 const handleClick = (value) => {

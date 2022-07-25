@@ -5,6 +5,10 @@ import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
 
+definePageMeta({
+  layout: "admin",
+});
+
 const searchState = ref("");
 const typeSelectState = ref("");
 

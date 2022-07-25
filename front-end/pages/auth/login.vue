@@ -23,7 +23,7 @@ const router = useRouter();
 // Check Logged in or not
 onMounted(() =>
   verifyLogin(
-    () => router.push({ path: "/" }),
+    () => router.push({ path: "/admin/dashboard" }),
     () => {},
     () => {}
   )
@@ -116,11 +116,12 @@ const handleClick = async () => {
           // If checkbox is checked make cookie
           if (formValues.checked) {
             cookieToken.value = response.data.access;
-            router.push({ path: "/" });
+            router.push({ path: "/admin/dashboard" });
           } else {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
           }
+          router.push({ path: "/admin/dashboard" });
         } else {
           // Jika gagal login
           buttonIsLoading.value = false;
