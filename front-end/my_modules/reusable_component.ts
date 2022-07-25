@@ -1,14 +1,15 @@
 import { checkUserRole, verifyLogin } from "~/my_modules/auth";
 
-export const verifyAdminPageUser = () => {
+export const verifyRolePageUser = (userRole, initialPageIsLoading) => {
   const router = useRouter();
 
   onBeforeMount(async () => {
     await verifyLogin(
       () => {
+        initialPageIsLoading.value = false;
         checkUserRole((role) => {
-          if (!(role === "admin")) {
-            router.push("/auth/login");
+          if (!(role === userRole)) {
+            router.push({ path: "/auth/login" });
           }
         });
       },
