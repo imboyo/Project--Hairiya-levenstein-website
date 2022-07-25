@@ -116,6 +116,7 @@ const handleClick = async () => {
           // If checkbox is checked make cookie
           if (formValues.checked) {
             cookieToken.value = response.data.access;
+            router.push({ path: "/" });
           } else {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
@@ -153,14 +154,6 @@ const handleClick = async () => {
       });
   }
 };
-
-onMounted(() => {
-  verifyLogin(
-    () => router.push({ path: "/" }),
-    () => {},
-    () => {}
-  );
-});
 </script>
 
 <template>

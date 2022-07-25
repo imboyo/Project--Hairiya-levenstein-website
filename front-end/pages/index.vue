@@ -2,6 +2,7 @@
 import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
+import { verifyLogin } from "~/my_modules/auth";
 
 const proposal = ref<{}[]>([
   {
@@ -18,6 +19,17 @@ const proposal = ref<{}[]>([
 
 const tableIsLoading = ref(false);
 const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
+
+const router = useRouter();
+onMounted(() => {
+  verifyLogin(
+    () => {
+      console.log((response) => {});
+    },
+    () => {},
+    () => router.push({ path: "/auth/login" })
+  );
+});
 </script>
 
 <template>
