@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { verifyLogin } from "~/my_modules/auth";
+import {
+  checkUserRole,
+  loginRoleRedirect,
+  verifyLogin,
+} from "~/my_modules/auth";
 const initialPageIsLoading = ref(true);
 
 const router = useRouter();
@@ -7,7 +11,7 @@ const router = useRouter();
 onBeforeMount(() => {
   verifyLogin(
     () => {
-      router.push({ path: "/admin/dashboard" });
+      loginRoleRedirect();
     },
     () => {},
     () => {

@@ -9,6 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { getDateUntilNYear } from "~/my_modules/date";
 import { baseApiUrl } from "~/my_modules/environment";
+import { checkUserRole, loginRoleRedirect } from "~/my_modules/auth";
 
 // Page Meta and main data
 useHead({
@@ -104,12 +105,12 @@ const handleClick = async () => {
           // If checkbox is checked make cookie
           if (formValues.checked) {
             cookieToken.value = response.data.access;
-            router.push({ path: "/admin/dashboard" });
           } else {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
           }
-          router.push({ path: "/admin/dashboard" });
+          // Custom Redirect after logged in between dosen, mahasiswa, admin
+          loginRoleRedirect();
         } else {
           // Jika gagal login
           buttonIsLoading.value = false;

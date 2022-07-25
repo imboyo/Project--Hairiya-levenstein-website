@@ -1,27 +1,11 @@
 <script lang="ts" setup>
 import FullNavigation from "~/components/navigation/FullNavigation.vue";
-import { checkUserRole, verifyLogin } from "~/my_modules/auth";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
 
 const initialPageIsLoading = ref(true);
 
-const router = useRouter();
-
-onMounted(() => {
-  verifyLogin(
-    () => {
-      initialPageIsLoading.value = false;
-      checkUserRole((role) => {
-        if (!(role === "admin")) {
-          router.push("/auth/login");
-        }
-      });
-    },
-    () => {},
-    () => {
-      router.push({ path: "/auth/login" });
-    }
-  );
-});
+// For redirecting user is not have permission in this page then redirect them.
+verifyRolePageUser("admin", initialPageIsLoading);
 
 provide("role", "admin");
 </script>

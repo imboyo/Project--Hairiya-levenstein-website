@@ -71,3 +71,14 @@ export const deleteCookieOrSession = (name) => {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   sessionStorage.removeItem(name);
 };
+
+export const loginRoleRedirect = async () => {
+  const router = useRouter();
+  await checkUserRole((role) => {
+    if (role === "admin") {
+      router.push({ path: "/admin/dashboard" });
+    } else {
+      router.push({ path: "/general/dashboard" });
+    }
+  });
+};
