@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from .utils import check_plagiarism_all
 from .serializers import CheckPlagiarismSerializer
 from rest_framework.response import Response
@@ -9,7 +9,7 @@ from django.conf import settings
 
 # Create your views here.
 class CheckPlagiarismAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
