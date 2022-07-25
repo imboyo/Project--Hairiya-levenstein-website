@@ -23,9 +23,7 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
 const router = useRouter();
 onMounted(() => {
   verifyLogin(
-    () => {
-      console.log((response) => {});
-    },
+    () => {},
     () => {},
     () => router.push({ path: "/auth/login" })
   );
@@ -41,7 +39,7 @@ onMounted(() => {
       :isLoading="tableIsLoading"
     >
       <template #body>
-        <MyTableRow v-for="(item, index) in proposal" :key="dashboard">
+        <MyTableRow v-for="(item, index) in proposal" :key="index">
           <MyTableCol>{{ item.proposal }}</MyTableCol>
           <MyTableCol>{{ item.percentage }}</MyTableCol>
           <MyTableCol>{{ item.date }}</MyTableCol>
