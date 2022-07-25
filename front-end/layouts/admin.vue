@@ -6,9 +6,6 @@ const initialPageIsLoading = ref(true);
 
 const router = useRouter();
 
-// Initial check for all admin pages and only load sidenav once
-const userRole = ref("");
-
 onMounted(() => {
   verifyLogin(
     () => {
@@ -17,7 +14,6 @@ onMounted(() => {
         if (!(role === "admin")) {
           router.push("/auth/login");
         }
-        userRole.value = role;
       });
     },
     () => {},
@@ -26,10 +22,12 @@ onMounted(() => {
     }
   );
 });
+
+provide("role", "admin");
 </script>
 
 <template>
-  <FullNavigation v-if="!initialPageIsLoading" :userRole="userRole">
+  <FullNavigation v-if="!initialPageIsLoading">
     <slot></slot>
   </FullNavigation>
 </template>

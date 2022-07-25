@@ -5,13 +5,9 @@ import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import { truncate } from "~/my_modules/string";
 import { dynamicSidenavByRoles } from "~/my_modules/sidenav";
 
-interface Props {
-  userRole: string;
-}
+const role = inject<string>("role");
 
-const props = defineProps<Props>();
-
-const dynamicSidenav = computed(() => dynamicSidenavByRoles(props.userRole));
+const dynamicSidenav = computed(() => dynamicSidenavByRoles(role));
 </script>
 
 <template>
