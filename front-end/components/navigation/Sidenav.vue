@@ -4,10 +4,25 @@ import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import { truncate } from "~/my_modules/string";
 import { dynamicSidenavByRoles } from "~/my_modules/sidenav";
+import { deleteCookieOrSession } from "~/my_modules/auth";
+import Swal from "sweetalert2";
 
 const role = inject<string>("role");
 
 const dynamicSidenav = computed(() => dynamicSidenavByRoles(role));
+
+const router = useRouter();
+
+const logOut = () => {
+  deleteCookieOrSession("token");
+  Swal.fire({
+    title: "Success",
+    text: "Logout berhasil",
+    icon: "success",
+    confirmButtonText: "OK",
+  });
+  router.push({ path: "/auth/login" });
+};
 </script>
 
 <template>
@@ -65,7 +80,7 @@ const dynamicSidenav = computed(() => dynamicSidenavByRoles(role));
           </h5>
         </div>
         <div class="flex justify-end items-center text-gray-500">
-          <button @click="() => alert('terlogout')">
+          <button @click="logOut">
             <span class="material-icons-outlined text-display-xs">
               logout
             </span>

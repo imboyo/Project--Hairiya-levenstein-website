@@ -8,13 +8,14 @@ import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { getDateUntilNYear } from "~/my_modules/date";
-import { verifyLogin } from "~/my_modules/auth";
 import { baseApiUrl } from "~/my_modules/environment";
 
 // Page Meta and main data
 useHead({
   titleTemplate: (title) => `Login - ${title}`,
 });
+
+const router = useRouter();
 
 // * State
 // Form Input Rules
