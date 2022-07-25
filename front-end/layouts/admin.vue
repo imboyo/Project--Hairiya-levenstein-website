@@ -7,32 +7,29 @@ const initialPageIsLoading = ref(true);
 const router = useRouter();
 
 // Initial check for all admin pages and only load sidenav once
+const userRole = ref("");
+
 onMounted(() => {
   verifyLogin(
     () => {
       initialPageIsLoading.value = false;
-      checkUserRole("admin", (data) => console.log(data));
+      checkUserRole((role) => {
+        if (!(role === "admin")) {
+          router.push("/auth/login");
+        }
+        userRole.value = role;
+      });
     },
     () => {},
-    () => router.push({ path: "/auth/login" })
+    () => {
+      router.push({ path: "/auth/login" });
+    }
   );
 });
-
-// * Jika ingin check user role ketika page berubah, maka gunakan ini:
-// * Masalahnya adalah memberatkan server jadi cukup sekali ajah
-// onUpdated(() => {
-//   verifyLogin(
-//     () => {
-//       console.log("success");
-//     },
-//     () => {},
-//     () => router.push({ path: "/auth/login" })
-//   );
-// });
 </script>
 
 <template>
-  <FullNavigation v-if="!initialPageIsLoading">
+  <FullNavigation v-if="!initialPageIsLoading" :userRole="userRole">
     <slot></slot>
   </FullNavigation>
 </template>

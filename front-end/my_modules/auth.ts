@@ -58,11 +58,11 @@ export const getUserDetailsByUsername = async (username, successCallback) => {
     });
 };
 
-export const checkUserRole = async (role, data) => {
+export const checkUserRole = async (role) => {
   await getMe((user) => {
     const username = user.username;
     getUserDetailsByUsername(username, (userDetails) => {
-      data(userDetails[0].profile.role === role);
+      role(userDetails[0].profile.role);
     });
   });
 };
