@@ -16,7 +16,7 @@ import Sidenav from "~/components/navigation/Sidenav.vue";
       <Sidenav />
     </div>
     <div class="w-full pt-[32px] px-[32px]">
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>

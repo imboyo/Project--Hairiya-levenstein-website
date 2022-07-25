@@ -25,12 +25,8 @@
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.4",
-    "@vueuse/integrations": "^8.9.4",
     "axios": "^0.27.2",
     "flowbite": "^1.4.7",
-    "sweetalert2": "^11.4.24",
-    "universal-cookie": "^4.0.4",
-    "validator": "^13.7.0",
-    "vee-validate": "^4.6.1"
+    "sweetalert2": "^11.4.24"
   }
 }

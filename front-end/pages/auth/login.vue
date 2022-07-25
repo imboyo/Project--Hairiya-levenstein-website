@@ -154,9 +154,13 @@ const handleClick = async () => {
   }
 };
 
-const handleClick2 = () => {
-  router.push({ path: "/login" });
-};
+onMounted(() => {
+  verifyLogin(
+    () => router.push({ path: "/" }),
+    () => {},
+    () => {}
+  );
+});
 </script>
 
 <template>
@@ -245,7 +249,5 @@ const handleClick2 = () => {
       <!--  ! End Button   -->
     </div>
     <!--   ! End Container   -->
-
-    <button @click="handleClick2">Handle Click</button>
   </div>
 </template>
