@@ -2,10 +2,6 @@
 import ConfirmForgotPasswordFirstSection from "~/components/pages/auth/confirm-forgot-password/ConfirmForgotPasswordFirstSection.vue";
 import ConfirmForgotPasswordSecondSection from "~/components/pages/auth/confirm-forgot-password/ConfirmForgotPasswordSecondSection.vue";
 
-definePageMeta({
-  layout: "auth",
-});
-
 useHead({
   titleTemplate: (title) => `Konfirmasi Lupa Password - ${title}`,
 });
@@ -25,23 +21,25 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-8 w-full md:w-[22.5rem] mt-[48px] md:mt-96px">
-    <Transition name="first-transition" :duration="300" mode="out-in">
-      <!--  First Section  -->
-      <div v-if="!formIsSubmitted">
-        <ConfirmForgotPasswordFirstSection
-          @btn-clicked="
-            formIsError = $event;
-            handleClick();
-          "
-        />
-      </div>
-      <!--  Second Section  -->
-      <div v-else>
-        <ConfirmForgotPasswordSecondSection />
-      </div>
-    </Transition>
-  </div>
+  <NuxtLayout name="auth">
+    <div class="flex flex-col gap-8 w-full md:w-[22.5rem] mt-[48px] md:mt-96px">
+      <Transition name="first-transition" :duration="300" mode="out-in">
+        <!--  First Section  -->
+        <div v-if="!formIsSubmitted">
+          <ConfirmForgotPasswordFirstSection
+            @btn-clicked="
+              formIsError = $event;
+              handleClick();
+            "
+          />
+        </div>
+        <!--  Second Section  -->
+        <div v-else>
+          <ConfirmForgotPasswordSecondSection />
+        </div>
+      </Transition>
+    </div>
+  </NuxtLayout>
 </template>
 
 <style scoped>
