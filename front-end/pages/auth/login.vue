@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  checkFormIsError,
-  isEmail,
-  isRequired,
-} from "~/my_modules/input_validation";
+import { checkFormIsError, isRequired } from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
 import InputCheckBox from "~/components/inputs/InputCheckBox.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
@@ -70,7 +66,7 @@ const passwordField = ref<InstanceType<typeof InputField> | null>(null);
 
 const buttonIsLoading = ref(false);
 
-// Cookie
+// Cookie function
 const cookieToken = useCookie("token", {
   sameSite: "strict",
   expires: getDateUntilNYear(2100),
@@ -112,7 +108,6 @@ const handleClick = async () => {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
           }
-          //
         } else {
           // Jika gagal login
           buttonIsLoading.value = false;
@@ -150,18 +145,33 @@ const handleClick = async () => {
 const config = useRuntimeConfig();
 
 const verifyLogin = async () => {
-  // Check Token is Good
-  // If Good return true
-  // If Bad
-  // Check is refresh token is good
-  // If Good return true
-  // If Bad
-  // Check apakah ada username dan password di cookies
-  // If Yes
-  // lakukan create token dan refresh dan timpa cookies
-  // return true
-  // If No return false
+  await axios
+    .post(`${config.public.baseApiUrl}auth/jwt/verify`, {
+      token: sessionStorage.getItem("token") ?? cookieToken.value,
+    })
+    .then((response) => {
+      const status = response.status;
+      if (status === 200) {
+        console.log("Token is good");
+        // If token is good
+        // Redirect to dashboard
+        // router.push("/dashboard");
+      } else {
+        console.log("Token is not good");
+        // If token is bad
+        // Redirect to login
+        // router.push("/login");
+      }
+    })
+    .catch((error) => {
+      console.log("Token is error");
+      // If token is bad
+      // Redirect to login
+      // router.push("/login");
+    });
 };
+
+onMounted(() => verifyLogin());
 </script>
 
 <template>
@@ -224,8 +234,8 @@ const verifyLogin = async () => {
             <InputCheckBox
               id="remember_me"
               @change="formValues.checked = $event.target.value"
-              >Ingat Saya</InputCheckBox
-            >
+              >Ingat Saya
+            </InputCheckBox>
           </div>
           <!--    TODO: Linknya nanti perbaiki      -->
           <div class="flex w-6/12 justify-end">
