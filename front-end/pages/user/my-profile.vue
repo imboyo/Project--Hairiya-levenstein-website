@@ -17,24 +17,26 @@ const handleClick = (value) => {
 </script>
 
 <template>
-  <div>
-    <section class="flex flex-col gap-8">
-      <PageHeader>Pengaturan</PageHeader>
-      <div class="flex flex-col gap-5">
-        <PageSubHeader>
-          <template #title>Info Pribadi</template>
-          <template #description
-            >Perbarui foto dan detail pribadi Anda di sini</template
-          >
-        </PageSubHeader>
-        <hr />
+  <NuxtLayout name="all">
+    <div>
+      <section class="flex flex-col gap-8">
+        <PageHeader>Pengaturan</PageHeader>
+        <div class="flex flex-col gap-5">
+          <PageSubHeader>
+            <template #title>Info Pribadi</template>
+            <template #description
+              >Perbarui foto dan detail pribadi Anda di sini</template
+            >
+          </PageSubHeader>
+          <hr />
 
-        <UserSettingForm
-          @clicked="handleClick($event)"
-          ref="userSettingFormRef"
-          :value="{ name: 'John Doe', email: 'sasuke@gmail.com' }"
-        />
-      </div>
-    </section>
-  </div>
+          <UserSettingForm
+            @clicked="handleClick($event)"
+            ref="userSettingFormRef"
+            :value="{ name: 'John Doe', email: 'sasuke@gmail.com' }"
+          />
+        </div>
+      </section>
+    </div>
+  </NuxtLayout>
 </template>
