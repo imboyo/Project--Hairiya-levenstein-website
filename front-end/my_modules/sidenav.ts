@@ -46,12 +46,12 @@ export const dynamicSidenavByRoles = (roles: string) => {
       icon: "dashboard",
     },
     {
-      path: "/general/proposal/list",
+      path: "/general/proposal/",
       name: "Daftar Proposal",
       icon: "list",
     },
     {
-      path: "/general/user/list",
+      path: "/general/user/",
       name: "Daftar User",
       icon: "list",
     },

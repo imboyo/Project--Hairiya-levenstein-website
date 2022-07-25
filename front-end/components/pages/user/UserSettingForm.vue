@@ -23,12 +23,12 @@ const valuePropsComputed = computed(() => {
   if (props.value) {
     return {
       name: props.value.name,
-      username: props.value.email,
+      email: props.value.email,
     };
   } else {
     return {
       name: "",
-      username: "",
+      email: "",
     };
   }
 });
@@ -73,7 +73,7 @@ const formInputState = {
 
 const formErrorValues = reactive({
   name: false,
-  username: false,
+  email: false,
 });
 
 const formIsError = computed(() => {
@@ -114,7 +114,6 @@ const inputContainerClass = computed(() => {
 </script>
 
 <template>
-  {{ formInputState }}
   <!-- First Input -->
   <GroupInput label="Nama Lengkap" required>
     <div :class="inputContainerClass">
