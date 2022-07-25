@@ -16,16 +16,6 @@ useHead({
   titleTemplate: (title) => `Login - ${title}`,
 });
 
-const router = useRouter();
-// Check Logged in or not
-onMounted(() => {
-  verifyLogin(
-    () => router.push({ path: "/admin/dashboard" }),
-    () => {},
-    () => {}
-  );
-});
-
 // * State
 // Form Input Rules
 const formInputRules = {

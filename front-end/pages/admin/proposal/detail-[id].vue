@@ -5,10 +5,6 @@ import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
 
-definePageMeta({
-  layout: "admin",
-});
-
 const searchState = ref("");
 
 const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
@@ -35,37 +31,39 @@ const proposalPagination = ref({
 </script>
 
 <template>
-  <div>
-    <section class="flex flex-col gap-8">
-      <PageHeader>Detail Proposal - blabla</PageHeader>
-      <div class="w-full">
-        <InputField
-          placeholder="Cari Mahasiswa"
-          :rules="[]"
-          type="text"
-          icon="search"
-          @typing="searchState = $event.inputValue"
-        />
-      </div>
-    </section>
+  <NuxtLayout name="admin">
+    <div>
+      <section class="flex flex-col gap-8">
+        <PageHeader>Detail Proposal - blabla</PageHeader>
+        <div class="w-full">
+          <InputField
+            placeholder="Cari Mahasiswa"
+            :rules="[]"
+            type="text"
+            icon="search"
+            @typing="searchState = $event.inputValue"
+          />
+        </div>
+      </section>
 
-    <!--  Table Mahasiswa  -->
-    <!--  Table Mahasiswa  -->
-    <section>
-      <MyTable
-        title="Daftar Proposal"
-        :header="proposalHeader"
-        :isLoading="tableIsLoading"
-        :pagination="proposalPagination"
-      >
-        <template #body>
-          <MyTableRow v-for="(item, index) in proposal" :key="index">
-            <MyTableCol>{{ item.proposal }}</MyTableCol>
-            <MyTableCol>{{ item.percentage }}</MyTableCol>
-            <MyTableCol>{{ item.date }}</MyTableCol>
-          </MyTableRow>
-        </template>
-      </MyTable>
-    </section>
-  </div>
+      <!--  Table Mahasiswa  -->
+      <!--  Table Mahasiswa  -->
+      <section>
+        <MyTable
+          title="Daftar Proposal"
+          :header="proposalHeader"
+          :isLoading="tableIsLoading"
+          :pagination="proposalPagination"
+        >
+          <template #body>
+            <MyTableRow v-for="(item, index) in proposal" :key="index">
+              <MyTableCol>{{ item.proposal }}</MyTableCol>
+              <MyTableCol>{{ item.percentage }}</MyTableCol>
+              <MyTableCol>{{ item.date }}</MyTableCol>
+            </MyTableRow>
+          </template>
+        </MyTable>
+      </section>
+    </div>
+  </NuxtLayout>
 </template>

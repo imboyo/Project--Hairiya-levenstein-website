@@ -7,10 +7,6 @@ useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
 });
 
-definePageMeta({
-  layout: "admin",
-});
-
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
 
 const handleClick = (value) => {
@@ -23,27 +19,29 @@ const handleClick = (value) => {
 </script>
 
 <template>
-  <div>
-    <section class="flex flex-col gap-8">
-      <!-- * Header Section    -->
-      <PageHeader>Upload Proposal</PageHeader>
-      <!--   ! End Header Section -->
-      <!-- Form Section   -->
-      <div class="flex flex-col gap-5">
-        <!--    Header Form    -->
-        <PageSubHeader>
-          <template #title>
-            File proposal yang diupload hanya berisi BAB 2 & 3
-          </template>
-          <template #description
-            >Untuk lainnya silahkan dihapus terlebih dahulu agar hasil yang
-            didapatkan sesua dengan yang diharapkan
-          </template>
-        </PageSubHeader>
-        <!--   End Header Form    -->
-        <hr />
-        <ProposalForm @clicked="handleClick($event)" ref="proposalFormRef" />
-      </div>
-    </section>
-  </div>
+  <NuxtLayout name="admin">
+    <div>
+      <section class="flex flex-col gap-8">
+        <!-- * Header Section    -->
+        <PageHeader>Upload Proposal</PageHeader>
+        <!--   ! End Header Section -->
+        <!-- Form Section   -->
+        <div class="flex flex-col gap-5">
+          <!--    Header Form    -->
+          <PageSubHeader>
+            <template #title>
+              File proposal yang diupload hanya berisi BAB 2 & 3
+            </template>
+            <template #description
+              >Untuk lainnya silahkan dihapus terlebih dahulu agar hasil yang
+              didapatkan sesua dengan yang diharapkan
+            </template>
+          </PageSubHeader>
+          <!--   End Header Form    -->
+          <hr />
+          <ProposalForm @clicked="handleClick($event)" ref="proposalFormRef" />
+        </div>
+      </section>
+    </div>
+  </NuxtLayout>
 </template>

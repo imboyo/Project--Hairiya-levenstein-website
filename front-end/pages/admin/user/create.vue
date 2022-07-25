@@ -21,14 +21,16 @@ const handleClick = (value) => {
 };
 </script>
 <template>
-  <div>
-    <section class="flex flex-col gap-8">
-      <PageHeader>Tambah User</PageHeader>
-      <hr />
-      <!--   Form Section   -->
-      <div class="flex flex-col gap-5">
-        <UserForm @clicked="handleClick($event)" ref="tambahUserFormRef" />
-      </div>
-    </section>
-  </div>
+  <NuxtLayout name="admin">
+    <div>
+      <section class="flex flex-col gap-8">
+        <PageHeader>Tambah User</PageHeader>
+        <hr />
+        <!--   Form Section   -->
+        <div class="flex flex-col gap-5">
+          <UserForm @clicked="handleClick($event)" ref="tambahUserFormRef" />
+        </div>
+      </section>
+    </div>
+  </NuxtLayout>
 </template>
