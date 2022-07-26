@@ -26,10 +26,9 @@ const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
       <MyTable
         title="Daftar Proposal"
         :header="proposalHeader"
-        :body="proposal"
         :isLoading="tableIsLoading"
       >
-        <template #body>
+        <template>
           <MyTableRow v-for="(item, index) in proposal" :key="index">
             <MyTableCol>{{ item.proposal }}</MyTableCol>
             <MyTableCol>{{ item.percentage }}</MyTableCol>

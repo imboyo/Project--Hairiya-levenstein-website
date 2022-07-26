@@ -7,43 +7,71 @@ import MyTableCol from "~/components/tables/MyTableCol.vue";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import { getAccessToken } from "~/my_modules/auth";
+import { getOffsetPage } from "~/my_modules/pagination";
+import { getFullDate } from "~/my_modules/date";
 
 useHead({
   titleTemplate: (title) => `Daftar Proposal- ${title}`,
 });
 
+const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
 const searchState = ref("");
-const proposal = ref<{}[]>([]);
+const proposal = ref<Proposal[]>([]);
 const tableIsLoading = ref(true);
 
-const proposalPagination = ref({
+const proposalPagination = reactive({
   currentPage: 1,
   totalPage: 1,
-  perPage: 10,
+  limit: 10,
 });
 
 // Do it after done backend
 const fetchProposal = async () => {
+  const limit = proposalPagination.limit;
+  const currPage = proposalPagination.currentPage;
   await axios
-    .get(`${baseApiUrl}proposal?limit=10&offset=`, {
-      headers: { Authorization: `Bearer ${getAccessToken()}` },
-    })
+    .get(
+      `${baseApiUrl}proposal?limit=${limit}&offset=${getOffsetPage(
+        currPage,
+        limit
+      )}`,
+      {
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+      }
+    )
     .then((response) => {
+      const data = response.data;
+      proposal.value = data.results;
+      // Round to higher
+
+      proposalPagination.totalPage = Math.ceil(data.count / limit);
       tableIsLoading.value = false;
-      proposal.value = response.data;
     })
     .catch((error) => {
       console.log(error);
     });
 };
 
-onBeforeMount(() => fetchProposal());
+onMounted(() => fetchProposal());
+
+const handlePrevClick = (isPrev) => {
+  if (isPrev) {
+    proposalPagination.currentPage--;
+    fetchProposal();
+  }
+};
+
+const handleNextClick = (isNext) => {
+  if (isNext) {
+    proposalPagination.currentPage++;
+    fetchProposal();
+  }
+};
 </script>
 
 <template>
   <NuxtLayout name="admin">
     <div>
-      {{ proposal }}
       <section class="flex flex-col gap-8 lg:flex-row">
         <div class="flex lg:justify-start lg:w-6/12">
           <PageHeader>Daftar Proposal</PageHeader>
@@ -66,26 +94,28 @@ onBeforeMount(() => fetchProposal());
         <MyTable
           title="Daftar Proposal"
           :header="proposalHeader"
-          :isLoading="tableIsLoading"
           :pagination="proposalPagination"
+          @prevClicked="handlePrevClick($event)"
+          @nextClicked="handleNextClick($event)"
         >
-          <template #body>
+          <template v-if="!tableIsLoading">
             <MyTableRow v-for="(item, index) in proposal" :key="index">
-              <MyTableCol>{{ item.proposal }}</MyTableCol>
-              <MyTableCol>{{ item.percentage }}</MyTableCol>
-              <MyTableCol>{{ item.date }}</MyTableCol>
+              <MyTableCol>{{ item.title }}</MyTableCol>
+              <MyTableCol>{{ item.plagiarism_percentage }}</MyTableCol>
+              <MyTableCol>{{ getFullDate(item.created_at) }}</MyTableCol>
               <td
                 class="py-4 px-6 text-right flex flex-row gap-4 justify-center"
               >
                 <NuxtLink
+                  to="/admin/proposal/edit/{{ item.id }}"
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
                   >Edit
                 </NuxtLink>
-                <a
-                  href="#"
+                <button
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
-                  >Delete</a
                 >
+                  Delete
+                </button>
               </td>
             </MyTableRow>
           </template>

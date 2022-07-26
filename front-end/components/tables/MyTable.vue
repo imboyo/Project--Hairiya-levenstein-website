@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 // Props
 import MyButton from "~/components/buttons/MyButton.vue";
+import { computed } from "#imports";
 
 interface Props {
   title: string;
   header: string[];
-  isLoading: boolean;
   pagination?: {
     currentPage: number;
     totalPage: number;
@@ -14,6 +14,14 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const isPrevPage = computed(() => {
+  return props.pagination.currentPage !== 1;
+});
+
+const isNextPage = computed(() => {
+  return props.pagination.currentPage !== props.pagination.totalPage;
+});
 </script>
 
 <template>
@@ -30,13 +38,15 @@ const props = defineProps<Props>();
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
       >
         <tr>
-          <th scope="col" class="py-3 px-6" v-for="item in header" :key="item">
-            {{ item }}
-          </th>
+          <template v-for="(item, index) in header" :key="index">
+            <th scope="col" class="py-3 px-6">
+              {{ item }}
+            </th>
+          </template>
         </tr>
       </thead>
-      <tbody v-if="!isLoading">
-        <slot name="body"></slot>
+      <tbody>
+        <slot></slot>
       </tbody>
     </table>
     <div class="px-4 py-4" v-if="pagination">
@@ -46,7 +56,8 @@ const props = defineProps<Props>();
             size="sm"
             width="fit"
             hieararchy="secondary"
-            :disabled="pagination.currentPage === 1"
+            :disabled="!isPrevPage"
+            @clicked="$emit('prevClicked', isPrevPage)"
           >
             <template #text>Sebelumnya</template>
           </MyButton>
@@ -61,7 +72,8 @@ const props = defineProps<Props>();
             size="sm"
             width="fit"
             hieararchy="secondary"
-            :disabled="pagination.currentPage === pagination.totalPage"
+            :disabled="!isNextPage"
+            @Clicked="$emit('nextClicked', isNextPage)"
           >
             <template #text>Selanjutnya</template>
           </MyButton>
