@@ -4,17 +4,20 @@ import InputField from "~/components/inputs/InputField.vue";
 import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
-import axios from "axios";
-import { baseApiUrl } from "~/my_modules/environment";
-import { getAccessToken } from "~/my_modules/auth";
-import { getOffsetPage } from "~/my_modules/pagination";
+import { fetchProposal } from "~/my_modules/proposal";
+
 import { getFullDate } from "~/my_modules/date";
 
 useHead({
   titleTemplate: (title) => `Daftar Proposal- ${title}`,
 });
 
-const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
+const proposalHeader = [
+  "Proposal",
+  "Persentase Plagiarism",
+  "Tanggal Upload",
+  "Tindakan",
+];
 const searchState = ref("");
 const proposal = ref<Proposal[]>([]);
 const tableIsLoading = ref(true);
@@ -25,46 +28,39 @@ const proposalPagination = reactive({
   limit: 20,
 });
 
-// Do it after done backend
-const fetchProposal = async () => {
-  const limit = proposalPagination.limit;
-  const currPage = proposalPagination.currentPage;
-  await axios
-    .get(
-      `${baseApiUrl}proposal?limit=${limit}&offset=${getOffsetPage(
-        currPage,
-        limit
-      )}`,
-      {
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      }
-    )
-    .then((response) => {
-      const data = response.data;
-      proposal.value = data.results;
-      // Round to higher
-
-      proposalPagination.totalPage = Math.ceil(data.count / limit);
-      tableIsLoading.value = false;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+const getProposal = () => {
+  fetchProposal(
+    proposal,
+    proposalPagination.limit,
+    proposalPagination.currentPage,
+    searchState,
+    tableIsLoading,
+    proposalPagination
+  );
 };
 
-onMounted(() => fetchProposal());
+onMounted(() => getProposal());
+
+watch(
+  () => searchState.value,
+  (value) => {
+    tableIsLoading.value = true;
+    getProposal();
+  },
+  { immediate: true }
+);
 
 const handlePrevClick = (isPrev) => {
   if (isPrev) {
     proposalPagination.currentPage--;
-    fetchProposal();
+    getProposal();
   }
 };
 
 const handleNextClick = (isNext) => {
   if (isNext) {
     proposalPagination.currentPage++;
-    fetchProposal();
+    getProposal();
   }
 };
 </script>

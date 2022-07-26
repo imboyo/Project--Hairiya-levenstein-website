@@ -19,7 +19,6 @@ class ProposalViewSet(ModelViewSet):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = ['title']
     search_fields = ['title']
 
     def get_permissions(self):
