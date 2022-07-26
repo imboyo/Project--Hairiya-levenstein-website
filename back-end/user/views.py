@@ -18,13 +18,13 @@ class UserViewSet(ModelViewSet):
     search_fields = ['username', 'first_name', 'last_name']
 
     def get_permissions(self):
-        permissions_classes = [AllowAny]
+        permissions_classes = [IsAuthenticated]
 
         if self.action == 'create' or self.action == 'destroy':
             permissions_classes = [IsAdminUser]
         elif self.action == 'update' or self.action == 'partial_update':
             permissions_classes = [IsLoggendInUser, IsAdminUser]
         elif self.action == 'list':
-            permissions_classes = [AllowAny]
+            permissions_classes = [IsAuthenticated]
 
         return [permissions() for permissions in permissions_classes]

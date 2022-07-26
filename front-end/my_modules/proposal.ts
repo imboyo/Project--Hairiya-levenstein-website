@@ -16,7 +16,7 @@ export const fetchProposal = async (
       `${baseApiUrl}proposal?limit=${limit}&offset=${getOffsetPage(
         currPage,
         limit
-      )}&search=${searchState.value}`,
+      )}&search=${searchState.value}&ordering=-created_at`,
       {
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       }

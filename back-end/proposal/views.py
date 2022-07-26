@@ -27,7 +27,7 @@ class ProposalViewSet(ModelViewSet):
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permissions_classes = [IsAdminUser]
         elif self.action == 'list':
-            permissions_classes = [IsAuthenticated]
+            permissions_classes = [AllowAny]
 
         return [permissions() for permissions in permissions_classes]
 
