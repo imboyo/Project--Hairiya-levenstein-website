@@ -118,6 +118,11 @@ const handleNextClick = (isNext) => {
                 </button>
               </td>
             </MyTableRow>
+            <div v-if="proposal.length === 0" class="text-center p-5">
+              <h1 class="text-display-md text-gray-400">
+                Belum ada proposal. Mohon tambahkan proposal
+              </h1>
+            </div>
           </template>
         </MyTable>
       </section>
