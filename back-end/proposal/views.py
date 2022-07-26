@@ -1,10 +1,14 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from .models import Proposal
-from .serializers import ProposalSerializer
+from .serializers import ProposalSerializer, DosenProposalSerializer, MahasiswaProposalSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from user.permission import IsAdminUser
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -26,3 +30,84 @@ class ProposalViewSet(ModelViewSet):
             permissions_classes = [AllowAny]
 
         return [permissions() for permissions in permissions_classes]
+
+
+class DosenProposalAPIView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        data = request.data
+        serializer = DosenProposalSerializer(data=data)
+
+        if serializer.is_valid():
+            try:
+                proposal = Proposal.objects.get(id=data['proposal_id'])
+                try:
+                    user = User.objects.get(id=data['dosen'])
+                    proposal.dosen.add(data['dosen'])
+                    proposal.save()
+                    return Response({"result": f"success add {user.username}"}, status=status.HTTP_200_OK)
+                except:
+                    return Response({"result": "dosen not found"}, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({"message": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        data = request.data
+        serializer = DosenProposalSerializer(data=data)
+
+        if serializer.is_valid():
+            try:
+                proposal = Proposal.objects.get(id=data['proposal_id'])
+                try:
+                    user = User.objects.get(id=data['dosen'])
+                    proposal.dosen.remove(data['dosen'])
+                    proposal.save()
+                    return Response({"result": f"success delete {user.username}"}, status=status.HTTP_200_OK)
+                except:
+                    return Response({"result": "dosen not found"}, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({"message": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MahasiswaProposalAPIView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        data = request.data
+        serializer = MahasiswaProposalSerializer(data=data)
+
+        if serializer.is_valid():
+            try:
+                proposal = Proposal.objects.get(id=data['proposal_id'])
+                try:
+                    user = User.objects.get(id=data['mahasiswa'])
+                    proposal.mahasiswa.add(data['mahasiswa'])
+                    proposal.save()
+                    return Response({"result": f"success add {user.username}"}, status=status.HTTP_200_OK)
+                except:
+                    return Response({"result": "mahasiswa not found"}, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({"message": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        data = request.data
+        serializer = MahasiswaProposalSerializer(data=data)
+
+        if serializer.is_valid():
+            try:
+                proposal = Proposal.objects.get(id=data['proposal_id'])
+                try:
+                    user = User.objects.get(id=data['mahasiswa'])
+                    proposal.mahasiswa.remove(data['mahasiswa'])
+                    proposal.save()
+                    return Response({"result": f"success delete {user.username}"}, status=status.HTTP_200_OK)
+                except:
+                    return Response({"result": "mahasiswa not found"}, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({"message": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
