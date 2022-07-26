@@ -7,6 +7,10 @@ import MyTableCol from "~/components/tables/MyTableCol.vue";
 import { fetchProposal } from "~/my_modules/proposal";
 
 import { getFullDate } from "~/my_modules/date";
+import axios from "axios";
+import { baseApiUrl } from "~/my_modules/environment";
+import { getAccessToken } from "~/my_modules/auth";
+import Swal from "sweetalert2";
 
 useHead({
   titleTemplate: (title) => `Daftar Proposal- ${title}`,
@@ -63,6 +67,28 @@ const handleNextClick = (isNext) => {
     getProposal();
   }
 };
+
+const handleClickDeleteProposal = (id) => {
+  Swal.fire({
+    title: "Yakin ingin menghapus proposal ini?",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await axios
+        .delete(`${baseApiUrl}proposal/${id}/`, {
+          headers: { Authorization: `Bearer ${getAccessToken()}` },
+        })
+        .then((response) => {
+          Swal.fire("Berhasil dihapus!", "", "success");
+          getProposal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  });
+};
 </script>
 
 <template>
@@ -95,7 +121,7 @@ const handleNextClick = (isNext) => {
           @nextClicked="handleNextClick($event)"
         >
           <template v-if="!tableIsLoading">
-            <MyTableRow v-for="(item, index) in proposal" :key="index">
+            <MyTableRow v-for="(item, index) in proposal" :key="item.id">
               <MyTableCol>{{ item.title }}</MyTableCol>
               <MyTableCol>{{ item.plagiarism_percentage }}</MyTableCol>
               <MyTableCol>{{ getFullDate(item.created_at) }}</MyTableCol>
@@ -103,11 +129,12 @@ const handleNextClick = (isNext) => {
                 class="py-4 px-6 text-right flex flex-row gap-4 justify-center"
               >
                 <NuxtLink
-                  to="/admin/proposal/edit/{{ item.id }}"
+                  :to="`/admin/proposal/edit-${item.id}/`"
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
                   >Edit
                 </NuxtLink>
                 <button
+                  @click="handleClickDeleteProposal(item.id)"
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
                 >
                   Delete
@@ -116,7 +143,7 @@ const handleNextClick = (isNext) => {
             </MyTableRow>
             <div v-if="proposal.length === 0" class="text-center p-5">
               <h1 class="text-display-md text-gray-400">
-                Belum ada proposal. Mohon tambahkan proposal
+                Tidak ditemukan proposal
               </h1>
             </div>
           </template>
