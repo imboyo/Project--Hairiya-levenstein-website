@@ -15,6 +15,7 @@ class ProposalSerializer(serializers.ModelSerializer):
         proposal = Proposal.objects.create(**validated_data)
 
         plagiarism_list = check_plagiarism_all(f'{settings.BASE_DIR}/media/{proposal.file}')
+        print(plagiarism_list)
         plagiarism_percentage = get_highest_percentage(plagiarism_list)
         proposal.plagiarism_percentage = plagiarism_percentage
 

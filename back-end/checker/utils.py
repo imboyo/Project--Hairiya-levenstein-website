@@ -76,7 +76,7 @@ def check_plagiarism(percentage_):
 def check_plagiarism_all(file_target_path):
     plagiarism_list = []
     for file in os.listdir(f'{settings.BASE_DIR}/media/proposal'):
-        if file.endswith('.pdf'):
+        if file.endswith('.pdf') and file != os.path.basename(file_target_path):
             user_article_ = read_pdf_file(file_target_path)
             user_article_clean_ = clean_data(user_article_)
             db_article_ = read_pdf_file(f'{settings.BASE_DIR}/media/proposal/{file}')
