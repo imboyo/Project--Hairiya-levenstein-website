@@ -5,8 +5,15 @@
     <div class="flex justify-start w-full">
       <slot></slot>
     </div>
-    <div class="flex justify-end w-full" @click="$emit('deleteClicked')">
-      <button><span class="material-icons-outlined"> clear </span></button>
+    <div class="flex justify-end w-full">
+      <button>
+        <span
+          class="material-icons-outlined hover:text-error-500"
+          @click="$emit('deleteClicked')"
+        >
+          clear
+        </span>
+      </button>
     </div>
   </div>
 </template>

@@ -14,6 +14,7 @@ import { getAccessToken } from "~/my_modules/auth";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import InputPickedCard from "~/components/card/InputPickedCard.vue";
+import { findIndexArray } from "~/my_modules/array";
 
 interface Props {
   value?: {
@@ -42,42 +43,6 @@ const valuePropsComputed = computed(() => {
 });
 
 // * State
-// Form Input Rules
-const formInputRules = {
-  judulProposal: [
-    {
-      validate: isRequired,
-      text: "Tolong masukkan judul proposal",
-    },
-    {
-      validate: (value) => value.length >= 5,
-      text: "Minimum nama 5 karakter",
-    },
-    {
-      validate: isASCII,
-      text: "Tolong masukkan nama dengan benar",
-    },
-  ],
-  fileUpload: [
-    {
-      validate: (value) => value > 0,
-      text: "Tolong masukkan file",
-    },
-  ],
-  mahasiswa: [
-    {
-      validate: isRequired,
-      text: "Tolong masukkan nama mahasiswa",
-    },
-  ],
-  dosen: [
-    {
-      validate: isRequired,
-      text: "Tolong masukkan nama dosen",
-    },
-  ],
-};
-
 // * Form Input State - Main
 const formValues = reactive({
   judulProposal: valuePropsComputed.value.title,
@@ -107,10 +72,16 @@ const inputContainerClass = computed(() => {
 const judulProposalFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const fileInputFieldRef = ref<InstanceType<typeof FileUpload> | null>(null);
 const mahasiswaFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
+const dosenFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
 
 // Handle Click
 const handleClick = () => {
-  const listRef = [judulProposalFieldRef, fileInputFieldRef, mahasiswaFieldRef];
+  const listRef = [
+    judulProposalFieldRef,
+    fileInputFieldRef,
+    mahasiswaFieldRef,
+    dosenFieldRef,
+  ];
   // Looping list ref
   listRef.forEach((ref) => {
     ref.value?.refreshValidation((value) => {
@@ -120,7 +91,7 @@ const handleClick = () => {
   return !formIsError.value;
 };
 
-// * Modal
+// * Modal Dosen
 const dosenSearchModal = ref(false);
 const dosenList = ref<User[]>([]);
 
@@ -159,18 +130,41 @@ const handleClickDosenPickedInModal = (
   first_name: string,
   last_name: string
 ) => {
-  dosenPicked.value.push({
-    id: userId,
-    first_name: first_name,
-    last_name: last_name,
-  });
+  // Fungsi ketika user memilih user di modal dan akan muncul di card bawah input
+  const pushObject = () => {
+    dosenPicked.value.push({
+      id: userId,
+      first_name: first_name,
+      last_name: last_name,
+    });
+  };
+
+  // Agar tidak terjadi duplikasi di array
+  if (dosenPicked.value.length === 0) {
+    pushObject();
+  } else {
+    dosenPicked.value.filter((item) => {
+      if (!(item.id === userId)) {
+        pushObject();
+      }
+    });
+  }
   dosenSearchModal.value = false;
+  dosenFieldRef.value?.refreshValidation((value) => {
+    formErrorValues.dosen = value;
+  });
 };
 
-const handleClickDosenPickedListCard = () => {
-  alert("Clicked");
+// Agar ketika dosen di pick, validation dijalankan ulang
+
+const handleClickDosenPickedListCard = (userId) => {
+  const index = findIndexArray(dosenPicked.value, "id", userId);
+  dosenPicked.value.splice(index, 1);
 };
 
+// ! End Modal Dosen
+
+// ? Modal Mahasiswa
 const mahasiswaSearchModal = ref(false);
 watch(
   () => formValues.mahasiswa,
@@ -180,7 +174,7 @@ watch(
   }
 );
 
-// End Modal
+//! End Modal Mahasiswa
 
 const emit = defineEmits(["clicked"]);
 
@@ -189,10 +183,47 @@ const toggleIsLoading = () => {
   isLoading.value = !isLoading.value;
 };
 defineExpose({ toggleIsLoading });
+
+// ? FORM INPUT RULES-----------------------------------------
+const formInputRules = {
+  judulProposal: [
+    {
+      validate: isRequired,
+      text: "Tolong masukkan judul proposal",
+    },
+    {
+      validate: (value) => value.length >= 5,
+      text: "Minimum nama 5 karakter",
+    },
+    {
+      validate: isASCII,
+      text: "Tolong masukkan nama dengan benar",
+    },
+  ],
+  fileUpload: [
+    {
+      validate: (value) => value > 0,
+      text: "Tolong masukkan file",
+    },
+  ],
+  mahasiswa: [
+    {
+      validate: isRequired,
+      text: "Tolong masukkan nama mahasiswa",
+    },
+  ],
+  dosen: [
+    {
+      validate: () => dosenPicked.value.length > 0,
+      text: "Tolong Pilih dosen",
+    },
+  ],
+};
 </script>
 
 <template>
   {{ formValues }}
+  {{ dosenPicked }}
   <!--    First Input    -->
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
@@ -235,7 +266,7 @@ defineExpose({ toggleIsLoading });
         :rules="formInputRules.dosen"
         type="text"
         required
-        ref="mahasiswaFieldRef"
+        ref="dosenFieldRef"
         @typing="
           formValues.dosen = $event.inputValue;
           formErrorValues.dosen = $event.errorState;
@@ -244,10 +275,14 @@ defineExpose({ toggleIsLoading });
         "
         :value="formValues.dosen"
       />
-      <InputPickedCard @deleteClicked="">
+      <InputPickedCard
+        v-for="(item, index) in dosenPicked"
+        :key="index"
+        v-if="dosenPicked.length > 0"
+        @deleteClicked="handleClickDosenPickedListCard(item.id)"
+      >
         <div>
-          <p>Mabrur Syamhur</p>
-          <p>B011171365</p>
+          <p>{{ item.first_name }} {{ item.last_name }}</p>
         </div>
       </InputPickedCard>
     </div>
