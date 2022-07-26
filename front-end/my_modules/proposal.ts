@@ -33,3 +33,34 @@ export const fetchProposal = async (
       console.log(error);
     });
 };
+
+export const pushObjectPickedInModalUser = (
+  userId: string,
+  first_name: string,
+  last_name: string,
+  search,
+  arrayObject,
+  fieldRef,
+  formErrorValues
+) => {
+  // Fungsi ketika user memilih user di modal dan akan muncul di card bawah input
+  const pushObject = () => {
+    arrayObject.value.push({
+      id: userId,
+      first_name: first_name,
+      last_name: last_name,
+    });
+  };
+
+  // Agar tidak terjadi duplikasi di array
+  if (arrayObject.value.length === 0) {
+    pushObject();
+  } else {
+    arrayObject.value.filter((item) => {
+      if (!(item.id === userId)) {
+        pushObject();
+      }
+    });
+  }
+  search.value = false;
+};

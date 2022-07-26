@@ -3,6 +3,7 @@ import {
   checkFormIsError,
   isASCII,
   isRequired,
+  validateField,
 } from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
 import GroupInput from "~/components/inputs/GroupInput.vue";
@@ -15,6 +16,7 @@ import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import InputPickedCard from "~/components/card/InputPickedCard.vue";
 import { findIndexArray } from "~/my_modules/array";
+import { pushObjectPickedInModalUser } from "~/my_modules/proposal";
 
 interface Props {
   value?: {
@@ -24,8 +26,15 @@ interface Props {
   };
 }
 
+interface userPicked {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
 const props = defineProps<Props>();
 
+// Computed to check is there is default value in form or not. Used in edit page
 const valuePropsComputed = computed(() => {
   if (props.value) {
     return {
@@ -43,7 +52,7 @@ const valuePropsComputed = computed(() => {
 });
 
 // * State
-// * Form Input State - Main
+// * Form Input State - Main ------------------
 const formValues = reactive({
   judulProposal: valuePropsComputed.value.title,
   fileInput: "",
@@ -63,45 +72,18 @@ const formIsError = computed(() => {
   return checkFormIsError(formErrorValues);
 });
 
-const inputContainerClass = computed(() => {
-  return "flex flex-col w-full lg:pr-6 gap-2";
-});
-
-// * Child Ref Component for accesing child funciton
+// ? Child Ref Component for accesing child funciton
 // ? Note : Buat Ref di component html di template sesaui dengan nama const disini
 const judulProposalFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const fileInputFieldRef = ref<InstanceType<typeof FileUpload> | null>(null);
 const mahasiswaFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
 const dosenFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
 
-// Handle Click
-const handleClick = () => {
-  const listRef = [
-    judulProposalFieldRef,
-    fileInputFieldRef,
-    mahasiswaFieldRef,
-    dosenFieldRef,
-  ];
-  // Looping list ref
-  listRef.forEach((ref) => {
-    ref.value?.refreshValidation((value) => {
-      formErrorValues[ref] = value;
-    });
-  });
-  return !formIsError.value;
-};
-
-// * Modal Dosen
+// * Modal Dosen------------------------
 const dosenSearchModal = ref(false);
-const dosenList = ref<User[]>([]);
+const dosenListModal = ref<User[]>([]);
+const dosenPicked = ref<userPicked[]>([]);
 
-interface dosenPicked {
-  id: string;
-  first_name: string;
-  last_name: string;
-}
-
-const dosenPicked = ref<dosenPicked[]>([]);
 watch(
   () => formValues.dosen,
   (value) => {
@@ -119,7 +101,7 @@ watch(
           }
         )
         .then((res) => {
-          dosenList.value = res.data.results;
+          dosenListModal.value = res.data.results;
         });
     }
   }
@@ -130,34 +112,27 @@ const handleClickDosenPickedInModal = (
   first_name: string,
   last_name: string
 ) => {
-  // Fungsi ketika user memilih user di modal dan akan muncul di card bawah input
-  const pushObject = () => {
-    dosenPicked.value.push({
-      id: userId,
-      first_name: first_name,
-      last_name: last_name,
-    });
-  };
+  pushObjectPickedInModalUser(
+    userId,
+    first_name,
+    last_name,
+    dosenSearchModal,
+    dosenPicked,
+    dosenFieldRef,
+    formErrorValues.dosen
+  );
 
-  // Agar tidak terjadi duplikasi di array
-  if (dosenPicked.value.length === 0) {
-    pushObject();
-  } else {
-    dosenPicked.value.filter((item) => {
-      if (!(item.id === userId)) {
-        pushObject();
-      }
-    });
-  }
-  dosenSearchModal.value = false;
   dosenFieldRef.value?.refreshValidation((value) => {
     formErrorValues.dosen = value;
   });
 };
 
-// Agar ketika dosen di pick, validation dijalankan ulang
+watch(
+  () => dosenPicked.value,
+  (value) => {}
+);
 
-const handleClickDosenPickedListCard = (userId) => {
+const dosenHandleClickDeleteModalItemPicked = (userId) => {
   const index = findIndexArray(dosenPicked.value, "id", userId);
   dosenPicked.value.splice(index, 1);
 };
@@ -166,23 +141,68 @@ const handleClickDosenPickedListCard = (userId) => {
 
 // ? Modal Mahasiswa
 const mahasiswaSearchModal = ref(false);
+const mahasiswaListModal = ref<User[]>([]);
+const mahasiswaPicked = ref<userPicked[]>([]);
+
 watch(
   () => formValues.mahasiswa,
   (value) => {
-    // Hilangkan jika kosong
+    // Hilangkan modal jika kosong
     mahasiswaSearchModal.value = value.length > 0;
+
+    if (value.length > 0) {
+      axios
+        .get(
+          `${baseApiUrl}user?profile__role=mahasiswa&limit=15&search=${formValues.mahasiswa}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          }
+        )
+        .then((res) => {
+          mahasiswaListModal.value = res.data.results;
+        });
+    }
   }
 );
 
+const handleClickMahasiswaPickedInModal = (
+  userId: string,
+  first_name: string,
+  last_name: string
+) => {
+  pushObjectPickedInModalUser(
+    userId,
+    first_name,
+    last_name,
+    mahasiswaSearchModal,
+    mahasiswaPicked,
+    mahasiswaFieldRef,
+    formErrorValues.mahasiswa
+  );
+  mahasiswaFieldRef.value?.refreshValidation((value) => {
+    formErrorValues.mahasiswa = value;
+  });
+};
+
+const mahasiswaHandleClickDeleteModalItemPicked = (userId) => {
+  const index = findIndexArray(mahasiswaPicked.value, "id", userId);
+  mahasiswaPicked.value.splice(index, 1);
+};
 //! End Modal Mahasiswa
 
-const emit = defineEmits(["clicked"]);
-
+// IsLoading Button and pass it to parent
 const isLoading = ref(false);
 const toggleIsLoading = () => {
   isLoading.value = !isLoading.value;
 };
 defineExpose({ toggleIsLoading });
+
+const inputContainerClass = computed(() => {
+  return "flex flex-col w-full lg:pr-6 gap-2";
+});
+const emit = defineEmits(["clicked"]);
 
 // ? FORM INPUT RULES-----------------------------------------
 const formInputRules = {
@@ -208,7 +228,7 @@ const formInputRules = {
   ],
   mahasiswa: [
     {
-      validate: isRequired,
+      validate: () => mahasiswaPicked.value.length > 0,
       text: "Tolong masukkan nama mahasiswa",
     },
   ],
@@ -219,11 +239,34 @@ const formInputRules = {
     },
   ],
 };
+
+// Handle Click
+const handleFormClick = () => {
+  const listRef = [
+    judulProposalFieldRef,
+    fileInputFieldRef,
+    mahasiswaFieldRef,
+    dosenFieldRef,
+  ];
+  // Looping list ref
+  listRef.forEach((ref) => {
+    ref.value?.refreshValidation((value) => {
+      formErrorValues[ref] = value;
+    });
+  });
+  return {
+    isError: formIsError.value,
+    formData: {
+      title: formValues.judulProposal,
+      file: formValues.fileInput,
+      pembimbing: dosenPicked.value,
+      pembimbing_2: mahasiswaPicked.value,
+    },
+  };
+};
 </script>
 
 <template>
-  {{ formValues }}
-  {{ dosenPicked }}
   <!--    First Input    -->
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
@@ -253,6 +296,7 @@ const formInputRules = {
           formValues.fileInput = $event.file;
           formErrorValues.fileInput = $event.errorState;
         "
+        accept=".pdf"
       />
     </div>
   </GroupInput>
@@ -279,9 +323,9 @@ const formInputRules = {
         v-for="(item, index) in dosenPicked"
         :key="index"
         v-if="dosenPicked.length > 0"
-        @deleteClicked="handleClickDosenPickedListCard(item.id)"
+        @deleteClicked="dosenHandleClickDeleteModalItemPicked(item.id)"
       >
-        <div>
+        <div class="flex flex-col justify-center">
           <p>{{ item.first_name }} {{ item.last_name }}</p>
         </div>
       </InputPickedCard>
@@ -297,7 +341,7 @@ const formInputRules = {
         class="flex flex-col bg-primary-50 rounded-2xl shadow-focus-ring-grey-100"
       >
         <SearchCardWrapper
-          v-for="item in dosenList"
+          v-for="item in dosenListModal"
           @click="
             handleClickDosenPickedInModal(
               item.id,
@@ -333,6 +377,16 @@ const formInputRules = {
         "
         :value="formValues.mahasiswa"
       />
+      <InputPickedCard
+        v-for="(item, index) in mahasiswaPicked"
+        :key="index"
+        v-if="mahasiswaPicked.length > 0"
+        @deleteClicked="mahasiswaHandleClickDeleteModalItemPicked(item.id)"
+      >
+        <div class="flex flex-col justify-center">
+          <p>{{ item.first_name }} {{ item.last_name }}</p>
+        </div>
+      </InputPickedCard>
     </div>
   </GroupInput>
   <!-- Search Mahasiswa Modal -->
@@ -344,17 +398,20 @@ const formInputRules = {
       <div
         class="flex flex-col bg-primary-50 rounded-2xl shadow-focus-ring-grey-100"
       >
-        <SearchCardWrapper>
-          <SearchCard />
-        </SearchCardWrapper>
-        <SearchCardWrapper>
-          <SearchCard />
-        </SearchCardWrapper>
-        <SearchCardWrapper>
-          <SearchCard />
-        </SearchCardWrapper>
-        <SearchCardWrapper>
-          <SearchCard />
+        <SearchCardWrapper
+          v-for="item in mahasiswaListModal"
+          @click="
+            handleClickMahasiswaPickedInModal(
+              item.id,
+              item.first_name,
+              item.last_name
+            )
+          "
+        >
+          <SearchCard
+            :title="`${item.first_name} ${item.last_name}`"
+            :sub-title="item.profile.nomor_induk"
+          />
         </SearchCardWrapper>
       </div>
     </div>
@@ -365,7 +422,7 @@ const formInputRules = {
     size="lg"
     width="full"
     hieararchy="primary"
-    @clicked="$emit('clicked', handleClick())"
+    @clicked="$emit('clicked', handleFormClick())"
     :disabled="formIsError"
   >
     <template #onlyIcon>

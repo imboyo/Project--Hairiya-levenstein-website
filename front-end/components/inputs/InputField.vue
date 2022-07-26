@@ -13,7 +13,7 @@ interface Props {
   hints?: string[];
   placeholder: string;
   required?: boolean;
-  value?: string;
+  value?: string | number;
 }
 
 const props = defineProps<Props>();

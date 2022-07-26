@@ -5,6 +5,7 @@ import MyErrorMessage from "~/components/inputs/MyErrorMessage.vue";
 // Props
 interface Props {
   rules: rule[];
+  accept: string;
 }
 
 const props = defineProps<Props>();
@@ -36,6 +37,7 @@ defineExpose({ refreshValidation });
         refreshValidation();
         file = $event.target;
       "
+      :accept="accept"
     />
     <MyErrorMessage v-if="errorState" :errorState="errorState" />
   </div>
