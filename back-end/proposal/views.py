@@ -9,7 +9,8 @@ from user.permission import IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
-
+import os
+from django.conf import settings
 
 # Create your views here.
 
@@ -30,6 +31,12 @@ class ProposalViewSet(ModelViewSet):
             permissions_classes = [AllowAny]
 
         return [permissions() for permissions in permissions_classes]
+
+    def perform_destroy(self, instance):
+        file_path = f'{settings.BASE_DIR}/media/{instance.file}'
+        os.remove(file_path)
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class DosenProposalAPIView(APIView):
