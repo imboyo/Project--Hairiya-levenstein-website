@@ -33,9 +33,9 @@ defineExpose({ refreshValidation });
       type="file"
       ref="file"
       @change="
+        file = $event.target;
         $emit('fileChanged', { file, errorState });
         refreshValidation();
-        file = $event.target;
       "
       :accept="accept"
     />

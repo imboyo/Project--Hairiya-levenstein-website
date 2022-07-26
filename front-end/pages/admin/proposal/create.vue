@@ -2,18 +2,59 @@
 import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import PageHeader from "~/components/header/PageHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
+import { getAccessToken } from "~/my_modules/auth";
+import axios from "axios";
+import { baseApiUrl } from "~/my_modules/environment";
+import Swal from "sweetalert2";
 
 useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
 });
-
+const router = useRouter();
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
 
-const handleClick = async ({ isError, formData }) => {
-  if (!isError) {
+const handleClick = async ({ isError, formData, isLoading }) => {
+  if (!isError && !isLoading) {
     proposalFormRef.value?.toggleIsLoading();
-
-    console.log(formData);
+    const authorization = `Bearer ${getAccessToken()}`;
+    await axios
+      .post(
+        `${baseApiUrl}proposal/`,
+        {
+          title: formData.title,
+          file: formData.file.files[0],
+        },
+        { headers: { authorization, "Content-Type": "multipart/form-data" } }
+      )
+      .then((response) => {
+        // add dosen pembimbing
+        formData.dosen.forEach(async (item) => {
+          await axios.post(
+            `${baseApiUrl}proposal/mahasiswa/`,
+            {
+              proposal_id: response.data.id,
+              mahasiswa: item.id,
+            },
+            { headers: { authorization } }
+          );
+        });
+        // add mahasiswa
+        formData.mahasiswa.forEach(async (item) => {
+          await axios
+            .post(
+              `${baseApiUrl}proposal/dosen/`,
+              {
+                proposal_id: response.data.id,
+                dosen: item.id,
+              },
+              { headers: { authorization } }
+            )
+            .then(() => {
+              Swal.fire("Berhasil", "Proposal berhasil diupload", "success");
+              router.push("/admin/proposal/list");
+            });
+        });
+      });
   } else {
     console.log("form is not valid");
   }

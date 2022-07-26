@@ -259,15 +259,18 @@ const handleFormClick = () => {
     formData: {
       title: formValues.judulProposal,
       file: formValues.fileInput,
-      pembimbing: dosenPicked.value,
-      pembimbing_2: mahasiswaPicked.value,
+      dosen: dosenPicked.value,
+      mahasiswa: mahasiswaPicked.value,
     },
+    isLoading: isLoading.value,
   };
 };
 </script>
 
 <template>
   <!--    First Input    -->
+  {{ dosenPicked }}
+  {{ mahasiswaPicked }}
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
       <InputField
