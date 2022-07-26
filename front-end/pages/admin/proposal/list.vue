@@ -22,7 +22,7 @@ const tableIsLoading = ref(true);
 const proposalPagination = reactive({
   currentPage: 1,
   totalPage: 1,
-  limit: 10,
+  limit: 20,
 });
 
 // Do it after done backend
