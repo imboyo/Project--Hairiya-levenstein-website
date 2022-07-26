@@ -66,6 +66,12 @@ const formInputRules = {
       text: "Tolong masukkan nama mahasiswa",
     },
   ],
+  dosen: [
+    {
+      validate: isRequired,
+      text: "Tolong masukkan nama dosen",
+    },
+  ],
 };
 
 // * Form Input State - Main
@@ -178,7 +184,7 @@ defineExpose({ toggleIsLoading });
     <div :class="`${inputContainerClass}`">
       <InputField
         placeholder="Dosen Pembimbing"
-        :rules="formInputRules.mahasiswa"
+        :rules="formInputRules.dosen"
         type="text"
         required
         ref="mahasiswaFieldRef"
@@ -192,7 +198,7 @@ defineExpose({ toggleIsLoading });
       />
     </div>
   </GroupInput>
-  <!-- Search Mahasiswa Modal -->
+  <!-- Search Dosen Modal -->
   <div class="flex relative" v-if="dosenSearchModal">
     <div
       class="h-[400px] absolute w-full overflow-y-auto left-0 top-0 lg:w-[400px] lg:left-[16rem]"
@@ -201,7 +207,7 @@ defineExpose({ toggleIsLoading });
       <div
         class="flex flex-col bg-primary-50 rounded-2xl shadow-focus-ring-grey-100"
       >
-        <SearchCardWrapper>
+        <SearchCardWrapper @click="dosenSearchModal = false">
           <SearchCard />
         </SearchCardWrapper>
         <SearchCardWrapper>

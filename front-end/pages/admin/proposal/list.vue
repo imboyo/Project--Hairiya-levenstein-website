@@ -122,7 +122,9 @@ const handleClickDeleteProposal = (id) => {
         >
           <template v-if="!tableIsLoading">
             <MyTableRow v-for="(item, index) in proposal" :key="item.id">
-              <MyTableCol>{{ item.title }}</MyTableCol>
+              <NuxtLink :to="`/admin/proposal/detail-${item.id}`">
+                <MyTableCol>{{ item.title }}</MyTableCol>
+              </NuxtLink>
               <MyTableCol>{{ item.plagiarism_percentage }}</MyTableCol>
               <MyTableCol>{{ getFullDate(item.created_at) }}</MyTableCol>
               <td

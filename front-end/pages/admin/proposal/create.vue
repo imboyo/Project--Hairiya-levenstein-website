@@ -2,6 +2,8 @@
 import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import PageHeader from "~/components/header/PageHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
+import axios from "axios";
+import { baseApiUrl } from "~/my_modules/environment";
 
 useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
@@ -9,9 +11,11 @@ useHead({
 
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
 
-const handleClick = (value) => {
+const handleClick = async (value) => {
   if (value) {
     proposalFormRef.value?.toggleIsLoading();
+
+    await axios.post(`${baseApiUrl}`);
   } else {
     console.log("form is not valid");
   }
