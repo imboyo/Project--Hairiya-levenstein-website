@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 from .models import Proposal
 from .serializers import ProposalSerializer
@@ -18,11 +18,11 @@ class ProposalViewSet(ModelViewSet):
     search_fields = ['title']
 
     def get_permissions(self):
-        permissions_classes = [IsAuthenticated]
+        permissions_classes = [AllowAny]
 
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permissions_classes = [IsAdminUser]
         elif self.action == 'list':
-            permissions_classes = [IsAuthenticated]
+            permissions_classes = [AllowAny]
 
         return [permissions() for permissions in permissions_classes]

@@ -4,39 +4,46 @@ import InputField from "~/components/inputs/InputField.vue";
 import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
+import axios from "axios";
+import { baseApiUrl } from "~/my_modules/environment";
+import { getAccessToken } from "~/my_modules/auth";
 
 useHead({
   titleTemplate: (title) => `Daftar Proposal- ${title}`,
 });
 
 const searchState = ref("");
-
-const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
-const proposal = ref<{}[]>([
-  {
-    proposal: "How to be Hokage",
-    percentage: 20,
-    date: "20 Januari 2022",
-  },
-  {
-    proposal: "How to be Hokage",
-    percentage: 20,
-    date: "20 Januari 2022",
-  },
-]);
-
-const tableIsLoading = ref(false);
+const proposal = ref<{}[]>([]);
+const tableIsLoading = ref(true);
 
 const proposalPagination = ref({
   currentPage: 1,
   totalPage: 1,
   perPage: 10,
 });
+
+// Do it after done backend
+const fetchProposal = async () => {
+  await axios
+    .get(`${baseApiUrl}proposal?limit=10&offset=`, {
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
+    })
+    .then((response) => {
+      tableIsLoading.value = false;
+      proposal.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+onBeforeMount(() => fetchProposal());
 </script>
 
 <template>
   <NuxtLayout name="admin">
     <div>
+      {{ proposal }}
       <section class="flex flex-col gap-8 lg:flex-row">
         <div class="flex lg:justify-start lg:w-6/12">
           <PageHeader>Daftar Proposal</PageHeader>
