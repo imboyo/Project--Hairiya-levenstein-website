@@ -2,6 +2,7 @@
 import PageHeader from "~/components/header/PageHeader.vue";
 import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
+import NotFoundComponent from "~/components/NotFoundComponent.vue";
 
 const route = useRoute();
 
@@ -10,6 +11,8 @@ useHead({
 });
 
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
+
+const proposalValue = ref([]);
 
 const handleClick = (value) => {
   if (value) {
@@ -50,6 +53,7 @@ const handleClick = (value) => {
           />
         </div>
       </section>
+      <NotFoundComponent />
     </div>
   </NuxtLayout>
 </template>
