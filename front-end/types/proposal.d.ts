@@ -1,7 +1,7 @@
 interface Proposals {
   count: number;
-  next: number | null;
-  previous: number | null;
+  next: number | null | string;
+  previous: number | null | string;
   results: Proposal[];
 }
 

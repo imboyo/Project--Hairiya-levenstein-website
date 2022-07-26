@@ -10,6 +10,10 @@ import FileUpload from "~/components/inputs/FileUpload.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
 import SearchCard from "~/components/card/SearchCard.vue";
 import SearchCardWrapper from "~/components/card/SearchCardWrapper.vue";
+import { getAccessToken } from "~/my_modules/auth";
+import axios from "axios";
+import { baseApiUrl } from "~/my_modules/environment";
+import InputPickedCard from "~/components/card/InputPickedCard.vue";
 
 interface Props {
   value?: {
@@ -76,10 +80,10 @@ const formInputRules = {
 
 // * Form Input State - Main
 const formValues = reactive({
-  judulProposal: "",
+  judulProposal: valuePropsComputed.value.title,
   fileInput: "",
-  mahasiswa: "",
-  dosen: "",
+  mahasiswa: valuePropsComputed.value.mahasiswa,
+  dosen: valuePropsComputed.value.dosen,
 });
 
 const formErrorValues = reactive({
@@ -117,22 +121,65 @@ const handleClick = () => {
 };
 
 // * Modal
-const mahasiswaSearchModal = ref(false);
 const dosenSearchModal = ref(false);
+const dosenList = ref<User[]>([]);
 
+interface dosenPicked {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
+const dosenPicked = ref<dosenPicked[]>([]);
+watch(
+  () => formValues.dosen,
+  (value) => {
+    // Hilangkan jika kosong
+    dosenSearchModal.value = value.length > 0;
+
+    if (value.length > 0) {
+      axios
+        .get(
+          `${baseApiUrl}user?profile__role=dosen&limit=15&search=${formValues.dosen}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          }
+        )
+        .then((res) => {
+          dosenList.value = res.data.results;
+        });
+    }
+  }
+);
+
+const handleClickDosenPickedInModal = (
+  userId: string,
+  first_name: string,
+  last_name: string
+) => {
+  dosenPicked.value.push({
+    id: userId,
+    first_name: first_name,
+    last_name: last_name,
+  });
+  dosenSearchModal.value = false;
+};
+
+const handleClickDosenPickedListCard = () => {
+  alert("Clicked");
+};
+
+const mahasiswaSearchModal = ref(false);
 watch(
   () => formValues.mahasiswa,
   (value) => {
+    // Hilangkan jika kosong
     mahasiswaSearchModal.value = value.length > 0;
   }
 );
 
-watch(
-  () => formValues.dosen,
-  (value) => {
-    dosenSearchModal.value = value.length > 0;
-  }
-);
 // End Modal
 
 const emit = defineEmits(["clicked"]);
@@ -145,6 +192,7 @@ defineExpose({ toggleIsLoading });
 </script>
 
 <template>
+  {{ formValues }}
   <!--    First Input    -->
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
@@ -158,7 +206,7 @@ defineExpose({ toggleIsLoading });
           formValues.judulProposal = $event.inputValue;
           formErrorValues.judulProposal = $event.errorState;
         "
-        :value="valuePropsComputed.title"
+        :value="formValues.judulProposal"
       />
     </div>
   </GroupInput>
@@ -194,8 +242,14 @@ defineExpose({ toggleIsLoading });
           dosenSearchModal = true;
           mahasiswaSearchModal = false;
         "
-        :value="valuePropsComputed.dosen"
+        :value="formValues.dosen"
       />
+      <InputPickedCard @deleteClicked="">
+        <div>
+          <p>Mabrur Syamhur</p>
+          <p>B011171365</p>
+        </div>
+      </InputPickedCard>
     </div>
   </GroupInput>
   <!-- Search Dosen Modal -->
@@ -207,17 +261,20 @@ defineExpose({ toggleIsLoading });
       <div
         class="flex flex-col bg-primary-50 rounded-2xl shadow-focus-ring-grey-100"
       >
-        <SearchCardWrapper @click="dosenSearchModal = false">
-          <SearchCard />
-        </SearchCardWrapper>
-        <SearchCardWrapper>
-          <SearchCard />
-        </SearchCardWrapper>
-        <SearchCardWrapper>
-          <SearchCard />
-        </SearchCardWrapper>
-        <SearchCardWrapper>
-          <SearchCard />
+        <SearchCardWrapper
+          v-for="item in dosenList"
+          @click="
+            handleClickDosenPickedInModal(
+              item.id,
+              item.first_name,
+              item.last_name
+            )
+          "
+        >
+          <SearchCard
+            :title="`${item.first_name} ${item.last_name}`"
+            :sub-title="item.profile.nomor_induk"
+          />
         </SearchCardWrapper>
       </div>
     </div>
@@ -239,7 +296,7 @@ defineExpose({ toggleIsLoading });
           mahasiswaSearchModal = true;
           dosenSearchModal = false;
         "
-        :value="valuePropsComputed.mahasiswa"
+        :value="formValues.mahasiswa"
       />
     </div>
   </GroupInput>

@@ -22,12 +22,12 @@ class ProposalViewSet(ModelViewSet):
     search_fields = ['title']
 
     def get_permissions(self):
-        permissions_classes = [AllowAny]
+        permissions_classes = [IsAuthenticated]
 
         if self.action == 'create' or self.action == 'update' or self.action == 'partial_update' or self.action == 'destroy':
             permissions_classes = [IsAdminUser]
         elif self.action == 'list':
-            permissions_classes = [AllowAny]
+            permissions_classes = [IsAuthenticated]
 
         return [permissions() for permissions in permissions_classes]
 
