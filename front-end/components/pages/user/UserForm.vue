@@ -119,6 +119,24 @@ const formInputRules = {
       text: "Tolong Pilih Jenis User",
     },
   ],
+  password: [
+    {
+      validate: isRequired,
+      text: "Tolong masukkan password",
+    },
+    {
+      validate: (value) => value.length >= 6,
+      text: "Minimum password 6 karakter",
+    },
+    {
+      validate: (value) => value.length <= 20,
+      text: "Maksimal password 20 karakter",
+    },
+    {
+      validate: isASCII,
+      text: "Terdapat karakter yang tidak diperbolehkan",
+    },
+  ],
 };
 
 // Form Input State
@@ -128,6 +146,7 @@ const formValues = reactive({
   nim: "",
   email: "",
   role: "",
+  password: "",
 });
 
 // Form Error State
@@ -137,6 +156,7 @@ const formErrorValues = reactive({
   nim: true,
   email: true,
   role: true,
+  password: true,
 });
 
 // Check input value is error or validated
@@ -151,6 +171,7 @@ const nameFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const nimFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const emailFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const roleFieldRef = ref<InstanceType<typeof InputField> | null>(null);
+const passwordFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 
 const refreshAllValidation = () => {
   const listRef = [
@@ -174,6 +195,10 @@ const refreshAllValidation = () => {
       field: "role",
       ref: roleFieldRef,
     },
+    {
+      field: "password",
+      ref: passwordFieldRef,
+    },
   ];
   //  Looping list ref
   listRef.forEach(({ field, ref }) => {
@@ -187,6 +212,7 @@ const isLoading = ref(false);
 const toggleIsLoading = () => {
   isLoading.value = !isLoading.value;
 };
+defineExpose({ toggleIsLoading });
 
 // Handle Click
 const handleFormClick = () => {
@@ -200,12 +226,11 @@ const handleFormClick = () => {
       nim: formValues.nim,
       email: formValues.username,
       role: formValues.role,
+      password: formValues.password,
     },
     isLoading: isLoading.value,
   };
 };
-
-defineExpose({ toggleIsLoading });
 
 const emit = defineEmits(["clicked"]);
 
@@ -284,6 +309,7 @@ const inputContainerClass = computed(() => {
         @typing="
           formValues.email = $event.inputValue;
           formErrorValues.email = $event.errorState;
+          refreshAllValidation();
         "
         :value="valuePropsComputed.email"
       />
@@ -297,14 +323,33 @@ const inputContainerClass = computed(() => {
       @changed="
         formValues.role = $event.inputValue;
         formErrorValues.role = $event.errorState;
+        refreshAllValidation();
       "
       ref="roleFieldRef"
     >
       <option disabled value="">Pilih Jenis User</option>
-      <option value="Dosen">Dosen</option>
-      <option value="Mahasiswa">Mahasiswa</option>
-      <option value="Admin">Admin</option>
+      <option value="dosen">Dosen</option>
+      <option value="mahasiswa">Mahasiswa</option>
+      <option value="admin">Admin</option>
     </SelectInput>
+  </GroupInput>
+
+  <!-- 3rd Input -->
+  <GroupInput label="Password" required>
+    <div :class="inputContainerClass">
+      <InputField
+        :rules="formInputRules.password"
+        placeholder="Password"
+        type="password"
+        required
+        ref="passwordFieldRef"
+        @typing="
+          formValues.password = $event.inputValue;
+          formErrorValues.password = $event.errorState;
+          refreshAllValidation();
+        "
+      />
+    </div>
   </GroupInput>
 
   <!-- Button -->

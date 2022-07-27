@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PageHeader from "~/components/header/PageHeader.vue";
 import UserForm from "~/components/pages/user/UserForm.vue";
+import { getAccessToken } from "~/my_modules/api_services/auth";
 
 useHead({
   titleTemplate: (title) => `Tambah User - ${title}`,
@@ -8,8 +9,10 @@ useHead({
 
 const tambahUserFormRef = ref<InstanceType<typeof UserForm> | null>(null);
 
-const handleClick = (value) => {
-  if (value) {
+const handleClick = ({ isError, formData, isLoading }) => {
+  if (!isError && !isLoading) {
+    tambahUserFormRef.value?.toggleIsLoading();
+    const authorization = `Bearer ${getAccessToken()}`;
   } else {
     console.log("form is not valid");
   }
