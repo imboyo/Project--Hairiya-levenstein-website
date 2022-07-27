@@ -23,7 +23,6 @@ export const verifyLogin = async (
     .then((response) => {
       const status = response.status;
       if (status === 200) {
-        const token = sessionStorage.getItem("token") ?? getCookie("token");
         successCallback(response);
       } else {
         badTokenCallback(response);

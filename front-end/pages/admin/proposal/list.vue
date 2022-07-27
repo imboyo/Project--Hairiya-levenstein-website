@@ -32,8 +32,8 @@ const proposalPagination = reactive({
   limit: 20,
 });
 
-const getProposal = () => {
-  fetchProposal(
+const thisPageGetProposal = async () => {
+  await fetchProposal(
     proposal,
     proposalPagination.limit,
     proposalPagination.currentPage,
@@ -43,13 +43,13 @@ const getProposal = () => {
   );
 };
 
-onMounted(() => getProposal());
+onMounted(() => thisPageGetProposal());
 
 watch(
   () => searchState.value,
   (value) => {
     tableIsLoading.value = true;
-    getProposal();
+    thisPageGetProposal();
   },
   { immediate: true }
 );
@@ -57,14 +57,14 @@ watch(
 const handlePrevClick = (isPrev) => {
   if (isPrev) {
     proposalPagination.currentPage--;
-    getProposal();
+    thisPageGetProposal();
   }
 };
 
 const handleNextClick = (isNext) => {
   if (isNext) {
     proposalPagination.currentPage++;
-    getProposal();
+    thisPageGetProposal();
   }
 };
 
@@ -81,7 +81,7 @@ const handleClickDeleteProposal = (id) => {
         })
         .then((response) => {
           Swal.fire("Berhasil dihapus!", "", "success");
-          getProposal();
+          thisPageGetProposal();
         })
         .catch((error) => {
           console.log(error);

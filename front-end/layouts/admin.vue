@@ -5,7 +5,7 @@ import { verifyRolePageUser } from "~/my_modules/reusable_component";
 const initialPageIsLoading = ref(true);
 
 // For redirecting user is not have permission in this page then redirect them.
-verifyRolePageUser("admin", initialPageIsLoading);
+onMounted(() => verifyRolePageUser("admin", initialPageIsLoading));
 
 provide("role", "admin");
 </script>
