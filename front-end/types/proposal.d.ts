@@ -11,6 +11,8 @@ interface Proposal {
   file: string;
   created_at: string;
   plagiarism_percentage: number;
+  dosen: number[];
+  mahsiswa: number[];
 }
 
 interface userPicked {

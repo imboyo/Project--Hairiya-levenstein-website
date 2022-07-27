@@ -4,7 +4,7 @@ import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import { truncate } from "~/my_modules/string";
 import { dynamicSidenavByRoles } from "~/my_modules/sidenav";
-import { deleteCookieOrSession } from "~/my_modules/auth";
+import { deleteCookieOrSession } from "~/my_modules/api_services/auth";
 import Swal from "sweetalert2";
 
 const role = inject<string>("role");

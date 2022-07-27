@@ -2,7 +2,7 @@
 import PageSubHeader from "~/components/header/PageSubHeader.vue";
 import PageHeader from "~/components/header/PageHeader.vue";
 import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
-import { getAccessToken } from "~/my_modules/auth";
+import { getAccessToken } from "~/my_modules/api_services/auth";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import Swal from "sweetalert2";

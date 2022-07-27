@@ -1,4 +1,4 @@
-import { checkUserRole, verifyLogin } from "~/my_modules/auth";
+import { checkUserRole, verifyLogin } from "~/my_modules/api_services/auth";
 
 export const verifyRolePageUser = (userRole, initialPageIsLoading) => {
   const router = useRouter();

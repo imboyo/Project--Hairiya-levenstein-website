@@ -9,7 +9,7 @@ import { fetchProposal } from "~/my_modules/proposal";
 import { getFullDate } from "~/my_modules/date";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
-import { getAccessToken } from "~/my_modules/auth";
+import { getAccessToken } from "~/my_modules/api_services/auth";
 import Swal from "sweetalert2";
 
 useHead({

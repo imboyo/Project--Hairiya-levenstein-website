@@ -3,7 +3,7 @@ import {
   checkUserRole,
   loginRoleRedirect,
   verifyLogin,
-} from "~/my_modules/auth";
+} from "~/my_modules/api_services/auth";
 const initialPageIsLoading = ref(true);
 
 const router = useRouter();

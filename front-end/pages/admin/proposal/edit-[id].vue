@@ -5,7 +5,7 @@ import ProposalForm from "~/components/pages/proposal/ProposalForm.vue";
 import NotFoundComponent from "~/components/NotFoundComponent.vue";
 import { baseApiUrl } from "~/my_modules/environment";
 import axios from "axios";
-import { getAccessToken, getUserById } from "~/my_modules/auth";
+import { getAccessToken, getUserById } from "~/my_modules/api_services/auth";
 import Swal from "sweetalert2";
 
 const route = useRoute();

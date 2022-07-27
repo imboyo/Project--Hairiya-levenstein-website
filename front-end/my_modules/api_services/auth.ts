@@ -34,7 +34,7 @@ export const verifyLogin = async (
     });
 };
 
-const headers = () => {
+export const headers = () => {
   return { Authorization: `Bearer ${getAccessToken()}` };
 };
 

@@ -10,7 +10,7 @@ import FileUpload from "~/components/inputs/FileUpload.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
 import SearchCard from "~/components/card/SearchCard.vue";
 import SearchCardWrapper from "~/components/card/SearchCardWrapper.vue";
-import { getAccessToken } from "~/my_modules/auth";
+import { getAccessToken } from "~/my_modules/api_services/auth";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import InputPickedCard from "~/components/card/InputPickedCard.vue";

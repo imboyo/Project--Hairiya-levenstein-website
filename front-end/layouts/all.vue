@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import FullNavigation from "~/components/navigation/FullNavigation.vue";
-import { checkUserRole, verifyLogin } from "~/my_modules/auth";
+import { checkUserRole, verifyLogin } from "~/my_modules/api_services/auth";
 
 const initialPageIsLoading = ref(true);
 const router = useRouter();

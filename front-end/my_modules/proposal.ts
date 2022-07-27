@@ -1,7 +1,7 @@
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import { getOffsetPage } from "~/my_modules/pagination";
-import { getAccessToken } from "~/my_modules/auth";
+import { getAccessToken } from "~/my_modules/api_services/auth";
 
 export const fetchProposal = async (
   proposal,

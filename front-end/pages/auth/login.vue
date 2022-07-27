@@ -9,7 +9,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { getDateUntilNYear } from "~/my_modules/date";
 import { baseApiUrl } from "~/my_modules/environment";
-import { checkUserRole, loginRoleRedirect } from "~/my_modules/auth";
+import {
+  checkUserRole,
+  loginRoleRedirect,
+} from "~/my_modules/api_services/auth";
 
 // Page Meta and main data
 useHead({
