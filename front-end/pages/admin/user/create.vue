@@ -10,7 +10,6 @@ const tambahUserFormRef = ref<InstanceType<typeof UserForm> | null>(null);
 
 const handleClick = (value) => {
   if (value) {
-    tambahUserFormRef.value?.toggleIsLoading();
   } else {
     console.log("form is not valid");
   }

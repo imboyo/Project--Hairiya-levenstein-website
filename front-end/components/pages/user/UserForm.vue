@@ -155,8 +155,8 @@ const roleFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const refreshAllValidation = () => {
   const listRef = [
     {
-      ref: "username",
-      field: usernameFieldRef,
+      field: "username",
+      ref: usernameFieldRef,
     },
     {
       field: "name",
@@ -183,6 +183,11 @@ const refreshAllValidation = () => {
   });
 };
 
+const isLoading = ref(false);
+const toggleIsLoading = () => {
+  isLoading.value = !isLoading.value;
+};
+
 // Handle Click
 const handleFormClick = () => {
   refreshAllValidation();
@@ -200,11 +205,6 @@ const handleFormClick = () => {
   };
 };
 
-const isLoading = ref(false);
-const toggleIsLoading = () => {
-  isLoading.value = !isLoading.value;
-};
-
 defineExpose({ toggleIsLoading });
 
 const emit = defineEmits(["clicked"]);
@@ -216,11 +216,11 @@ const inputContainerClass = computed(() => {
 </script>
 
 <template>
-  <GroupInput label="Nama Lengkap" required>
+  <GroupInput label="Username" required>
     <div :class="inputContainerClass">
       <InputField
         :rules="formInputRules.username"
-        placeholder="Nama Lengkap"
+        placeholder="Username"
         type="text"
         required
         ref="usernameFieldRef"
