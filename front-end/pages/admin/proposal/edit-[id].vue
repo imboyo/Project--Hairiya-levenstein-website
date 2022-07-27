@@ -114,7 +114,7 @@ const handleClick = async ({ isError, formData, isLoading }) => {
   <NuxtLayout name="admin">
     <div class="pb-10">
       <div v-if="!isLoading">
-        <section class="flex flex-col gap-8" v-if="proposalValue">
+        <section class="flex flex-col gap-8">
           <!-- * Header Section    -->
           <PageHeader>Edit Proposal</PageHeader>
           <!--   ! End Header Section -->
@@ -142,8 +142,8 @@ const handleClick = async ({ isError, formData, isLoading }) => {
             />
           </div>
         </section>
-        <NotFoundComponent v-else />
       </div>
+      <NotFoundComponent v-else />
     </div>
   </NuxtLayout>
 </template>
