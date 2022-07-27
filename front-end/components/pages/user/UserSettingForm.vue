@@ -49,7 +49,7 @@ const formInputRules = {
       text: "Terdapat karakter yang tidak diperbolehkan",
     },
   ],
-  username: [
+  email: [
     {
       validate: isRequired,
       text: "Tolong masukkan email",

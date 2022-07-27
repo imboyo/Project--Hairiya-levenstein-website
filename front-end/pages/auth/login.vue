@@ -24,7 +24,7 @@ const router = useRouter();
 // * State
 // Form Input Rules
 const formInputRules = {
-  username: [
+  email: [
     {
       validate: isRequired,
       text: "Tolong masukkan username anda",
@@ -48,13 +48,13 @@ const formInputRules = {
 
 // Form Input State
 const formValues = reactive({
-  username: "",
+  email: "",
   password: "",
   checked: false,
 });
 
 const formErrorValues = reactive({
-  username: true,
+  email: true,
   password: true,
 });
 
@@ -92,7 +92,7 @@ const handleClick = async () => {
     // Connect to api
     await axios
       .post(`${baseApiUrl}auth/jwt/create`, {
-        username: formValues.username,
+        email: formValues.username,
         password: formValues.password,
       })
       .then((response) => {
@@ -179,7 +179,7 @@ const handleClick = async () => {
         <div class="flex flex-col gap-5">
           <InputField
             placeholder="Email"
-            :rules="formInputRules.username"
+            :rules="formInputRules.email"
             type="text"
             label="Username"
             required

@@ -3,6 +3,7 @@ import {
   checkFormIsError,
   isASCII,
   isEmail,
+  isNoSpace,
   isRequired,
 } from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
@@ -12,6 +13,7 @@ import SelectInput from "~/components/inputs/SelectInput.vue";
 
 interface Props {
   value?: {
+    username: string;
     name: string;
     nim: string;
     email: string;
@@ -24,16 +26,18 @@ const props = defineProps<Props>();
 const valuePropsComputed = computed(() => {
   if (props.value) {
     return {
+      username: props.value.username,
       name: props.value.name,
       nim: props.value.nim,
-      username: props.value.email,
+      email: props.value.email,
       role: props.value.role,
     };
   } else {
     return {
+      username: "",
       name: "",
       nim: "",
-      username: "",
+      email: "",
       role: "",
     };
   }
@@ -41,6 +45,28 @@ const valuePropsComputed = computed(() => {
 
 // Form Rules
 const formInputRules = {
+  username: [
+    {
+      validate: isRequired,
+      text: "Username harus diisi",
+    },
+    {
+      validate: isASCII,
+      text: "Username harus berupa karakter ASCII",
+    },
+    {
+      validate: isNoSpace,
+      text: "Username tidak boleh mengandung spasi",
+    },
+    {
+      validate: (value) => value.length >= 6,
+      text: "Username minimal 6 karakter",
+    },
+    {
+      validate: (value) => value.length <= 20,
+      text: "Username maksimal 20 karakter",
+    },
+  ],
   name: [
     {
       validate: isRequired,
@@ -97,16 +123,19 @@ const formInputRules = {
 
 // Form Input State
 const formValues = reactive({
+  username: "",
   name: "",
   nim: "",
-  username: "",
+  email: "",
   role: "",
 });
 
+// Form Error State
 const formErrorValues = reactive({
+  username: true,
   name: true,
   nim: true,
-  username: true,
+  email: true,
   role: true,
 });
 
@@ -117,24 +146,59 @@ const formIsError = computed(() => {
 
 // * Child Ref Component for accesing child funciton
 // ? Note : Buat Ref di component html di template sesaui dengan nama const disini
+const usernameFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const nameFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const nimFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const emailFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 const roleFieldRef = ref<InstanceType<typeof InputField> | null>(null);
 
-// Handle Click
-const handleClick = () => {
-  const listRef = [nameFieldRef, nimFieldRef, emailFieldRef, roleFieldRef];
-  listRef.forEach((ref) => {
+const refreshAllValidation = () => {
+  const listRef = [
+    {
+      ref: "username",
+      field: usernameFieldRef,
+    },
+    {
+      field: "name",
+      ref: nameFieldRef,
+    },
+    {
+      field: "nim",
+      ref: nimFieldRef,
+    },
+    {
+      field: "username",
+      ref: emailFieldRef,
+    },
+    {
+      field: "role",
+      ref: roleFieldRef,
+    },
+  ];
+  //  Looping list ref
+  listRef.forEach(({ field, ref }) => {
     ref.value?.refreshValidation((value) => {
-      return value;
+      formErrorValues[field] = value;
     });
   });
-
-  return !formIsError.value;
 };
 
-const emit = defineEmits(["clicked"]);
+// Handle Click
+const handleFormClick = () => {
+  refreshAllValidation();
+
+  return {
+    isError: formIsError.value,
+    formData: {
+      username: formValues.username,
+      name: formValues.name,
+      nim: formValues.nim,
+      email: formValues.username,
+      role: formValues.role,
+    },
+    isLoading: isLoading.value,
+  };
+};
 
 const isLoading = ref(false);
 const toggleIsLoading = () => {
@@ -143,6 +207,8 @@ const toggleIsLoading = () => {
 
 defineExpose({ toggleIsLoading });
 
+const emit = defineEmits(["clicked"]);
+
 // * Class and CSS Binding
 const inputContainerClass = computed(() => {
   return "flex flex-col w-full lg:pr-6 gap-2";
@@ -150,6 +216,24 @@ const inputContainerClass = computed(() => {
 </script>
 
 <template>
+  <GroupInput label="Nama Lengkap" required>
+    <div :class="inputContainerClass">
+      <InputField
+        :rules="formInputRules.username"
+        placeholder="Nama Lengkap"
+        type="text"
+        required
+        ref="usernameFieldRef"
+        @typing="
+          formValues.username = $event.inputValue;
+          formErrorValues.username = $event.errorState;
+          refreshAllValidation();
+        "
+        :value="valuePropsComputed.username"
+      />
+    </div>
+  </GroupInput>
+
   <!-- First Input -->
   <GroupInput label="Nama Lengkap" required>
     <div :class="inputContainerClass">
@@ -162,6 +246,7 @@ const inputContainerClass = computed(() => {
         @typing="
           formValues.name = $event.inputValue;
           formErrorValues.name = $event.errorState;
+          refreshAllValidation();
         "
         :value="valuePropsComputed.name"
       />
@@ -180,6 +265,7 @@ const inputContainerClass = computed(() => {
         @typing="
           formValues.nim = $event.inputValue;
           formErrorValues.nim = $event.errorState;
+          refreshAllValidation();
         "
         :value="valuePropsComputed.nim"
       />
@@ -226,7 +312,7 @@ const inputContainerClass = computed(() => {
     size="lg"
     width="full"
     hieararchy="primary"
-    @clicked="$emit('clicked', handleClick())"
+    @clicked="$emit('clicked', handleFormClick())"
     :disabled="formIsError"
   >
     <template #onlyIcon>

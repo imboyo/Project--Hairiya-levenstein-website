@@ -21,7 +21,7 @@ const emailRules = [
 
 // Form Input State
 const formValues = reactive({
-  username: "",
+  email: "",
   password: "",
   checked: false,
   fileInput: "",
