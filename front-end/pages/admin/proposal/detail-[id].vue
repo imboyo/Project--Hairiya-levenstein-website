@@ -12,6 +12,7 @@ import {
 } from "~/my_modules/api_services/proposal";
 import Swal from "sweetalert2";
 import { getFullDate } from "~/my_modules/date";
+import { getPagination } from "~/my_modules/pagination";
 
 useHead({
   titleTemplate: (title) => `Detail Proposal - ${title}`,
@@ -23,16 +24,35 @@ const router = useRouter();
 const proposalHeader = ["Proposal", "Persentase Plagiarism", "Tanggal Upload"];
 
 // State
-const searchState = ref("");
 const proposalDetail = ref<Proposal>();
 const proposalList = ref<Proposal[]>([]);
+const proposalListPaginated = ref<Proposal[]>([]);
 const tableIsLoading = ref(true);
 
-const proposalPagination = ref({
+const proposalPagination = reactive({
   currentPage: 1,
   totalPage: 1,
-  perPage: 10,
+  limit: 10,
 });
+
+const paginateList = () => {
+  // Make data paginated biar rapi
+  const { dataPagination, totalPage, total } = getPagination(
+    proposalList.value,
+    proposalPagination.limit,
+    proposalPagination.currentPage
+  );
+
+  proposalListPaginated.value = dataPagination;
+  proposalPagination.totalPage = totalPage;
+};
+
+watch(
+  () => proposalPagination.currentPage,
+  (value) => {
+    paginateList();
+  }
+);
 
 // * Get Proposal List
 onBeforeMount(() =>
@@ -49,6 +69,8 @@ onBeforeMount(() =>
         (data) => {
           proposalList.value = data.result;
           tableIsLoading.value = false;
+
+          paginateList();
         },
         () => {}
       );
@@ -62,7 +84,31 @@ onBeforeMount(() =>
   )
 );
 
-// Get Proporsal Plagiarism List
+const handlePrevClick = (isPrev) => {
+  if (isPrev) {
+    proposalPagination.currentPage--;
+  }
+};
+
+const handleNextClick = (isNext) => {
+  if (isNext) {
+    proposalPagination.currentPage++;
+  }
+};
+
+const percentageClassDynamic = computed(() => {
+  return (number) => {
+    if (number >= 20 && number <= 40) {
+      return "text-secondary-700";
+    } else if (number >= 40 && number <= 60) {
+      return "text-warning-700";
+    } else if (number >= 60) {
+      return "text-error-700";
+    } else {
+      return "text-success-700";
+    }
+  };
+});
 </script>
 
 <template>
@@ -73,15 +119,6 @@ onBeforeMount(() =>
           >Detail Proposal -
           {{ truncate(proposalDetail.title, 20) }}
         </PageHeader>
-        <div class="w-full">
-          <InputField
-            placeholder="Cari Mahasiswa"
-            :rules="[]"
-            type="text"
-            icon="search"
-            @typing="searchState = $event.inputValue"
-          />
-        </div>
       </section>
 
       <!--  Table Mahasiswa  -->
@@ -92,11 +129,25 @@ onBeforeMount(() =>
           :header="proposalHeader"
           :isLoading="tableIsLoading"
           :pagination="proposalPagination"
+          @prevClicked="handlePrevClick($event)"
+          @nextClicked="handleNextClick($event)"
         >
-          <MyTableRow v-for="item in proposalList" :key="item.id">
-            <MyTableCol>{{ item.title }}</MyTableCol>
-            <MyTableCol>{{ item.percentage }}%</MyTableCol>
-            <MyTableCol>{{ getFullDate(item.created_at) }}</MyTableCol>
+          <MyTableRow v-for="item in proposalListPaginated" :key="item.id">
+            <MyTableCol>
+              <div class="flex flex-col">
+                <p class="text-gray-700 font-bold text-md">{{ item.title }}</p>
+                <p>{{ item.name }}</p>
+                <p>{{ item.nim }}</p>
+              </div>
+            </MyTableCol>
+            <MyTableCol
+              class="text-lg text-gray-700 font-bold"
+              :class="percentageClassDynamic(item.percentage)"
+              >{{ item.percentage }}%
+            </MyTableCol>
+            <MyTableCol class="text-gray-700 text-md"
+              >{{ getFullDate(item.created_at) }}
+            </MyTableCol>
           </MyTableRow>
         </MyTable>
       </section>
