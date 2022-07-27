@@ -1,6 +1,8 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+
+from checker.utils import check_plagiarism_all, get_highest_percentage
 from .models import Proposal
 from .serializers import ProposalSerializer, DosenProposalSerializer, MahasiswaProposalSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,6 +13,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 import os
 from django.conf import settings
+
 
 # Create your views here.
 
@@ -35,6 +38,20 @@ class ProposalViewSet(ModelViewSet):
         file_path = f'{settings.BASE_DIR}/media/{instance.file}'
         os.remove(file_path)
         instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_update(self, serializer):
+        parameter = self.kwargs.get('pk')
+        proposal = Proposal.objects.get(id=parameter)
+        file_path = f'{settings.BASE_DIR}/media/{proposal.file}'
+        os.remove(file_path)
+
+        instance = serializer.save()
+        plagiarism_list = check_plagiarism_all(f'{settings.BASE_DIR}/media/{instance.file}')
+        plagiarism_percentage = get_highest_percentage(plagiarism_list)
+        instance.plagiarism_percentage = plagiarism_percentage
+        instance.save()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -116,4 +133,3 @@ class MahasiswaProposalAPIView(APIView):
             except:
                 return Response({"message": "Proposal not found"}, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
