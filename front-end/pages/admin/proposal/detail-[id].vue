@@ -122,7 +122,6 @@ const percentageClassDynamic = computed(() => {
       </section>
 
       <!--  Table Mahasiswa  -->
-      <!--  Table Mahasiswa  -->
       <section>
         <MyTable
           title="Daftar Proposal"
