@@ -23,6 +23,6 @@ export const splitArrayInto2Array = (array) => {
         newArray.push(item);
       }
     }
-    return newArray;
   });
+  return newArray;
 };

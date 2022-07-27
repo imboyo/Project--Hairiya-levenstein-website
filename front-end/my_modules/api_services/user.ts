@@ -26,3 +26,16 @@ export const getUsersService = (
       isError(err);
     });
 };
+
+export const checkIsUserExist = async (username, cbSucces, cbError) => {
+  await axios
+    .get(`${baseApiUrl}user/check-username/${username}/`, {
+      headers: headers(),
+    })
+    .then((res) => {
+      cbSucces(res);
+    })
+    .catch((err) => {
+      cbError(err);
+    });
+};

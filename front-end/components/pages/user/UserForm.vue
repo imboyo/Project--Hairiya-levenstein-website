@@ -10,6 +10,7 @@ import InputField from "~/components/inputs/InputField.vue";
 import GroupInput from "~/components/inputs/GroupInput.vue";
 import MyButton from "~/components/buttons/MyButton.vue";
 import SelectInput from "~/components/inputs/SelectInput.vue";
+import { checkIsUserExist } from "~/my_modules/api_services/user";
 
 interface Props {
   value?: {
@@ -224,7 +225,7 @@ const handleFormClick = () => {
       username: formValues.username,
       name: formValues.name,
       nim: formValues.nim,
-      email: formValues.username,
+      email: formValues.email,
       role: formValues.role,
       password: formValues.password,
     },
@@ -238,10 +239,24 @@ const emit = defineEmits(["clicked"]);
 const inputContainerClass = computed(() => {
   return "flex flex-col w-full lg:pr-6 gap-2";
 });
+
+const userIsExisted = ref(false);
+const checkUsernameExisted = computed(() => {
+  checkIsUserExist(
+    formValues.username,
+    (data) => {
+      userIsExisted.value = data.status === 200;
+    },
+    () => {
+      userIsExisted.value = false;
+    }
+  );
+});
 </script>
 
 <template>
-  <GroupInput label="Username" required>
+  {{ checkUsernameExisted }}
+  <GroupInput label="Username" required class="flex flex-col">
     <div :class="inputContainerClass">
       <InputField
         :rules="formInputRules.username"
@@ -256,6 +271,10 @@ const inputContainerClass = computed(() => {
         "
         :value="valuePropsComputed.username"
       />
+
+      <div v-if="userIsExisted">
+        <p class="text-sm text-error-500">Username ini sudah digunakan</p>
+      </div>
     </div>
   </GroupInput>
 
@@ -351,6 +370,8 @@ const inputContainerClass = computed(() => {
       />
     </div>
   </GroupInput>
+
+  <slot name="error"></slot>
 
   <!-- Button -->
   <MyButton

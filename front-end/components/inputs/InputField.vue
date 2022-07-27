@@ -60,6 +60,7 @@ defineExpose({ refreshValidation });
           refreshValidation();
           $emit('typing', { inputValue, errorState });
         "
+        autocomplete="off"
       />
       <span
         v-if="errorState"

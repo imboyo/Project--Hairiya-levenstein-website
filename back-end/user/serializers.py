@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer()
     password = serializers.CharField(style={"input_type": "password"}, write_only=True)
     first_name = serializers.CharField(required=True)
-    last_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=False)
     email = serializers.EmailField(required=True)
 
     class Meta:
@@ -51,3 +51,12 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class CheckUsernameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
+        read_only_fields = ['username']
+        lookup_field = 'username'
+        extra_kwargs = {'url': {'lookup_field': 'username'}}
