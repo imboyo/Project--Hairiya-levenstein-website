@@ -17,9 +17,14 @@ const file = ref(null);
 const errorState = ref<boolean | string>(false);
 
 // Pass this function to parent as ref
-const refreshValidation = () => {
+const refreshValidation = (callback) => {
   errorState.value = validateField(file.value.files.length, props.rules);
+  if (callback) callback(errorState.value);
 };
+
+// watch(file, () => {
+//   refreshValidation(() => {});
+// });
 
 defineExpose({ refreshValidation });
 </script>

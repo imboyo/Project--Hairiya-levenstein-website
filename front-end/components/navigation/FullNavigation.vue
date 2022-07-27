@@ -11,11 +11,11 @@ import Sidenav from "~/components/navigation/Sidenav.vue";
     <!-- ?  Mobile Sidenav  -->
     <MobileSidenav />
     <div
-      class="hidden flex-col h-screen w-[280px] lg:flex shadow-focus-ring-grey-100"
+      class="hidden flex-col h-screen w-[280px] lg:flex shadow-focus-ring-grey-100 lg:fixed lg:left-0 lg:top-0"
     >
       <Sidenav v-once />
     </div>
-    <div class="w-full pt-[32px] px-[32px]">
+    <div class="w-full pt-[32px] px-[32px] lg:ml-[280px]">
       <slot></slot>
     </div>
   </div>

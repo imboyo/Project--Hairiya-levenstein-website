@@ -3,7 +3,6 @@ import {
   checkFormIsError,
   isASCII,
   isRequired,
-  validateField,
 } from "~/my_modules/input_validation";
 import InputField from "~/components/inputs/InputField.vue";
 import GroupInput from "~/components/inputs/GroupInput.vue";
@@ -21,15 +20,9 @@ import { pushObjectPickedInModalUser } from "~/my_modules/proposal";
 interface Props {
   value?: {
     title: string;
-    dosen: string;
-    mahasiswa: string;
+    dosen: userPicked[];
+    mahasiswa: userPicked[];
   };
-}
-
-interface userPicked {
-  id: string;
-  first_name: string;
-  last_name: string;
 }
 
 const props = defineProps<Props>();
@@ -45,8 +38,8 @@ const valuePropsComputed = computed(() => {
   } else {
     return {
       title: "",
-      dosen: "",
-      mahasiswa: "",
+      dosen: [],
+      mahasiswa: [],
     };
   }
 });
@@ -54,10 +47,10 @@ const valuePropsComputed = computed(() => {
 // * State
 // * Form Input State - Main ------------------
 const formValues = reactive({
-  judulProposal: valuePropsComputed.value.title,
+  judulProposal: valuePropsComputed.value.title ?? "",
   fileInput: "",
-  mahasiswa: valuePropsComputed.value.mahasiswa,
-  dosen: valuePropsComputed.value.dosen,
+  mahasiswa: "",
+  dosen: "",
 });
 
 const formErrorValues = reactive({
@@ -67,7 +60,6 @@ const formErrorValues = reactive({
   dosen: true,
 });
 
-// Check input value is error or validated
 const formIsError = computed(() => {
   return checkFormIsError(formErrorValues);
 });
@@ -81,8 +73,8 @@ const dosenFieldRef = ref<InstanceType<typeof GroupInput> | null>(null);
 
 // * Modal Dosen------------------------
 const dosenSearchModal = ref(false);
-const dosenListModal = ref<User[]>([]);
-const dosenPicked = ref<userPicked[]>([]);
+const dosenListModal = ref<User[]>();
+const dosenPicked = ref<userPicked[]>(valuePropsComputed.value.dosen ?? []);
 
 watch(
   () => formValues.dosen,
@@ -129,7 +121,10 @@ const handleClickDosenPickedInModal = (
 
 watch(
   () => dosenPicked.value,
-  (value) => {}
+  (value) => {
+    refreshAllValidation();
+  },
+  { deep: true }
 );
 
 const dosenHandleClickDeleteModalItemPicked = (userId) => {
@@ -142,7 +137,9 @@ const dosenHandleClickDeleteModalItemPicked = (userId) => {
 // ? Modal Mahasiswa
 const mahasiswaSearchModal = ref(false);
 const mahasiswaListModal = ref<User[]>([]);
-const mahasiswaPicked = ref<userPicked[]>([]);
+const mahasiswaPicked = ref<userPicked[]>(
+  valuePropsComputed.value.mahasiswa ?? []
+);
 
 watch(
   () => formValues.mahasiswa,
@@ -240,20 +237,36 @@ const formInputRules = {
   ],
 };
 
-// Handle Click
-const handleFormClick = () => {
+const refreshAllValidation = () => {
   const listRef = [
-    judulProposalFieldRef,
-    fileInputFieldRef,
-    mahasiswaFieldRef,
-    dosenFieldRef,
+    {
+      field: "judulProposal",
+      ref: judulProposalFieldRef,
+    },
+    {
+      field: "fileInput",
+      ref: fileInputFieldRef,
+    },
+    {
+      field: "mahasiswa",
+      ref: mahasiswaFieldRef,
+    },
+    {
+      field: "dosen",
+      ref: dosenFieldRef,
+    },
   ];
   // Looping list ref
-  listRef.forEach((ref) => {
+  listRef.forEach(({ field, ref }) => {
     ref.value?.refreshValidation((value) => {
-      formErrorValues[ref] = value;
+      formErrorValues[field] = value;
     });
   });
+};
+
+// Handle Click
+const handleFormClick = () => {
+  refreshAllValidation();
   return {
     isError: formIsError.value,
     formData: {
@@ -269,8 +282,6 @@ const handleFormClick = () => {
 
 <template>
   <!--    First Input    -->
-  {{ dosenPicked }}
-  {{ mahasiswaPicked }}
   <GroupInput label="Judul Proposal" required>
     <div :class="`${inputContainerClass}`">
       <InputField
@@ -282,6 +293,7 @@ const handleFormClick = () => {
         @typing="
           formValues.judulProposal = $event.inputValue;
           formErrorValues.judulProposal = $event.errorState;
+          refreshAllValidation();
         "
         :value="formValues.judulProposal"
       />
@@ -298,6 +310,7 @@ const handleFormClick = () => {
         @fileChanged="
           formValues.fileInput = $event.file;
           formErrorValues.fileInput = $event.errorState;
+          refreshAllValidation();
         "
         accept=".pdf"
       />
@@ -320,7 +333,6 @@ const handleFormClick = () => {
           dosenSearchModal = true;
           mahasiswaSearchModal = false;
         "
-        :value="formValues.dosen"
       />
       <InputPickedCard
         v-for="(item, index) in dosenPicked"
@@ -378,7 +390,6 @@ const handleFormClick = () => {
           mahasiswaSearchModal = true;
           dosenSearchModal = false;
         "
-        :value="formValues.mahasiswa"
       />
       <InputPickedCard
         v-for="(item, index) in mahasiswaPicked"
@@ -436,6 +447,6 @@ const handleFormClick = () => {
         v-if="isLoading"
       />
     </template>
-    <template #text>Upload Proposal</template>
+    <template #text>Submit</template>
   </MyButton>
 </template>

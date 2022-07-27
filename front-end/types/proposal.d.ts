@@ -12,3 +12,9 @@ interface Proposal {
   created_at: string;
   plagiarism_percentage: number;
 }
+
+interface userPicked {
+  id: string;
+  first_name: string;
+  last_name: string;
+}

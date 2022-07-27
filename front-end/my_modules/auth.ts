@@ -48,6 +48,16 @@ export const getMe = async (successCallback) => {
     });
 };
 
+export const getUserById = async (id, successCallback) => {
+  await axios
+    .get(`${baseApiUrl}user/${id}`, {
+      headers: headers(),
+    })
+    .then((response) => {
+      successCallback(response.data);
+    });
+};
+
 export const getUserDetailsByUsername = async (username, successCallback) => {
   await axios
     .get(`${baseApiUrl}user?username=${username}`, {
