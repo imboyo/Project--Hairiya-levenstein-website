@@ -22,10 +22,6 @@ const refreshValidation = (callback) => {
   if (callback) callback(errorState.value);
 };
 
-// watch(file, () => {
-//   refreshValidation(() => {});
-// });
-
 defineExpose({ refreshValidation });
 </script>
 
@@ -40,7 +36,6 @@ defineExpose({ refreshValidation });
       @change="
         file = $event.target;
         $emit('fileChanged', { file, errorState });
-        refreshValidation();
       "
       :accept="accept"
     />

@@ -183,6 +183,14 @@ const handleClickMahasiswaPickedInModal = (
   });
 };
 
+watch(
+  () => mahasiswaPicked.value,
+  (value) => {
+    refreshAllValidation();
+  },
+  { deep: true }
+);
+
 const mahasiswaHandleClickDeleteModalItemPicked = (userId) => {
   const index = findIndexArray(mahasiswaPicked.value, "id", userId);
   mahasiswaPicked.value.splice(index, 1);
