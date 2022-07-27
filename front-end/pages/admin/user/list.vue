@@ -7,8 +7,9 @@ import MyTableCol from "~/components/tables/MyTableCol.vue";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import { getOffsetPage } from "~/my_modules/pagination";
-import { headers } from "~/my_modules/api_services/auth";
+import { getAccessToken, headers } from "~/my_modules/api_services/auth";
 import { getUsersService } from "~/my_modules/api_services/user";
+import Swal from "sweetalert2";
 
 useHead({
   titleTemplate: (title) => `Daftar User - ${title}`,
@@ -82,6 +83,29 @@ watch(
   },
   { immediate: true }
 );
+
+// handle delete user
+const handleClickDeleteUser = (id) => {
+  Swal.fire({
+    title: "Yakin ingin menghapus proposal ini?",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await axios
+        .delete(`${baseApiUrl}user/${id}/`, {
+          headers: { Authorization: `Bearer ${getAccessToken()}` },
+        })
+        .then((response) => {
+          Swal.fire("Berhasil dihapus!", "", "success");
+          thisPageGetUsers();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  });
+};
 </script>
 
 <template>
@@ -129,20 +153,24 @@ watch(
       >
         <template v-if="!tableIsLoading">
           <MyTableRow v-for="item in users" :key="item.id">
-            <MyTableCol>{{ item.first_name }} {{ item.last_name }} </MyTableCol>
+            <MyTableCol class="font-bold"
+              >{{ item.first_name }} {{ item.last_name }}</MyTableCol
+            >
             <MyTableCol>{{ item.profile.nomor_induk }}</MyTableCol>
             <MyTableCol>{{ item.email }}</MyTableCol>
-            <MyTableCol>{{ item.profile.role }}</MyTableCol>
+            <MyTableCol class="uppercase font-bold">{{
+              item.profile.role
+            }}</MyTableCol>
             <td class="py-4 px-6 text-right flex flex-row gap-4">
               <NuxtLink
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
                 >Edit
               </NuxtLink>
-              <a
-                href="#"
+              <Button
+                @click="handleClickDeleteUser(item.id)"
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
-                >Delete</a
-              >
+                >Delete
+              </Button>
             </td>
           </MyTableRow>
         </template>
