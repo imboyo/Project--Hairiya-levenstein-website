@@ -11,7 +11,7 @@ const router = useRouter();
 onBeforeMount(() => {
   verifyLogin(
     () => {
-      loginRoleRedirect();
+      router.push("/");
     },
     () => {},
     () => {
