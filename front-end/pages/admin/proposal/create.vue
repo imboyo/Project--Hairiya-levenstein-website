@@ -12,6 +12,10 @@ useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
 });
 
+definePageMeta({
+  layout: "admin",
+});
+
 // For redirecting user is not have permission in this page then redirect them.
 const initialPageIsLoading = ref(true);
 verifyRolePageUser("admin", initialPageIsLoading);

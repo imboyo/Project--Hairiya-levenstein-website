@@ -22,6 +22,10 @@ useHead({
 const initialPageIsLoading = ref(true);
 verifyRolePageUser("admin", initialPageIsLoading);
 
+definePageMeta({
+  layout: "admin",
+});
+
 const proposalHeader = [
   "Proposal",
   "Persentase Plagiarism",

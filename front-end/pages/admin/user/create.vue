@@ -12,6 +12,10 @@ import { verifyRolePageUser } from "~/my_modules/reusable_component";
 const initialPageIsLoading = ref(true);
 verifyRolePageUser("admin", initialPageIsLoading);
 
+definePageMeta({
+  layout: "admin",
+});
+
 useHead({
   titleTemplate: (title) => `Tambah User - ${title}`,
 });

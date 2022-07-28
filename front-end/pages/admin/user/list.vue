@@ -20,6 +20,10 @@ useHead({
   titleTemplate: (title) => `Daftar User - ${title}`,
 });
 
+definePageMeta({
+  layout: "admin",
+});
+
 const userHeader = ["Nama", "Nomor Induk", "Email", "Role", "Aksi"];
 
 // State

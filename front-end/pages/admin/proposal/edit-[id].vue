@@ -13,6 +13,10 @@ import { verifyRolePageUser } from "~/my_modules/reusable_component";
 const initialPageIsLoading = ref(true);
 verifyRolePageUser("admin", initialPageIsLoading);
 
+definePageMeta({
+  layout: "admin",
+});
+
 const route = useRoute();
 
 useHead({
