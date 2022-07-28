@@ -142,11 +142,11 @@ const formInputRules = {
 
 // Form Input State
 const formValues = reactive({
-  username: "",
-  name: "",
-  nim: "",
-  email: "",
-  role: "",
+  username: valuePropsComputed.value.username,
+  name: valuePropsComputed.value.name,
+  nim: valuePropsComputed.value.nim,
+  email: valuePropsComputed.value.email,
+  role: valuePropsComputed.value.role,
   password: "",
 });
 
@@ -190,7 +190,7 @@ const refreshAllValidation = () => {
       ref: nimFieldRef,
     },
     {
-      field: "username",
+      field: "email",
       ref: emailFieldRef,
     },
     {

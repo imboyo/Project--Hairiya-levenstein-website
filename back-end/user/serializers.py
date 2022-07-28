@@ -41,11 +41,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         profile = instance.profile
+        profile_data = validated_data.pop('profile')
+
+        profile.role = profile_data.get('role', profile.role)
+        profile.nomor_induk = profile_data.get('nomor_induk', profile.nomor_induk)
 
         instance.username = validated_data['username']
         instance.password = make_password(validated_data['password'])
         instance.first_name = validated_data['first_name']
-        instance.last_name = validated_data['last_name']
+        try:
+            instance.last_name = validated_data['last_name']
+        except:
+            instance.last_name = ""
+
+        instance.email = validated_data['email']
 
         profile.save()
         instance.save()
