@@ -4,12 +4,32 @@ import ImageWrapper from "~/components/image/ImageWrapper.vue";
 import DropdownNavItem from "~/components/navigation/DropdownNavItem.vue";
 import { truncate } from "~/my_modules/string";
 import { dynamicSidenavByRoles } from "~/my_modules/sidenav";
-import { deleteCookieOrSession } from "~/my_modules/api_services/auth";
+import {
+  deleteCookieOrSession,
+  getAccessToken,
+  getUserById,
+} from "~/my_modules/api_services/auth";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { baseApiUrl } from "~/my_modules/environment";
 
-const role = inject<string>("role");
+const userProfile = ref();
 
-const dynamicSidenav = computed(() => dynamicSidenavByRoles(role));
+onBeforeMount(() => {
+  axios
+    .get(`${baseApiUrl}auth/users/me/`, {
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
+    })
+    .then((res) => {
+      getUserById(res.data.id, (data) => {
+        userProfile.value = data;
+      });
+    });
+});
+
+const dynamicSidenav = computed(() =>
+  dynamicSidenavByRoles(userProfile.value.profile.role)
+);
 
 const router = useRouter();
 
@@ -27,7 +47,10 @@ const logOut = () => {
 
 <template>
   <!--  ? Nav Content  -->
-  <div class="flex flex-col w-full h-screen bg-white py-[1rem] gap-[4px] z-50">
+  <div
+    class="flex flex-col w-full h-screen bg-white py-[1rem] gap-[4px] z-50"
+    v-if="userProfile"
+  >
     <!--  ? First Section     -->
     <div class="flex flex-col">
       <!--    Logo Hero    -->
@@ -73,10 +96,12 @@ const logOut = () => {
         </div>
         <div class="flex flex-col basis-9/12 text-sm block">
           <h3 class="inline-block text-gray-700 font-medium">
-            {{ truncate("Mabrur Syamhur", 16) }}
+            {{
+              truncate(`${userProfile.first_name} ${userProfile.last_name}`, 16)
+            }}
           </h3>
           <h5 class="inline-block text-gray-500">
-            {{ truncate("imbomabrur84@gmail.com", 16) }}
+            {{ truncate(`${userProfile.email}`, 16) }}
           </h5>
         </div>
         <div class="flex justify-end items-center text-gray-500">
