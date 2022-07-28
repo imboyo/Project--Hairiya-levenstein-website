@@ -153,6 +153,7 @@ const formValues = reactive({
 // Form Error State
 const formErrorValues = reactive({
   username: true,
+  userIsExisted: true,
   name: true,
   nim: true,
   email: true,
@@ -246,9 +247,11 @@ const checkUsernameExisted = computed(() => {
     formValues.username,
     (data) => {
       userIsExisted.value = data.status === 200;
+      formErrorValues.userIsExisted = true;
     },
     () => {
       userIsExisted.value = false;
+      formErrorValues.userIsExisted = false;
     }
   );
 });
