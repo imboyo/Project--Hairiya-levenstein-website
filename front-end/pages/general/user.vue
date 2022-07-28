@@ -12,10 +12,6 @@ import { getUsersService } from "~/my_modules/api_services/user";
 import Swal from "sweetalert2";
 import { verifyRolePageUser } from "~/my_modules/reusable_component";
 
-// For redirecting user is not have permission in this page then redirect them.
-const initialPageIsLoading = ref(true);
-verifyRolePageUser("admin", initialPageIsLoading);
-
 useHead({
   titleTemplate: (title) => `Daftar User - ${title}`,
 });
