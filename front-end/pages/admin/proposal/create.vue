@@ -6,10 +6,16 @@ import { getAccessToken } from "~/my_modules/api_services/auth";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import Swal from "sweetalert2";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
 
 useHead({
   titleTemplate: (title) => `Upload Proposal - ${title}`,
 });
+
+// For redirecting user is not have permission in this page then redirect them.
+const initialPageIsLoading = ref(true);
+verifyRolePageUser("admin", initialPageIsLoading);
+
 const router = useRouter();
 const proposalFormRef = ref<InstanceType<typeof ProposalForm> | null>(null);
 
@@ -62,8 +68,8 @@ const handleClick = async ({ isError, formData, isLoading }) => {
 </script>
 
 <template>
-  <NuxtLayout name="admin">
-    <div class="mb-10">
+  <div>
+    <div class="mb-10" v-if="!initialPageIsLoading">
       <section class="flex flex-col gap-8">
         <!-- * Header Section    -->
         <PageHeader>Upload Proposal</PageHeader>
@@ -86,5 +92,5 @@ const handleClick = async ({ isError, formData, isLoading }) => {
         </div>
       </section>
     </div>
-  </NuxtLayout>
+  </div>
 </template>

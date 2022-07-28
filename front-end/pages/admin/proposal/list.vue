@@ -18,8 +18,8 @@ useHead({
   titleTemplate: (title) => `Daftar Proposal- ${title}`,
 });
 
-const initialPageIsLoading = ref(true);
 // For redirecting user is not have permission in this page then redirect them.
+const initialPageIsLoading = ref(true);
 verifyRolePageUser("admin", initialPageIsLoading);
 
 const proposalHeader = [

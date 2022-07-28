@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import PageHeader from "~/components/header/PageHeader.vue";
-import InputField from "~/components/inputs/InputField.vue";
 import MyTable from "~/components/tables/MyTable.vue";
 import MyTableRow from "~/components/tables/MyTableRow.vue";
 import MyTableCol from "~/components/tables/MyTableCol.vue";
@@ -13,10 +12,15 @@ import {
 import Swal from "sweetalert2";
 import { getFullDate } from "~/my_modules/date";
 import { getPagination } from "~/my_modules/pagination";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
 
 useHead({
   titleTemplate: (title) => `Detail Proposal - ${title}`,
 });
+
+// For redirecting user is not have permission in this page then redirect them.
+const initialPageIsLoading = ref(true);
+verifyRolePageUser("admin", initialPageIsLoading);
 
 const route = useRoute();
 const router = useRouter();
@@ -112,8 +116,8 @@ const percentageClassDynamic = computed(() => {
 </script>
 
 <template>
-  <NuxtLayout name="admin">
-    <div>
+  <div>
+    <div v-if="!initialPageIsLoading">
       <section class="flex flex-col gap-8" v-if="proposalDetail">
         <PageHeader
           >Detail Proposal -
@@ -151,5 +155,5 @@ const percentageClassDynamic = computed(() => {
         </MyTable>
       </section>
     </div>
-  </NuxtLayout>
+  </div>
 </template>

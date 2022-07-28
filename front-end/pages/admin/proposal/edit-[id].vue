@@ -7,6 +7,11 @@ import { baseApiUrl } from "~/my_modules/environment";
 import axios from "axios";
 import { getAccessToken, getUserById } from "~/my_modules/api_services/auth";
 import Swal from "sweetalert2";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
+
+// For redirecting user is not have permission in this page then redirect them.
+const initialPageIsLoading = ref(true);
+verifyRolePageUser("admin", initialPageIsLoading);
 
 const route = useRoute();
 
@@ -111,39 +116,37 @@ const handleClick = async ({ isError, formData, isLoading }) => {
 };
 </script>
 <template>
-  <NuxtLayout name="admin">
-    <div class="pb-10">
-      <div v-if="!isLoading">
-        <section class="flex flex-col gap-8">
-          <!-- * Header Section    -->
-          <PageHeader>Edit Proposal</PageHeader>
-          <!--   ! End Header Section -->
-          <div class="flex flex-col gap-5">
-            <!--    Header Form    -->
-            <PageSubHeader>
-              <template #title>
-                File proposal yang diupload hanya berisi BAB 2 & 3
-              </template>
-              <template #description
-                >Untuk lainnya silahkan dihapus terlebih dahulu agar hasil yang
-                didapatkan sesua dengan yang diharapkan
-              </template>
-            </PageSubHeader>
-            <!--   End Header Form    -->
-            <hr />
-            <ProposalForm
-              @clicked="handleClick($event)"
-              ref="proposalFormRef"
-              :value="{
-                title: proposalValue.title,
-                dosen: dosenValue,
-                mahasiswa: mahasiswa,
-              }"
-            />
-          </div>
-        </section>
-      </div>
-      <NotFoundComponent v-else />
+  <div class="pb-10">
+    <div v-if="!isLoading">
+      <section class="flex flex-col gap-8">
+        <!-- * Header Section    -->
+        <PageHeader>Edit Proposal</PageHeader>
+        <!--   ! End Header Section -->
+        <div class="flex flex-col gap-5">
+          <!--    Header Form    -->
+          <PageSubHeader>
+            <template #title>
+              File proposal yang diupload hanya berisi BAB 2 & 3
+            </template>
+            <template #description
+              >Untuk lainnya silahkan dihapus terlebih dahulu agar hasil yang
+              didapatkan sesua dengan yang diharapkan
+            </template>
+          </PageSubHeader>
+          <!--   End Header Form    -->
+          <hr />
+          <ProposalForm
+            @clicked="handleClick($event)"
+            ref="proposalFormRef"
+            :value="{
+              title: proposalValue.title,
+              dosen: dosenValue,
+              mahasiswa: mahasiswa,
+            }"
+          />
+        </div>
+      </section>
     </div>
-  </NuxtLayout>
+    <NotFoundComponent v-else />
+  </div>
 </template>
