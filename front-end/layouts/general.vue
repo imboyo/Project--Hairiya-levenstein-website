@@ -9,10 +9,11 @@ const router = useRouter();
 onBeforeMount(() => {
   verifyLogin(
     () => {
-      initialPageIsLoading.value = false;
       checkUserRole((role) => {
         if (!(role === "mahasiswa" || role === "dosen")) {
           router.push("/auth/login");
+        } else {
+          initialPageIsLoading.value = false;
         }
       });
     },
@@ -26,6 +27,8 @@ onBeforeMount(() => {
 
 <template>
   <FullNavigation>
-    <slot></slot>
+    <template v-if="!initialPageIsLoading">
+      <slot></slot>
+    </template>
   </FullNavigation>
 </template>

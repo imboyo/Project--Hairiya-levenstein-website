@@ -10,6 +10,11 @@ import { getOffsetPage } from "~/my_modules/pagination";
 import { getAccessToken, headers } from "~/my_modules/api_services/auth";
 import { getUsersService } from "~/my_modules/api_services/user";
 import Swal from "sweetalert2";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
+
+// For redirecting user is not have permission in this page then redirect them.
+const initialPageIsLoading = ref(true);
+verifyRolePageUser("admin", initialPageIsLoading);
 
 useHead({
   titleTemplate: (title) => `Daftar User - ${title}`,
@@ -109,7 +114,7 @@ const handleClickDeleteUser = (id) => {
 </script>
 
 <template>
-  <div>
+  <div v-if="!initialPageIsLoading">
     <!-- * Heard & Form  -->
     <section class="flex flex-col gap-8 lg:flex-row">
       <div class="flex lg:justify-start lg:w-6/12">

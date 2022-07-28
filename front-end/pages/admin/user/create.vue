@@ -6,7 +6,15 @@ import { splitArrayInto2Array, splitStringBySpace } from "~/my_modules/string";
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import Swal from "sweetalert2";
-import { checkIsUserExist } from "~/my_modules/api_services/user";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
+
+// For redirecting user is not have permission in this page then redirect them.
+const initialPageIsLoading = ref(true);
+verifyRolePageUser("admin", initialPageIsLoading);
+
+definePageMeta({
+  layout: "admin",
+});
 
 useHead({
   titleTemplate: (title) => `Tambah User - ${title}`,
@@ -62,16 +70,14 @@ const handleClick = ({ isError, formData, isLoading }) => {
 };
 </script>
 <template>
-  <NuxtLayout name="admin">
-    <div>
-      <section class="flex flex-col gap-8">
-        <PageHeader>Tambah User</PageHeader>
-        <hr />
-        <!--   Form Section   -->
-        <form class="flex flex-col gap-5" @submit.prevent autocomplete="off">
-          <UserForm @clicked="handleClick($event)" ref="tambahUserFormRef" />
-        </form>
-      </section>
-    </div>
-  </NuxtLayout>
+  <div v-if="!initialPageIsLoading">
+    <section class="flex flex-col gap-8">
+      <PageHeader>Tambah User</PageHeader>
+      <hr />
+      <!--   Form Section   -->
+      <form class="flex flex-col gap-5" @submit.prevent autocomplete="off">
+        <UserForm @clicked="handleClick($event)" ref="tambahUserFormRef" />
+      </form>
+    </section>
+  </div>
 </template>
