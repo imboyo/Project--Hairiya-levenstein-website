@@ -1,7 +1,7 @@
 export const dynamicSidenavByRoles = (roles: string) => {
   const admin = [
     {
-      path: "/admin/dashboard",
+      path: "/",
       name: "Dashboard",
       icon: "dashboard",
     },
@@ -41,7 +41,7 @@ export const dynamicSidenavByRoles = (roles: string) => {
 
   const dosen_mahasiswa = [
     {
-      path: "/general/dashboard",
+      path: "/",
       name: "Dashboard",
       icon: "dashboard",
     },
