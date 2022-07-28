@@ -1,21 +1,23 @@
 import { checkUserRole, verifyLogin } from "~/my_modules/api_services/auth";
 
-export const verifyRolePageUser = (userRole, initialPageIsLoading) => {
+export const verifyRolePageUser = (pageRole, initialPageIsLoading) => {
   const router = useRouter();
 
   onBeforeMount(async () => {
     await verifyLogin(
       () => {
-        initialPageIsLoading.value = false;
+        console.log(pageRole);
         checkUserRole((role) => {
-          if (!(role === userRole)) {
-            router.push({ path: "/auth/login" });
+          if (!(role === pageRole)) {
+            router.push({ path: "/" });
+          } else {
+            initialPageIsLoading.value = false;
           }
         });
       },
       () => {},
       () => {
-        router.push({ path: "/auth/login" });
+        router.push({ path: "/" });
       }
     );
   });

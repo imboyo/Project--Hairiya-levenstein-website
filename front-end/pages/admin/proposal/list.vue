@@ -11,10 +11,16 @@ import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import { getAccessToken } from "~/my_modules/api_services/auth";
 import Swal from "sweetalert2";
+import { verifyRolePageUser } from "~/my_modules/reusable_component";
+import NotFoundComponent from "~/components/NotFoundComponent.vue";
 
 useHead({
   titleTemplate: (title) => `Daftar Proposal- ${title}`,
 });
+
+const initialPageIsLoading = ref(true);
+// For redirecting user is not have permission in this page then redirect them.
+verifyRolePageUser("admin", initialPageIsLoading);
 
 const proposalHeader = [
   "Proposal",
@@ -92,8 +98,8 @@ const handleClickDeleteProposal = (id) => {
 </script>
 
 <template>
-  <NuxtLayout name="admin">
-    <div>
+  <div>
+    <div v-if="!initialPageIsLoading">
       <section class="flex flex-col gap-8 lg:flex-row">
         <div class="flex lg:justify-start lg:w-6/12">
           <PageHeader>Daftar Proposal</PageHeader>
@@ -152,5 +158,8 @@ const handleClickDeleteProposal = (id) => {
         </MyTable>
       </section>
     </div>
-  </NuxtLayout>
+    <div v-else>
+      <NotFoundComponent />
+    </div>
+  </div>
 </template>
