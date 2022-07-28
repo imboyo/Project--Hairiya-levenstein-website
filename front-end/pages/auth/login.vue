@@ -9,10 +9,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { getDateUntilNYear } from "~/my_modules/date";
 import { baseApiUrl } from "~/my_modules/environment";
-import {
-  checkUserRole,
-  loginRoleRedirect,
-} from "~/my_modules/api_services/auth";
 
 // Page Meta and main data
 useHead({
@@ -24,14 +20,14 @@ const router = useRouter();
 // * State
 // Form Input Rules
 const formInputRules = {
-  email: [
+  username: [
     {
       validate: isRequired,
-      text: "Tolong masukkan username anda",
+      text: "Tolong masukkan email anda",
     },
     {
       validate: (value) => value.length >= 6,
-      text: "Minimum password 6 karakter",
+      text: "Minimum username 6 karakter",
     },
   ],
   password: [
@@ -48,13 +44,13 @@ const formInputRules = {
 
 // Form Input State
 const formValues = reactive({
-  email: "",
+  username: "",
   password: "",
   checked: false,
 });
 
 const formErrorValues = reactive({
-  email: true,
+  username: true,
   password: true,
 });
 
@@ -92,7 +88,7 @@ const handleClick = async () => {
     // Connect to api
     await axios
       .post(`${baseApiUrl}auth/jwt/create`, {
-        email: formValues.username,
+        username: formValues.username,
         password: formValues.password,
       })
       .then((response) => {
@@ -112,8 +108,8 @@ const handleClick = async () => {
             // if checkbox not checked make sessions in browser
             sessionStorage.setItem("token", response.data.access);
           }
-          // Custom Redirect after logged in between dosen, mahasiswa, admin
-          loginRoleRedirect();
+          // Redirect to dashboard
+          router.push("/");
         } else {
           // Jika gagal login
           buttonIsLoading.value = false;
@@ -178,8 +174,8 @@ const handleClick = async () => {
         <!--   Input Field   -->
         <div class="flex flex-col gap-5">
           <InputField
-            placeholder="Email"
-            :rules="formInputRules.email"
+            placeholder="Username"
+            :rules="formInputRules.username"
             type="text"
             label="Username"
             required
@@ -192,7 +188,7 @@ const handleClick = async () => {
           <InputField
             placeholder="Password"
             :rules="formInputRules.password"
-            type="email"
+            type="password"
             label="Password"
             required
             ref="passwordField"

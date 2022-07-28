@@ -31,7 +31,7 @@ const logOut = () => {
     <!--  ? First Section     -->
     <div class="flex flex-col">
       <!--    Logo Hero    -->
-      <div class="flex flex-row items-center px-[12px] py-[20px]" to="/">
+      <div class="flex flex-row items-center px-[12px] py-[20px]">
         <ImageWrapper
           rounded="lg"
           img="/img/64ff580d4559faeaf7fc7e1ffd13cb5a.jpg"
