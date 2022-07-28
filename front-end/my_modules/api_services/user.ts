@@ -1,7 +1,7 @@
 import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import { getOffsetPage } from "~/my_modules/pagination";
-import { headers } from "~/my_modules/api_services/auth";
+import { getAccessToken, headers } from "~/my_modules/api_services/auth";
 
 export const getUsersService = (
   limit,

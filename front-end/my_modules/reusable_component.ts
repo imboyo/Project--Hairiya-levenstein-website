@@ -6,7 +6,6 @@ export const verifyRolePageUser = (pageRole, initialPageIsLoading) => {
   onBeforeMount(async () => {
     await verifyLogin(
       () => {
-        console.log(pageRole);
         checkUserRole((role) => {
           if (!(role === pageRole)) {
             router.push({ path: "/" });

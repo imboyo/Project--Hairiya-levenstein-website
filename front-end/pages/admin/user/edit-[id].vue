@@ -7,6 +7,7 @@ import axios from "axios";
 import { baseApiUrl } from "~/my_modules/environment";
 import Swal from "sweetalert2";
 import { verifyRolePageUser } from "~/my_modules/reusable_component";
+import { onBeforeMount } from "#imports";
 
 // For redirecting user is not have permission in this page then redirect them.
 const initialPageIsLoading = ref(true);
@@ -19,15 +20,41 @@ definePageMeta({
 useHead({
   titleTemplate: (title) => `Tambah User - ${title}`,
 });
+
+const route = useRoute();
 const router = useRouter();
 const tambahUserFormRef = ref<InstanceType<typeof UserForm> | null>(null);
 const errorMessage = ref("");
+const userDetails = ref<User>();
+const formValues = reactive({
+  username: "",
+  name: "",
+  nim: "",
+  email: "",
+  role: "",
+});
 
-const handleClick = ({ isError, formData, isLoading }) => {
+onBeforeMount(async () => {
+  // get user detail
+  const id = route.params.id;
+  const response = await axios.get(`${baseApiUrl}user/${id}`, {
+    headers: { Authorization: `Bearer ${getAccessToken()}` },
+  });
+  const data = response.data;
+  userDetails.value = data;
+
+  // assign formValues data
+  formValues.username = data.username;
+  formValues.name = `${data.first_name} ${data.last_name}`;
+  formValues.nim = data.profile.nomor_induk;
+  formValues.email = data.email;
+  formValues.role = data.profile.role;
+});
+
+const handleClick = async ({ isError, formData, isLoading }) => {
   if (!isError && !isLoading) {
     tambahUserFormRef.value?.toggleIsLoading();
 
-    const authorization = `Bearer ${getAccessToken()}`;
     const nameArray = () => {
       const array = splitStringBySpace(formData.name);
       if (array.length > 1) {
@@ -36,6 +63,8 @@ const handleClick = ({ isError, formData, isLoading }) => {
         return array;
       }
     };
+
+    console.log(nameArray());
 
     let formDataSend = {
       username: formData.username,
@@ -50,19 +79,21 @@ const handleClick = ({ isError, formData, isLoading }) => {
       formDataSend.last_name = nameArray()[1];
     }
 
-    axios
-      .post(`${baseApiUrl}user/`, formDataSend, {
-        headers: { authorization, "Content-Type": "multipart/form-data" },
+    await axios
+      .patch(`${baseApiUrl}user/${route.params.id}/`, formDataSend, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((response) => {
         Swal.fire("Berhasil", "User berhasil ditambahkan", "success");
         router.push("/admin/user/list");
       })
       .catch((error) => {
-        Swal.fire("Gagal", "User gagal ditambahkan", "error");
         tambahUserFormRef.value?.toggleIsLoading();
-        // errorMessage.value = error.response.data.message;
         errorMessage.value = error.response.data;
+        Swal.fire("Gagal", "User gagal diedit", "error");
       });
   } else {
     console.log("form is not valid");
@@ -72,11 +103,20 @@ const handleClick = ({ isError, formData, isLoading }) => {
 <template>
   <div v-if="!initialPageIsLoading">
     <section class="flex flex-col gap-8">
-      <PageHeader>Tambah User</PageHeader>
+      <PageHeader class="capitalize"
+        >Edit User -
+        {{
+          `${userDetails.profile.role} - ${userDetails.username}`
+        }}</PageHeader
+      >
       <hr />
       <!--   Form Section   -->
       <form class="flex flex-col gap-5" @submit.prevent autocomplete="off">
-        <UserForm @clicked="handleClick($event)" ref="tambahUserFormRef" />
+        <UserForm
+          @clicked="handleClick($event)"
+          ref="tambahUserFormRef"
+          :value="formValues"
+        />
       </form>
     </section>
   </div>

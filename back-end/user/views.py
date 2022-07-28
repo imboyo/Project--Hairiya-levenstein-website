@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from user.permission import IsAdminUser, IsLoggendInUser
+from user.permission import IsAdminUser, IsLoggedInUser
 from user.serializers import UserSerializer, CheckUsernameSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -23,7 +23,7 @@ class UserViewSet(ModelViewSet):
         if self.action == 'create' or self.action == 'destroy':
             permissions_classes = [IsAdminUser]
         elif self.action == 'update' or self.action == 'partial_update':
-            permissions_classes = [IsLoggendInUser, IsAdminUser]
+            permissions_classes = [IsAdminUser]
         elif self.action == 'list':
             permissions_classes = [AllowAny]
 

@@ -169,13 +169,15 @@ const handleClickDeleteUser = (id) => {
             <td class="py-4 px-6 text-right flex flex-row gap-4">
               <NuxtLink
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
+                :to="`/admin/user/edit-${item.id}`"
                 >Edit
               </NuxtLink>
-              <Button
+              <button
                 @click="handleClickDeleteUser(item.id)"
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-block"
-                >Delete
-              </Button>
+              >
+                Delete
+              </button>
             </td>
           </MyTableRow>
         </template>
