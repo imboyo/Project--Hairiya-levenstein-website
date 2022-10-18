@@ -5,8 +5,8 @@ from django.db import models
 class Proposal(models.Model):
     mahasiswa = models.ManyToManyField('auth.User', related_name='mahasiswa')
     dosen = models.ManyToManyField('auth.User', related_name='dosen')
-    title = models.CharField(max_length=100)
-    file = models.FileField(upload_to='proposal/')
+    title = models.CharField(max_length=300)
+    file = models.FileField(upload_to='proposal/', max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     plagiarism_percentage = models.FloatField(default=0)
 

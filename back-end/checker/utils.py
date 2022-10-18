@@ -87,7 +87,6 @@ def check_plagiarism_all(file_target_path):
 
             # Append to list
             plagiarism_list.append(output)
-
     return plagiarism_list
 
 

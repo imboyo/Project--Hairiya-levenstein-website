@@ -16,9 +16,10 @@ distances = Levenshtein.distance(user_article_clean, db_article_clean)
 percentage = get_percentage(user_article_clean, db_article_clean)
 matrix = get_levenshtein_matrix(user_article_clean, db_article_clean)
 
-
-# print(f'distances - {distances}')
-# print(f'Similarity - {percentage}%')
+print(len(user_article_clean))
+print(len(db_article_clean))
+print(f'distances - {distances}')
+print(f'Similarity - {percentage}%')
 # print(check_plagiarism(percentage))
 #
 # print('----------------------------------------')
@@ -31,7 +32,7 @@ def print_plagiarism_all(plagiarism_list):
         print(f'{item["file"]} - {item["percentage"]}% - {item["plagiarism"]}')
 
 
-print_plagiarism_all(check_plagiarism_all('data_target/user_article.pdf'))
+# print_plagiarism_all(check_plagiarism_all('data_target/user_article.pdf'))
 
 
 # Matplotlib visualization of Levenshtein ---------------------------------------------------
@@ -43,7 +44,7 @@ def plot_levenshtein_matrix(matrix_):
     plt.show()
 
 
-plot_levenshtein_matrix(matrix)
+# plot_levenshtein_matrix(matrix)
 
 
 # matrix linear data visualization using matplotlib
@@ -54,7 +55,7 @@ def plot_levenshtein_matrix_linear(matrix_):
     plt.show()
 
 
-plot_levenshtein_matrix_linear(matrix)
+# plot_levenshtein_matrix_linear(matrix)
 
 
 # Get Levenstein visualization
@@ -64,6 +65,5 @@ def get_levenshtein_visualization(matrix_):
             print(matrix_[i][j], end=' ')
     return matrix_
 
-
 # Pakai string dikit karena kalau pdf hasil output nya kebanyakan. Nggak bisa dibaca manusia visualization nya
-get_levenshtein_visualization(get_levenshtein_matrix('buku', 'kutu'))
+# get_levenshtein_visualization(get_levenshtein_matrix('buku', 'kutu'))

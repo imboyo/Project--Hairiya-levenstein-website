@@ -62,7 +62,6 @@ def get_levenshtein_matrix(str1, str2):
 def get_percentage(str1, str2):
     return round(100 - (Levenshtein.distance(str1, str2) / max(len(str1), len(str2)) * 100))
 
-
 # Function for Check plagiarism with levenstein
 def check_plagiarism(percentage_):
     if percentage_ > 40:
